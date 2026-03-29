@@ -357,6 +357,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get dayOfWeek => '曜日:';
 
   @override
+  String get scheduleTimes => '服薬時間';
+
+  @override
   String get required => '必須';
 
   @override

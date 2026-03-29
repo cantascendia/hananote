@@ -772,6 +772,12 @@ abstract class AppLocalizations {
   /// **'Day of week:'**
   String get dayOfWeek;
 
+  /// No description provided for @scheduleTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule times'**
+  String get scheduleTimes;
+
   /// No description provided for @required.
   ///
   /// In en, this message translates to:

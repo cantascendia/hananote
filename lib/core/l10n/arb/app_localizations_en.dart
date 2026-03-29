@@ -362,6 +362,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dayOfWeek => 'Day of week:';
 
   @override
+  String get scheduleTimes => 'Schedule times';
+
+  @override
   String get required => 'Required';
 
   @override
