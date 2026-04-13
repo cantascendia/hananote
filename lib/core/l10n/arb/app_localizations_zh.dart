@@ -1103,6 +1103,24 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get webDownloadBannerTitle => '下载 HanaNote Android 版';
+
+  @override
+  String get webDownloadBannerSubtitle => '获得完整的原生体验';
+
+  @override
+  String get webDownloadButton => '下载';
+
+  @override
+  String get downloadApp => '下载应用';
+
+  @override
+  String get downloadAndroidApp => '下载 Android 应用';
+
+  @override
+  String get downloadAndroidAppDesc => '原生应用获得最佳体验';
+
+  @override
   String get termsOfUseContent =>
       '使用条款\n\n最后更新：2026年4月\n\n使用 HanaNote（以下简称\"本应用\"），即表示您同意以下使用条款。\n\n1. 用途\n本应用是一款个人健康追踪工具，专为激素替代治疗（HRT）管理而设计。它不是医疗设备，不提供医疗建议。\n\n2. 医疗免责声明\n本应用不能替代专业医疗建议、诊断或治疗。在更改用药方案前，请务必咨询您的医疗服务提供者。药代动力学模拟结果仅供参考。\n\n3. 用户责任\n您对输入的数据的准确性以及设备和应用密码的安全性负责。\n\n4. 数据所有权\n您保留在应用中创建的所有数据的完全所有权。我们不对您的内容主张任何权利。\n\n5. 可用性\n本应用按\"原样\"提供，不附带任何形式的保证。我们不保证不间断或无错误的运行。\n\n6. 责任限制\n在法律允许的最大范围内，本应用的开发者不对因使用或无法使用本应用而产生的任何损害承担责任。\n\n7. 更新\n我们可能会发布更新以改进功能。更新后继续使用即表示接受任何修改后的条款。\n\n8. 适用法律\n本条款受当地适用法律管辖。\n\n9. 联系\n如果您对本条款有任何疑问，请通过我们的官方渠道联系我们。';
 }

@@ -4,10 +4,12 @@
 // ignore_for_file: public_member_api_docs, lines_longer_than_80_chars
 
 import 'dart:ui';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hananote/app/theme/hana_colors.dart';
 import 'package:hananote/core/l10n/arb/app_localizations.dart';
+import 'package:hananote/core/widgets/web_download_banner.dart';
 
 /// Navigation bar content height, excluding the bottom safe area inset.
 const double kNavBarContentHeight = 72;
@@ -27,7 +29,12 @@ class MainShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: navigationShell,
+      body: Column(
+        children: [
+          if (kIsWeb) const WebDownloadBanner(),
+          Expanded(child: navigationShell),
+        ],
+      ),
       bottomNavigationBar: _StitchNavigationBar(
         currentIndex: navigationShell.currentIndex,
         onTap: _onTap,

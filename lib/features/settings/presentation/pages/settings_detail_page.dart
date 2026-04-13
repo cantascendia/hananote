@@ -12,6 +12,7 @@ import 'package:hananote/features/settings/presentation/bloc/settings_bloc.dart'
 import 'package:hananote/features/settings/presentation/bloc/settings_event.dart';
 import 'package:hananote/features/settings/presentation/bloc/settings_state.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// The settings detail page.
 class SettingsDetailPage extends StatelessWidget {
@@ -237,6 +238,30 @@ class SettingsDetailPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 24),
                     ], // end if (!kIsWeb)
+
+                    // Download App (web only)
+                    if (kIsWeb) ...[
+                      _SectionTitle(title: l10n.downloadApp),
+                      const SizedBox(height: 12),
+                      _SettingsCard(
+                        children: [
+                          _SettingsTile(
+                            icon: Icons.android,
+                            title: l10n.downloadAndroidApp,
+                            subtitle: l10n.downloadAndroidAppDesc,
+                            trailing: const Icon(
+                              Icons.download_rounded,
+                              color: HanaColors.primary,
+                            ),
+                            onTap: () => launchUrl(
+                              Uri.parse(AppUrls.githubReleasesLatest),
+                              mode: LaunchMode.externalApplication,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+                    ],
 
                     // About
                     _SectionTitle(title: l10n.about),

@@ -2224,6 +2224,42 @@ abstract class AppLocalizations {
   /// **'About {time} remaining'**
   String updateEstimatedTime(String time);
 
+  /// No description provided for @webDownloadBannerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Download HanaNote for Android'**
+  String get webDownloadBannerTitle;
+
+  /// No description provided for @webDownloadBannerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get the full native experience'**
+  String get webDownloadBannerSubtitle;
+
+  /// No description provided for @webDownloadButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get webDownloadButton;
+
+  /// No description provided for @downloadApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Download App'**
+  String get downloadApp;
+
+  /// No description provided for @downloadAndroidApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Android App'**
+  String get downloadAndroidApp;
+
+  /// No description provided for @downloadAndroidAppDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Native app for the best experience'**
+  String get downloadAndroidAppDesc;
+
   /// No description provided for @termsOfUseContent.
   ///
   /// In en, this message translates to:
