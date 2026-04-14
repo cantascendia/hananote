@@ -1,7 +1,7 @@
 /* HanaNote Landing Page — Dynamic version from CDN */
 (function () {
   var CDN = 'https://cdn.hrtyaku.com/hananote/version.json';
-  var GH = 'https://github.com/Loveil381/hananote/releases/latest';
+  var GH = 'https://github.com/cantascendia/hananote/releases/latest';
 
   fetch(CDN)
     .then(function (r) { return r.json(); })

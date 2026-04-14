@@ -18,7 +18,7 @@
   <img src="https://img.shields.io/badge/Flutter-3.24+-02569B?logo=flutter&logoColor=white" alt="Flutter" />
   <img src="https://img.shields.io/badge/Dart-3.5+-0175C2?logo=dart&logoColor=white" alt="Dart" />
   <img src="https://img.shields.io/badge/i18n-中文%20%7C%20English%20%7C%20日本語-blue" alt="Languages" />
-  <img src="https://github.com/Loveil381/hananote/actions/workflows/ci.yml/badge.svg" alt="CI" />
+  <img src="https://github.com/cantascendia/hananote/actions/workflows/ci.yml/badge.svg" alt="CI" />
   <img src="https://img.shields.io/badge/encryption-AES--256--GCM-green" alt="Encryption" />
 </p>
 
@@ -75,7 +75,7 @@ Over 84% of transgender hormone users in China lack adequate medical guidance. H
 
 ## Download
 
-Download the latest APK from [GitHub Releases](https://github.com/Loveil381/hananote/releases/latest).
+Download the latest APK from [GitHub Releases](https://github.com/cantascendia/hananote/releases/latest).
 
 The app checks for updates automatically on launch.
 
@@ -84,7 +84,7 @@ The app checks for updates automatically on launch.
 ## Development
 
 ```bash
-git clone https://github.com/Loveil381/hananote.git
+git clone https://github.com/cantascendia/hananote.git
 cd hananote
 
 flutter pub get

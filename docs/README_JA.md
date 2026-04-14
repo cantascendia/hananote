@@ -18,7 +18,7 @@
   <img src="https://img.shields.io/badge/Flutter-3.24+-02569B?logo=flutter&logoColor=white" alt="Flutter" />
   <img src="https://img.shields.io/badge/Dart-3.5+-0175C2?logo=dart&logoColor=white" alt="Dart" />
   <img src="https://img.shields.io/badge/i18n-中文%20%7C%20English%20%7C%20日本語-blue" alt="Languages" />
-  <img src="https://github.com/Loveil381/hananote/actions/workflows/ci.yml/badge.svg" alt="CI" />
+  <img src="https://github.com/cantascendia/hananote/actions/workflows/ci.yml/badge.svg" alt="CI" />
   <img src="https://img.shields.io/badge/encryption-AES--256--GCM-green" alt="Encryption" />
 </p>
 
@@ -73,7 +73,7 @@ HanaNote は、ホルモン補充療法（HRT）を受けている MTF トラン
 
 ## ダウンロード
 
-[GitHub Releases](https://github.com/Loveil381/hananote/releases/latest) から最新の APK をダウンロードしてください。
+[GitHub Releases](https://github.com/cantascendia/hananote/releases/latest) から最新の APK をダウンロードしてください。
 
 アプリ起動時に自動でアップデートを確認します。
 
@@ -82,7 +82,7 @@ HanaNote は、ホルモン補充療法（HRT）を受けている MTF トラン
 ## 開発
 
 ```bash
-git clone https://github.com/Loveil381/hananote.git
+git clone https://github.com/cantascendia/hananote.git
 cd hananote
 
 flutter pub get

@@ -10,7 +10,7 @@ class AppUrls {
 
   /// Fallback: latest GitHub Release page.
   static const githubReleasesLatest =
-      'https://github.com/Loveil381/hananote/releases/latest';
+      'https://github.com/cantascendia/hananote/releases/latest';
 }
 
 /// Application-level constants.

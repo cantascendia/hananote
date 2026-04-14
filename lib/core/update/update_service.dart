@@ -93,7 +93,7 @@ class DownloadProgress {
 /// GitHub Releases API.
 class UpdateService {
   /// GitHub owner/repo.
-  static const _owner = 'Loveil381';
+  static const _owner = 'cantascendia';
   static const _repo = 'hananote';
 
   /// Cloudflare R2 CDN base URL.

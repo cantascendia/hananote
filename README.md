@@ -18,7 +18,7 @@
   <img src="https://img.shields.io/badge/Flutter-3.24+-02569B?logo=flutter&logoColor=white" alt="Flutter" />
   <img src="https://img.shields.io/badge/Dart-3.5+-0175C2?logo=dart&logoColor=white" alt="Dart" />
   <img src="https://img.shields.io/badge/i18n-中文%20%7C%20English%20%7C%20日本語-blue" alt="Languages" />
-  <img src="https://github.com/Loveil381/hananote/actions/workflows/ci.yml/badge.svg" alt="CI" />
+  <img src="https://github.com/cantascendia/hananote/actions/workflows/ci.yml/badge.svg" alt="CI" />
   <img src="https://img.shields.io/badge/encryption-AES--256--GCM-green" alt="Encryption" />
 </p>
 
@@ -81,7 +81,7 @@ HanaNote 是一款面向 MTF 跨性别群体的一站式 HRT 健康记录应用�
 
 ### Android
 
-从 [GitHub Releases](https://github.com/Loveil381/hananote/releases/latest) 下载最新 APK。
+从 [GitHub Releases](https://github.com/cantascendia/hananote/releases/latest) 下载最新 APK。
 
 App 启动时会自动检查更新，有新版本时弹窗提示。
 
@@ -160,7 +160,7 @@ lib/features/
 ### 快速开始
 
 ```bash
-git clone https://github.com/Loveil381/hananote.git
+git clone https://github.com/cantascendia/hananote.git
 cd hananote
 
 flutter pub get
@@ -188,7 +188,7 @@ git push origin --tags
 
 ## 参与贡献
 
-欢迎通过 [GitHub Issues](https://github.com/Loveil381/hananote/issues) 提交 Bug 报告和功能建议。
+欢迎通过 [GitHub Issues](https://github.com/cantascendia/hananote/issues) 提交 Bug 报告和功能建议。
 
 ### 提交规范
 
