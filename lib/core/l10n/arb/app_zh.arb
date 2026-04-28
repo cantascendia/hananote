@@ -115,6 +115,8 @@
   "medicationPlan": "用药方案",
   "manageEditSchedules": "管理与编辑方案",
   "privacySecurity": "隐私与安全",
+  "settingsCrashReporting": "崩溃报告",
+  "settingsCrashReportingDesc": "匿名上报应用崩溃以帮助修复问题。可随时关闭。",
   "appLock": "应用锁",
   "privacyMode": "隐私模式",
   "privacyModeEnabled": "最近任务中隐藏应用内容",

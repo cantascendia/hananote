@@ -196,6 +196,24 @@ class SettingsDetailPage extends StatelessWidget {
                                 .add(TogglePrivacyMode(enabled: val)),
                           ),
                         ),
+                        Container(
+                          height: 1,
+                          margin: const EdgeInsets.only(left: 56),
+                          color: HanaColors.primaryOf(context).withAlpha(13),
+                        ),
+                        _SettingsTile(
+                          icon: Icons.bug_report_outlined,
+                          title: l10n.settingsCrashReporting,
+                          subtitle: l10n.settingsCrashReportingDesc,
+                          trailing: Switch(
+                            value: settings.crashReportingEnabled,
+                            onChanged: (val) =>
+                                context.read<SettingsBloc>().add(
+                                      ToggleCrashReporting(enabled: val),
+                                    ),
+                            activeTrackColor: HanaColors.primary,
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 24),

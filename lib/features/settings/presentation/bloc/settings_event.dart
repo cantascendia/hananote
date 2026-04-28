@@ -53,4 +53,8 @@ sealed class SettingsEvent with _$SettingsEvent {
   /// Sets the version the user chose to skip.
   const factory SettingsEvent.skipVersion({required String version}) =
       SkipVersion;
+
+  /// Toggles crash reporting (opt-in, privacy-first).
+  const factory SettingsEvent.toggleCrashReporting({required bool enabled}) =
+      ToggleCrashReporting;
 }

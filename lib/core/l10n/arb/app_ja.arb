@@ -115,6 +115,8 @@
   "medicationPlan": "服薬プラン",
   "manageEditSchedules": "スケジュールを管理・編集",
   "privacySecurity": "プライバシーとセキュリティ",
+  "settingsCrashReporting": "クラッシュレポート",
+  "settingsCrashReportingDesc": "匿名でクラッシュを報告し問題修正に協力。いつでもオフにできます。",
   "appLock": "アプリロック",
   "privacyMode": "プライバシーモード",
   "privacyModeEnabled": "最近使ったアプリで内容を隠す",

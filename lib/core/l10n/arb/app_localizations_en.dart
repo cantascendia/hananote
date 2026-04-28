@@ -238,6 +238,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get privacySecurity => 'Privacy & Security';
 
   @override
+  String get settingsCrashReporting => 'Crash reports';
+
+  @override
+  String get settingsCrashReportingDesc =>
+      'Anonymously report crashes to help fix issues. Can be turned off anytime.';
+
+  @override
   String get appLock => 'App lock';
 
   @override

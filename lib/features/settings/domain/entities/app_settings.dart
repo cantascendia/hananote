@@ -17,6 +17,7 @@ class AppSettings with _$AppSettings {
     @Default(false) bool darkModeEnabled,
     @Default(true) bool autoCheckUpdate,
     @Default('') String skippedVersion,
+    @Default(false) bool crashReportingEnabled,
   }) = _AppSettings;
 
   /// Creates an [AppSettings] from JSON.

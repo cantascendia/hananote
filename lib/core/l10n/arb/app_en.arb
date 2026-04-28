@@ -115,6 +115,8 @@
   "medicationPlan": "Medication Plan",
   "manageEditSchedules": "Manage and edit schedules",
   "privacySecurity": "Privacy & Security",
+  "settingsCrashReporting": "Crash reports",
+  "settingsCrashReportingDesc": "Anonymously report crashes to help fix issues. Can be turned off anytime.",
   "appLock": "App lock",
   "privacyMode": "Privacy mode",
   "privacyModeEnabled": "Hide app content in recents",

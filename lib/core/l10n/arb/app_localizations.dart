@@ -526,6 +526,18 @@ abstract class AppLocalizations {
   /// **'Privacy & Security'**
   String get privacySecurity;
 
+  /// No description provided for @settingsCrashReporting.
+  ///
+  /// In en, this message translates to:
+  /// **'Crash reports'**
+  String get settingsCrashReporting;
+
+  /// No description provided for @settingsCrashReportingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Anonymously report crashes to help fix issues. Can be turned off anytime.'**
+  String get settingsCrashReportingDesc;
+
   /// No description provided for @appLock.
   ///
   /// In en, this message translates to:

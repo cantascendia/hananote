@@ -32,6 +32,7 @@ dependencies:
   path: any
   path_provider: ^2.1.5
   pointycastle: ^3.9.0
+  sentry_flutter: ^8.13.2
   share_plus: ^12.0.2
   sqlite3: ^3.3.0
   sqflite_common: ^2.5.6

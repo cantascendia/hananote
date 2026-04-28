@@ -234,6 +234,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get privacySecurity => '隐私与安全';
 
   @override
+  String get settingsCrashReporting => '崩溃报告';
+
+  @override
+  String get settingsCrashReportingDesc => '匿名上报应用崩溃以帮助修复问题。可随时关闭。';
+
+  @override
   String get appLock => '应用锁';
 
   @override

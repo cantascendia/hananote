@@ -234,6 +234,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get privacySecurity => 'プライバシーとセキュリティ';
 
   @override
+  String get settingsCrashReporting => 'クラッシュレポート';
+
+  @override
+  String get settingsCrashReportingDesc => '匿名でクラッシュを報告し問題修正に協力。いつでもオフにできます。';
+
+  @override
   String get appLock => 'アプリロック';
 
   @override
