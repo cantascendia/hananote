@@ -54,3 +54,12 @@ branches*.txt
 commits*.txt
 fix_lints.ps1
 .wrangler/
+
+# v3.6 ai-playbook
+.claude/agent-logs/*
+!.claude/agent-logs/.gitkeep
+docs/ai-cto/.codex-quota-cooldown
+docs/ai-cto/.codex-bridge.lock
+
+# CTO harness 升级备份（本地留存，不入库）
+.claude/*.bak-*/

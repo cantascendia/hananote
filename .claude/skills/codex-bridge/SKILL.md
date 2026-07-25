@@ -10,21 +10,37 @@ user-invocable: true
 
 把 Claude Code 任务产物送给 Codex（gpt-5.5）做跨模型八维评审。
 
-## 触发链路
+## 触发链路（v3.7 autopilot）
 
 ```
-Stop hook (auto)  /  /cto-cross-review (manual)
+Stop hook (auto, 每次会话结束)  /  /cto-cross-review (manual)
    ↓
 本 skill 准备 prompt
    ↓
-通过 Codex MCP server (localhost:8723) → fallback CLI → fallback GH Actions
-   ↓
-gpt-5.5 跑八维评审
-   ↓
+codex review --commit HEAD（订阅 auth）
+   ↓ 成功
 追加到 docs/ai-cto/REVIEW-QUEUE.md（带时间戳 + commit sha）
    ↓
-下次 SessionStart hook 自动加载给主 agent
+🆕 PR autopilot（v3.7）：
+   if branch != main && unpushed commits → git push -u + gh pr create
+   if open PR exists → gh pr comment（按 sha 去重，marker = <!-- codex-bridge:${SHA} -->）
+   ↓
+下次 SessionStart hook 自动加载 REVIEW-QUEUE 给主 agent
 ```
+
+## AI-native autopilot 哲学（v3.7）
+
+整条链路设计目标：**人不需要催，AI 不需要被提醒**。
+
+| 旧 | 新 |
+|---|---|
+| 手动 `gh pr create` | 自动开 PR（branch 有 commits + 无 open PR）|
+| 手动跑 `/cto-cross-review` | Stop hook 每次会话结束自动跑 |
+| codex review 写 REVIEW-QUEUE 后停止 | 同步 PR comment（按 sha 去重）|
+| 锁残留导致永久阻塞 | stale lock >60min auto-clear |
+| forbidden/non-business/debounce silent skip | 全部写 audit log（CODEX-REVIEW-LOG.md）|
+
+关闭 autopilot：`NO_PR_AUTOPILOT=1 bash run.sh` 或在 `.claude/settings.local.json` 关 Stop hook。
 
 ## 执行步骤
 
