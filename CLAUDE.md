@@ -46,7 +46,7 @@ CTO 操作手册（工作流程、输出格式、配置规范、决策框架、�
 - **图表**: fl_chart
 - **i18n**: ARB-driven (`lib/core/l10n/arb/app_{en,zh,ja}.arb`) + AppLocalizations 自动生成
 - **更新分发**: Cloudflare R2 (cdn.hrtyaku.com) + version.json 轮询
-- **CI/CD**: GitHub Actions（ci.yml + release.yml + sync-r2.yml）
+- **CI/CD**: GitLab CI（.gitlab-ci.yml：analyze-test-build + release + sync-r2）
 
 ### 构建和测试
 ```bash

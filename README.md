@@ -18,7 +18,7 @@
   <img src="https://img.shields.io/badge/Flutter-3.24+-02569B?logo=flutter&logoColor=white" alt="Flutter" />
   <img src="https://img.shields.io/badge/Dart-3.5+-0175C2?logo=dart&logoColor=white" alt="Dart" />
   <img src="https://img.shields.io/badge/i18n-中文%20%7C%20English%20%7C%20日本語-blue" alt="Languages" />
-  <img src="https://github.com/Loveil381/hananote/actions/workflows/ci.yml/badge.svg" alt="CI" />
+  <img src="https://gitlab.com/cantascendia/hananote/badges/main/pipeline.svg" alt="CI" />
   <img src="https://img.shields.io/badge/encryption-AES--256--GCM-green" alt="Encryption" />
 </p>
 
@@ -134,7 +134,7 @@ lib/features/
 | 图表 | fl_chart |
 | 代码规范 | very_good_analysis |
 | 测试 | bloc_test + mocktail |
-| CI/CD | GitHub Actions |
+| CI/CD | GitLab CI |
 
 ### 设计系统
 
@@ -178,10 +178,10 @@ flutter run
 # 构建 Release APK
 flutter build apk --release
 
-# 或通过 git tag 触发 GitHub Actions 自动发布
+# 或通过 git tag 触发 GitLab CI 自动发布
 git tag v1.0.0
 git push origin --tags
-# → 自动构建 APK + 创建 GitHub Release
+# → 自动构建 APK + 创建 GitLab Release
 ```
 
 ---

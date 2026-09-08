@@ -1,0 +1,251 @@
+# =============================================================================
+# HanaNote — GitLab CI/CD
+#
+# Migrated from GitHub Actions:
+#   .github/workflows/ci.yml       -> analyze-test-build
+#   .github/workflows/release.yml  -> release-build + release
+#   .github/workflows/sync-r2.yml  -> sync-r2
+#
+# -----------------------------------------------------------------------------
+# REQUIRED CI/CD VARIABLES  (Settings -> CI/CD -> Variables)
+# -----------------------------------------------------------------------------
+# Android release signing (same names as the old GitHub secrets):
+#   KEYSTORE_BASE64        Masked + Protected   base64 of hananote-release.jks
+#                                               (generate with `base64 -w0`, must be
+#                                               a single line or masking will fail)
+#   KEYSTORE_PASSWORD      Masked + Protected   keystore store password
+#   KEY_ALIAS              Masked + Protected   signing key alias
+#   KEY_PASSWORD           Masked + Protected   signing key password
+#
+# Cloudflare R2 (same names as the old GitHub secrets):
+#   R2_ACCOUNT_ID          Masked + Protected   Cloudflare account id (S3 endpoint host)
+#   R2_ACCESS_KEY_ID       Masked + Protected   R2 access key id
+#   R2_SECRET_ACCESS_KEY   Masked + Protected   R2 secret access key
+#   R2_BUCKET              Protected            bucket name (not secret, do not mask)
+#
+# NOTE: "Protected" variables are only exposed to protected refs. Protect the
+#       release tags too: Settings -> Repository -> Protected tags -> add `v*`.
+#       Otherwise the release/sync-r2 jobs will see empty secrets.
+# =============================================================================
+
+stages:
+  - test
+  - release
+  - publish
+
+default:
+  # Cirrus Labs Flutter image (Flutter + Dart + Android SDK + JDK preinstalled).
+  # Tag verified against ghcr.io (anonymous pull token -> HTTP 200) on 2026-09-08.
+  # Alternative if ghcr.io is ever unavailable: instrumentisto/flutter:3.38.4
+  image: ghcr.io/cirruslabs/flutter:3.38.4
+  interruptible: true
+
+variables:
+  # Keep the pub cache inside the project dir so GitLab can cache it.
+  PUB_CACHE: "$CI_PROJECT_DIR/.pub-cache"
+
+.pub_cache: &pub_cache
+  key:
+    files:
+      - pubspec.lock
+  paths:
+    - .pub-cache/
+
+# -----------------------------------------------------------------------------
+# CI — was .github/workflows/ci.yml
+# -----------------------------------------------------------------------------
+analyze-test-build:
+  stage: test
+  timeout: 15 minutes
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+  cache: *pub_cache
+  script:
+    - flutter pub get
+    # Info-level lints are advisory; only warnings/errors gate the build.
+    # Project has accumulated stylistic infos (doc comments, line length)
+    # that don't reflect ship-quality. Run with --fatal-warnings instead.
+    - dart analyze --fatal-warnings
+    - flutter test
+    - flutter build apk --debug
+
+# -----------------------------------------------------------------------------
+# RELEASE (build + sign + upload) — was .github/workflows/release.yml
+# The APK is published to the GitLab Generic Package Registry, which replaces
+# the GitHub Release asset upload.
+# -----------------------------------------------------------------------------
+release-build:
+  stage: release
+  timeout: 20 minutes
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v/
+  cache: *pub_cache
+  variables:
+    # Full history so we can diff against the previous tag for release notes.
+    GIT_DEPTH: "0"
+  script:
+    - flutter pub get
+
+    # --- Setup release signing (ported verbatim from release.yml) ---
+    - echo "$KEYSTORE_BASE64" | base64 --decode > "$CI_PROJECT_DIR/hananote-release.jks"
+    - |
+      cat > android/key.properties <<PROPS
+      storePassword=$KEYSTORE_PASSWORD
+      keyPassword=$KEY_PASSWORD
+      keyAlias=$KEY_ALIAS
+      storeFile=$CI_PROJECT_DIR/hananote-release.jks
+      PROPS
+
+    - dart analyze
+    - flutter test
+    - flutter build apk --release
+
+    # --- Rename APK ---
+    - export VERSION="${CI_COMMIT_TAG#v}"
+    - export APK_NAME="HanaNote-${CI_COMMIT_TAG}.apk"
+    - mv "build/app/outputs/flutter-apk/app-release.apk" "build/app/outputs/flutter-apk/${APK_NAME}"
+
+    # --- Release notes (replaces generate_release_notes: true) ---
+    - |
+      PREV_TAG=$(git describe --tags --abbrev=0 "${CI_COMMIT_TAG}^" 2>/dev/null || true)
+      if [ -n "$PREV_TAG" ]; then
+        RANGE="${PREV_TAG}..${CI_COMMIT_TAG}"
+        echo "Generating notes for range ${RANGE}"
+      else
+        RANGE="$CI_COMMIT_TAG"
+        echo "No previous tag found; using full history"
+      fi
+      {
+        echo "## What's Changed"
+        echo
+        git log --no-merges --pretty=format:'- %s (%h)' "$RANGE"
+        echo
+      } > release_notes.md
+      cat release_notes.md
+
+    # --- Publish APK to the Generic Package Registry ---
+    - |
+      PACKAGE_URL="${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hananote/${VERSION}/${APK_NAME}"
+      echo "Uploading to ${PACKAGE_URL}"
+      curl --fail-with-body --silent --show-error \
+        --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
+        --upload-file "build/app/outputs/flutter-apk/${APK_NAME}" \
+        "$PACKAGE_URL"
+
+    # --- Hand VERSION / APK_NAME to the downstream jobs ---
+    - |
+      {
+        echo "VERSION=${VERSION}"
+        echo "APK_NAME=${APK_NAME}"
+      } > build.env
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - release_notes.md
+    reports:
+      dotenv: build.env
+
+# Creates the GitLab Release. Separate job because `release:` needs release-cli,
+# which is not present in the Flutter image.
+release:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - job: release-build
+      artifacts: true
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v/
+  script:
+    - echo "Creating GitLab Release for ${CI_COMMIT_TAG} (version ${VERSION})"
+  # Re-publish release_notes.md so sync-r2 (needs: [release]) can read it.
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - release_notes.md
+  release:
+    tag_name: "$CI_COMMIT_TAG"
+    name: "HanaNote $CI_COMMIT_TAG"
+    description: "./release_notes.md"
+    assets:
+      links:
+        - name: "$APK_NAME"
+          url: "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/hananote/$VERSION/$APK_NAME"
+          link_type: package
+
+# -----------------------------------------------------------------------------
+# SYNC TO R2 — was .github/workflows/sync-r2.yml
+# GitHub triggered this on `release: published`; here it simply follows the
+# release job on the same tag pipeline.
+# -----------------------------------------------------------------------------
+sync-r2:
+  stage: publish
+  image: alpine:3.20
+  timeout: 10 minutes
+  needs:
+    - job: release
+      artifacts: true
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v/
+  variables:
+    GIT_STRATEGY: none
+    # AWS CLI v2.23+ sends checksum trailers that R2 rejects. Keep them opt-in.
+    AWS_REQUEST_CHECKSUM_CALCULATION: "when_required"
+    AWS_RESPONSE_CHECKSUM_VALIDATION: "when_required"
+  before_script:
+    - apk add --no-cache curl jq aws-cli
+  script:
+    # --- Download the APK from the Generic Package Registry (replaces `gh release download`) ---
+    - |
+      TAG="$CI_COMMIT_TAG"
+      VERSION="${VERSION:-${TAG#v}}"
+      APK_NAME="${APK_NAME:-HanaNote-${TAG}.apk}"
+
+      mkdir -p ./dist
+      curl --fail-with-body --silent --show-error --location \
+        --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
+        --output "./dist/HanaNote-${TAG}.apk" \
+        "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/hananote/${VERSION}/${APK_NAME}"
+
+    # --- Generate version.json with file size ---
+    - |
+      TAG="$CI_COMMIT_TAG"
+      VERSION="${VERSION:-${TAG#v}}"
+
+      if [ -f release_notes.md ]; then
+        NOTES=$(cat release_notes.md)
+      else
+        echo "WARNING: release_notes.md artifact missing; version.json notes will be empty" >&2
+        NOTES=""
+      fi
+      APK_SIZE=$(stat -c%s "./dist/HanaNote-${TAG}.apk" 2>/dev/null || stat -f%z "./dist/HanaNote-${TAG}.apk")
+
+      cat > ./dist/version.json <<ENDJSON
+      {
+        "version": "${VERSION}",
+        "url": "https://cdn.hrtyaku.com/hananote/HanaNote-${TAG}.apk",
+        "notes": $(echo "$NOTES" | jq -Rs .),
+        "release_url": "${CI_PROJECT_URL}/-/releases/${CI_COMMIT_TAG}",
+        "size": ${APK_SIZE}
+      }
+      ENDJSON
+      cat ./dist/version.json
+
+    # --- Upload to Cloudflare R2 (replaces ryand56/r2-upload-action) ---
+    # Equivalent of source-dir ./dist -> destination-dir hananote in $R2_BUCKET.
+    - |
+      export AWS_ACCESS_KEY_ID="$R2_ACCESS_KEY_ID"
+      export AWS_SECRET_ACCESS_KEY="$R2_SECRET_ACCESS_KEY"
+      export AWS_DEFAULT_REGION="auto"
+      R2_ENDPOINT="https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
+
+      aws s3 cp "./dist/HanaNote-${CI_COMMIT_TAG}.apk" \
+        "s3://${R2_BUCKET}/hananote/HanaNote-${CI_COMMIT_TAG}.apk" \
+        --endpoint-url "$R2_ENDPOINT" \
+        --content-type "application/vnd.android.package-archive"
+
+      aws s3 cp "./dist/version.json" \
+        "s3://${R2_BUCKET}/hananote/version.json" \
+        --endpoint-url "$R2_ENDPOINT" \
+        --content-type "application/json" \
+        --cache-control "public, max-age=300"
