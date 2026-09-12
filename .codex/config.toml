@@ -1,0 +1,11 @@
+[shell_environment_policy]
+inherit = "core"
+
+[shell_environment_policy.set]
+CLAUDE_CODE_ENABLE_TELEMETRY = "1"
+OTEL_METRICS_EXPORTER = "otlp"
+OTEL_LOGS_EXPORTER = "otlp"
+OTEL_EXPORTER_OTLP_PROTOCOL = "http/json"
+OTEL_EXPORTER_OTLP_ENDPOINT = "http://localhost:4318"
+OTEL_METRIC_EXPORT_INTERVAL = "10000"
+OTEL_RESOURCE_ATTRIBUTES = "repo=HanaNote"

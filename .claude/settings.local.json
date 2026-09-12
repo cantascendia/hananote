@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"import json; json.load\\(open\\('.claude/settings.json', encoding='utf-8'\\)\\); print\\('valid JSON'\\)\")"
+    ]
+  },
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
+    "OTEL_METRICS_EXPORTER": "otlp",
+    "OTEL_LOGS_EXPORTER": "otlp",
+    "OTEL_EXPORTER_OTLP_PROTOCOL": "http/json",
+    "OTEL_EXPORTER_OTLP_ENDPOINT": "http://localhost:4318",
+    "OTEL_METRIC_EXPORT_INTERVAL": "10000",
+    "OTEL_RESOURCE_ATTRIBUTES": "repo=HanaNote"
+  }
+}
