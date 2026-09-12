@@ -22,15 +22,6 @@ enum TimelineRange {
 
 /// Presentation helpers for [TimelineRange].
 extension TimelineRangeX on TimelineRange {
-  /// Localized label.
-  String get displayName => switch (this) {
-        TimelineRange.oneMonth => '1月',
-        TimelineRange.threeMonths => '3月',
-        TimelineRange.sixMonths => '6月',
-        TimelineRange.oneYear => '1年',
-        TimelineRange.all => '全部',
-      };
-
   /// Date range represented by the selected filter.
   ({DateTime from, DateTime to})? get dateRange {
     if (this == TimelineRange.all) {

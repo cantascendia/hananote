@@ -43,10 +43,10 @@ class _PhotoPageState extends State<PhotoPage> {
         );
       },
       child: Scaffold(
-        backgroundColor: HanaColors.background,
+        backgroundColor: HanaColors.backgroundOf(context),
         appBar: AppBar(
           title: Text(l10n.photoGallery),
-          backgroundColor: HanaColors.surface,
+          backgroundColor: HanaColors.surfaceOf(context),
           actions: [
             IconButton(
               tooltip: l10n.addPhoto,
@@ -228,13 +228,13 @@ class _PhotoEmptyState extends StatelessWidget {
               width: 120,
               height: 120,
               decoration: BoxDecoration(
-                color: HanaColors.primaryContainer.withAlpha(80),
+                color: HanaColors.primaryContainerOf(context).withAlpha(80),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.lock_person_outlined,
                 size: 56,
-                color: HanaColors.primary,
+                color: HanaColors.primaryOf(context),
               ),
             ),
             const SizedBox(height: 24),
@@ -242,7 +242,7 @@ class _PhotoEmptyState extends StatelessWidget {
               title,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: HanaColors.primary,
+                    color: HanaColors.primaryOf(context),
                   ),
               textAlign: TextAlign.center,
             ),
@@ -250,7 +250,7 @@ class _PhotoEmptyState extends StatelessWidget {
             Text(
               description,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: HanaColors.onSurfaceVariant,
+                    color: HanaColors.onSurfaceVariantOf(context),
                   ),
               textAlign: TextAlign.center,
             ),
@@ -280,7 +280,7 @@ class _PhotoErrorState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline, size: 40, color: HanaColors.error),
+            Icon(Icons.error_outline, size: 40, color: HanaColors.errorOf(context)),
             const SizedBox(height: 12),
             Text(
               message,
@@ -321,7 +321,7 @@ class _PhotoGridItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         child: Ink(
           decoration: BoxDecoration(
-            color: HanaColors.surfaceContainerLowest,
+            color: HanaColors.surfaceContainerLowestOf(context),
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
@@ -388,13 +388,13 @@ class _PhotoThumbnailPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            HanaColors.primaryContainer,
-            HanaColors.surfaceContainerHigh,
+            HanaColors.primaryContainerOf(context),
+            HanaColors.surfaceContainerHighOf(context),
           ],
         ),
       ),

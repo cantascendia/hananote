@@ -33,4 +33,14 @@ sealed class SettingsEvent with _$SettingsEvent {
 
   /// Exports local data to a JSON file.
   const factory SettingsEvent.exportData() = ExportDataEvent;
+
+  /// Imports data from a backup JSON file.
+  const factory SettingsEvent.importData() = ImportDataEvent;
+
+  /// Generates a PDF health report.
+  const factory SettingsEvent.generatePdf() = GeneratePdfEvent;
+
+  /// Marks onboarding as complete.
+  const factory SettingsEvent.markOnboardingComplete() =
+      MarkOnboardingComplete;
 }

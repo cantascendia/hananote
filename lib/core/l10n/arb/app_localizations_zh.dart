@@ -703,4 +703,81 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get featureInDevelopmentDesc => '此功能正在开发中，将在下个版本推出';
+
+  @override
+  String get onboardingWelcome => '欢迎使用 HanaNote';
+
+  @override
+  String get onboardingWelcomeSub => '让我们先设置一下你的个人信息';
+
+  @override
+  String get onboardingSetName => '你想怎么称呼自己？';
+
+  @override
+  String get onboardingNameHint => '输入你的昵称';
+
+  @override
+  String get onboardingNameNote => '可以随时在设置中修改';
+
+  @override
+  String get onboardingSetHrtDate => '你是什么时候开始 HRT 的？';
+
+  @override
+  String get onboardingSkipHrt => '还没开始，跳过';
+
+  @override
+  String get onboardingAddDrug => '添加你的第一种药物';
+
+  @override
+  String get onboardingDrugOptional => '稍后添加';
+
+  @override
+  String get onboardingComplete => '设置完成！';
+
+  @override
+  String get onboardingNext => '下一步';
+
+  @override
+  String get onboardingDone => '开始使用';
+
+  @override
+  String get importInProgress => '正在导入...';
+
+  @override
+  String get importSuccess => '导入成功';
+
+  @override
+  String get importFailed => '导入失败';
+
+  @override
+  String importedCount(int count) {
+    return '已导入 $count 条数据';
+  }
+
+  @override
+  String get pdfGenerating => '正在生成报告...';
+
+  @override
+  String get pdfSuccess => '报告已生成';
+
+  @override
+  String get pdfFailed => '报告生成失败';
+
+  @override
+  String get pdfTitle => 'HanaNote 健康报告';
+
+  @override
+  String get pdfMedSection => '用药方案';
+
+  @override
+  String get pdfBloodSection => '血检记录';
+
+  @override
+  String get pdfMeasureSection => '身体测量';
+
+  @override
+  String get pdfJournalSection => '心情日记';
+
+  @override
+  String get pdfNoData => '暂无数据';
 }

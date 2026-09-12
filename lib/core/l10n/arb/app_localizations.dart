@@ -1455,6 +1455,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This feature is under development and will be available in the next release'**
   String get featureInDevelopmentDesc;
+
+  /// No description provided for @onboardingWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to HanaNote'**
+  String get onboardingWelcome;
+
+  /// No description provided for @onboardingWelcomeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s set up your profile'**
+  String get onboardingWelcomeSub;
+
+  /// No description provided for @onboardingSetName.
+  ///
+  /// In en, this message translates to:
+  /// **'What should we call you?'**
+  String get onboardingSetName;
+
+  /// No description provided for @onboardingNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name'**
+  String get onboardingNameHint;
+
+  /// No description provided for @onboardingNameNote.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change this anytime in settings'**
+  String get onboardingNameNote;
+
+  /// No description provided for @onboardingSetHrtDate.
+  ///
+  /// In en, this message translates to:
+  /// **'When did you start HRT?'**
+  String get onboardingSetHrtDate;
+
+  /// No description provided for @onboardingSkipHrt.
+  ///
+  /// In en, this message translates to:
+  /// **'Haven\'t started yet, skip'**
+  String get onboardingSkipHrt;
+
+  /// No description provided for @onboardingAddDrug.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your first medication'**
+  String get onboardingAddDrug;
+
+  /// No description provided for @onboardingDrugOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'ll add later'**
+  String get onboardingDrugOptional;
+
+  /// No description provided for @onboardingComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'All set!'**
+  String get onboardingComplete;
+
+  /// No description provided for @onboardingNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardingNext;
+
+  /// No description provided for @onboardingDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get onboardingDone;
+
+  /// No description provided for @importInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Importing...'**
+  String get importInProgress;
+
+  /// No description provided for @importSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Import successful'**
+  String get importSuccess;
+
+  /// No description provided for @importFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Import failed'**
+  String get importFailed;
+
+  /// No description provided for @importedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items imported'**
+  String importedCount(int count);
+
+  /// No description provided for @pdfGenerating.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating report...'**
+  String get pdfGenerating;
+
+  /// No description provided for @pdfSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Report generated'**
+  String get pdfSuccess;
+
+  /// No description provided for @pdfFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to generate report'**
+  String get pdfFailed;
+
+  /// No description provided for @pdfTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'HanaNote Health Report'**
+  String get pdfTitle;
+
+  /// No description provided for @pdfMedSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Medication Plan'**
+  String get pdfMedSection;
+
+  /// No description provided for @pdfBloodSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Blood Test Records'**
+  String get pdfBloodSection;
+
+  /// No description provided for @pdfMeasureSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Body Measurements'**
+  String get pdfMeasureSection;
+
+  /// No description provided for @pdfJournalSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Mood Diary'**
+  String get pdfJournalSection;
+
+  /// No description provided for @pdfNoData.
+  ///
+  /// In en, this message translates to:
+  /// **'No data'**
+  String get pdfNoData;
 }
 
 class _AppLocalizationsDelegate

@@ -24,6 +24,7 @@ mixin _$AppSettings {
   bool get privacyModeEnabled => throw _privateConstructorUsedError;
   bool get blurOverlayEnabled => throw _privateConstructorUsedError;
   DateTime? get lastBackupDate => throw _privateConstructorUsedError;
+  bool get onboardingComplete => throw _privateConstructorUsedError;
 
   /// Serializes this AppSettings to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -45,7 +46,8 @@ abstract class $AppSettingsCopyWith<$Res> {
       {bool appLockEnabled,
       bool privacyModeEnabled,
       bool blurOverlayEnabled,
-      DateTime? lastBackupDate});
+      DateTime? lastBackupDate,
+      bool onboardingComplete});
 }
 
 /// @nodoc
@@ -67,6 +69,7 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
     Object? privacyModeEnabled = null,
     Object? blurOverlayEnabled = null,
     Object? lastBackupDate = freezed,
+    Object? onboardingComplete = null,
   }) {
     return _then(_value.copyWith(
       appLockEnabled: null == appLockEnabled
@@ -85,6 +88,10 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
           ? _value.lastBackupDate
           : lastBackupDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      onboardingComplete: null == onboardingComplete
+          ? _value.onboardingComplete
+          : onboardingComplete // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -101,7 +108,8 @@ abstract class _$$AppSettingsImplCopyWith<$Res>
       {bool appLockEnabled,
       bool privacyModeEnabled,
       bool blurOverlayEnabled,
-      DateTime? lastBackupDate});
+      DateTime? lastBackupDate,
+      bool onboardingComplete});
 }
 
 /// @nodoc
@@ -121,6 +129,7 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
     Object? privacyModeEnabled = null,
     Object? blurOverlayEnabled = null,
     Object? lastBackupDate = freezed,
+    Object? onboardingComplete = null,
   }) {
     return _then(_$AppSettingsImpl(
       appLockEnabled: null == appLockEnabled
@@ -139,6 +148,10 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
           ? _value.lastBackupDate
           : lastBackupDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      onboardingComplete: null == onboardingComplete
+          ? _value.onboardingComplete
+          : onboardingComplete // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -150,7 +163,8 @@ class _$AppSettingsImpl implements _AppSettings {
       {required this.appLockEnabled,
       required this.privacyModeEnabled,
       required this.blurOverlayEnabled,
-      required this.lastBackupDate});
+      required this.lastBackupDate,
+      this.onboardingComplete = false});
 
   factory _$AppSettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppSettingsImplFromJson(json);
@@ -163,10 +177,13 @@ class _$AppSettingsImpl implements _AppSettings {
   final bool blurOverlayEnabled;
   @override
   final DateTime? lastBackupDate;
+  @override
+  @JsonKey()
+  final bool onboardingComplete;
 
   @override
   String toString() {
-    return 'AppSettings(appLockEnabled: $appLockEnabled, privacyModeEnabled: $privacyModeEnabled, blurOverlayEnabled: $blurOverlayEnabled, lastBackupDate: $lastBackupDate)';
+    return 'AppSettings(appLockEnabled: $appLockEnabled, privacyModeEnabled: $privacyModeEnabled, blurOverlayEnabled: $blurOverlayEnabled, lastBackupDate: $lastBackupDate, onboardingComplete: $onboardingComplete)';
   }
 
   @override
@@ -181,13 +198,20 @@ class _$AppSettingsImpl implements _AppSettings {
             (identical(other.blurOverlayEnabled, blurOverlayEnabled) ||
                 other.blurOverlayEnabled == blurOverlayEnabled) &&
             (identical(other.lastBackupDate, lastBackupDate) ||
-                other.lastBackupDate == lastBackupDate));
+                other.lastBackupDate == lastBackupDate) &&
+            (identical(other.onboardingComplete, onboardingComplete) ||
+                other.onboardingComplete == onboardingComplete));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, appLockEnabled,
-      privacyModeEnabled, blurOverlayEnabled, lastBackupDate);
+  int get hashCode => Object.hash(
+      runtimeType,
+      appLockEnabled,
+      privacyModeEnabled,
+      blurOverlayEnabled,
+      lastBackupDate,
+      onboardingComplete);
 
   /// Create a copy of AppSettings
   /// with the given fields replaced by the non-null parameter values.
@@ -210,7 +234,8 @@ abstract class _AppSettings implements AppSettings {
       {required final bool appLockEnabled,
       required final bool privacyModeEnabled,
       required final bool blurOverlayEnabled,
-      required final DateTime? lastBackupDate}) = _$AppSettingsImpl;
+      required final DateTime? lastBackupDate,
+      final bool onboardingComplete}) = _$AppSettingsImpl;
 
   factory _AppSettings.fromJson(Map<String, dynamic> json) =
       _$AppSettingsImpl.fromJson;
@@ -223,6 +248,8 @@ abstract class _AppSettings implements AppSettings {
   bool get blurOverlayEnabled;
   @override
   DateTime? get lastBackupDate;
+  @override
+  bool get onboardingComplete;
 
   /// Create a copy of AppSettings
   /// with the given fields replaced by the non-null parameter values.

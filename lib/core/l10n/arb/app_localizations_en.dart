@@ -725,4 +725,81 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get featureInDevelopmentDesc =>
       'This feature is under development and will be available in the next release';
+
+  @override
+  String get onboardingWelcome => 'Welcome to HanaNote';
+
+  @override
+  String get onboardingWelcomeSub => 'Let\'s set up your profile';
+
+  @override
+  String get onboardingSetName => 'What should we call you?';
+
+  @override
+  String get onboardingNameHint => 'Enter your name';
+
+  @override
+  String get onboardingNameNote => 'You can change this anytime in settings';
+
+  @override
+  String get onboardingSetHrtDate => 'When did you start HRT?';
+
+  @override
+  String get onboardingSkipHrt => 'Haven\'t started yet, skip';
+
+  @override
+  String get onboardingAddDrug => 'Add your first medication';
+
+  @override
+  String get onboardingDrugOptional => 'I\'ll add later';
+
+  @override
+  String get onboardingComplete => 'All set!';
+
+  @override
+  String get onboardingNext => 'Next';
+
+  @override
+  String get onboardingDone => 'Get Started';
+
+  @override
+  String get importInProgress => 'Importing...';
+
+  @override
+  String get importSuccess => 'Import successful';
+
+  @override
+  String get importFailed => 'Import failed';
+
+  @override
+  String importedCount(int count) {
+    return '$count items imported';
+  }
+
+  @override
+  String get pdfGenerating => 'Generating report...';
+
+  @override
+  String get pdfSuccess => 'Report generated';
+
+  @override
+  String get pdfFailed => 'Failed to generate report';
+
+  @override
+  String get pdfTitle => 'HanaNote Health Report';
+
+  @override
+  String get pdfMedSection => 'Medication Plan';
+
+  @override
+  String get pdfBloodSection => 'Blood Test Records';
+
+  @override
+  String get pdfMeasureSection => 'Body Measurements';
+
+  @override
+  String get pdfJournalSection => 'Mood Diary';
+
+  @override
+  String get pdfNoData => 'No data';
 }

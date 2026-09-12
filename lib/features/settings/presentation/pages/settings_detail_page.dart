@@ -21,7 +21,7 @@ class SettingsDetailPage extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: HanaColors.background,
+      backgroundColor: HanaColors.backgroundOf(context),
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(64),
@@ -30,21 +30,21 @@ class SettingsDetailPage extends StatelessWidget {
             filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
             child: AppBar(
               backgroundColor:
-                  HanaColors.background.withAlpha((255 * 0.8).round()),
+                  HanaColors.backgroundOf(context).withAlpha((255 * 0.8).round()),
               elevation: 0,
               scrolledUnderElevation: 0,
               centerTitle: true,
               leading: IconButton(
-                icon: const Icon(Icons.arrow_back, color: HanaColors.primary),
+                icon: Icon(Icons.arrow_back, color: HanaColors.primaryOf(context)),
                 onPressed: () => context.pop(),
               ),
               title: Text(
                 l10n.settingsTitle,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Plus Jakarta Sans',
                   fontWeight: FontWeight.w600,
                   fontSize: 18,
-                  color: HanaColors.primary,
+                  color: HanaColors.primaryOf(context),
                   letterSpacing: -0.5,
                 ),
               ),
@@ -84,8 +84,8 @@ class SettingsDetailPage extends StatelessWidget {
                           title: l10n.editDisplayName,
                           trailing: Text(
                             profile.displayName,
-                            style: const TextStyle(
-                              color: HanaColors.onSurfaceVariant,
+                            style: TextStyle(
+                              color: HanaColors.onSurfaceVariantOf(context),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -102,8 +102,8 @@ class SettingsDetailPage extends StatelessWidget {
                           trailing: Text(
                             DateFormat.yMMMd(localeName)
                                 .format(profile.hrtStartDate),
-                            style: const TextStyle(
-                              color: HanaColors.onSurfaceVariant,
+                            style: TextStyle(
+                              color: HanaColors.onSurfaceVariantOf(context),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -124,10 +124,10 @@ class SettingsDetailPage extends StatelessWidget {
                         _SettingsTile(
                           icon: Icons.language,
                           title: l10n.languageSetting,
-                          trailing: const Text(
+                          trailing: Text(
                             'System', // Placeholder
                             style: TextStyle(
-                              color: HanaColors.onSurfaceVariant,
+                              color: HanaColors.onSurfaceVariantOf(context),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -201,10 +201,10 @@ class SettingsDetailPage extends StatelessWidget {
                         _SettingsTile(
                           icon: Icons.info_outline,
                           title: l10n.version,
-                          trailing: const Text(
+                          trailing: Text(
                             '1.0.0', // Placeholder
                             style: TextStyle(
-                              color: HanaColors.onSurfaceVariant,
+                              color: HanaColors.onSurfaceVariantOf(context),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -213,7 +213,7 @@ class SettingsDetailPage extends StatelessWidget {
                         _SettingsTile(
                           icon: Icons.privacy_tip_outlined,
                           title: l10n.privacyPolicy,
-                          trailing: const Icon(Icons.chevron_right, color: HanaColors.outlineVariant),
+                          trailing: Icon(Icons.chevron_right, color: HanaColors.outlineVariantOf(context)),
                           onTap: () => launchUrl(
                             Uri.parse(AppUrls.privacyPolicy),
                             mode: LaunchMode.externalApplication,
@@ -223,7 +223,7 @@ class SettingsDetailPage extends StatelessWidget {
                         _SettingsTile(
                           icon: Icons.description_outlined,
                           title: l10n.termsOfUse,
-                          trailing: const Icon(Icons.chevron_right, color: HanaColors.outlineVariant),
+                          trailing: Icon(Icons.chevron_right, color: HanaColors.outlineVariantOf(context)),
                           onTap: () => launchUrl(
                             Uri.parse(AppUrls.termsOfService),
                             mode: LaunchMode.externalApplication,
@@ -251,7 +251,7 @@ class SettingsDetailPage extends StatelessWidget {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          backgroundColor: HanaColors.surfaceContainerLowest,
+          backgroundColor: HanaColors.surfaceContainerLowestOf(context),
           title: Text(l10n.editDisplayName),
           content: TextField(
             controller: controller,
@@ -297,9 +297,9 @@ class SettingsDetailPage extends StatelessWidget {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: HanaColors.primary,
-              onSurface: HanaColors.onSurface,
+            colorScheme: ColorScheme.light(
+              primary: HanaColors.primaryOf(context),
+              onSurface: HanaColors.onSurfaceOf(context),
             ),
           ),
           child: child!,
@@ -323,10 +323,10 @@ class _SectionTitle extends StatelessWidget {
       padding: const EdgeInsets.only(left: 8),
       child: Text(
         title,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w600,
-          color: HanaColors.onSurfaceVariant,
+          color: HanaColors.onSurfaceVariantOf(context),
           letterSpacing: 0.5,
         ),
       ),
@@ -342,11 +342,11 @@ class _SettingsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: HanaColors.surfaceContainerLowest,
+        color: HanaColors.surfaceContainerLowestOf(context),
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: HanaColors.primary.withAlpha(8),
+            color: HanaColors.primaryOf(context).withAlpha(8),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),
@@ -390,10 +390,10 @@ class _SettingsTile extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: HanaColors.primaryContainer.withAlpha(128),
+                  color: HanaColors.primaryContainerOf(context).withAlpha(128),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(icon, color: HanaColors.primary, size: 20),
+                child: Icon(icon, color: HanaColors.primaryOf(context), size: 20),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -402,19 +402,19 @@ class _SettingsTile extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: HanaColors.onSurface,
+                        color: HanaColors.onSurfaceOf(context),
                       ),
                     ),
                     if (subtitle != null) ...[
                       const SizedBox(height: 2),
                       Text(
                         subtitle!,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
-                          color: HanaColors.onSurfaceVariant,
+                          color: HanaColors.onSurfaceVariantOf(context),
                         ),
                       ),
                     ],

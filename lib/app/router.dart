@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hananote/app/di/injection.dart';
 import 'package:hananote/app/presentation/main_shell.dart';
 import 'package:hananote/features/auth/presentation/pages/auth_wrapper_page.dart';
+import 'package:hananote/features/auth/presentation/pages/onboarding_page.dart';
 import 'package:hananote/features/blood_test/presentation/bloc/blood_test_bloc.dart';
 import 'package:hananote/features/blood_test/presentation/bloc/blood_test_event.dart';
 import 'package:hananote/features/blood_test/presentation/pages/blood_test_edit_page.dart';
@@ -31,6 +32,8 @@ import 'package:hananote/features/medication/presentation/pages/drug_list_page.d
 import 'package:hananote/features/medication/presentation/pages/inventory_page.dart';
 import 'package:hananote/features/medication/presentation/pages/schedule_editor_page.dart';
 import 'package:hananote/features/medication/presentation/pages/today_page.dart';
+import 'package:hananote/features/notification/presentation/bloc/notification_settings_cubit.dart';
+import 'package:hananote/features/notification/presentation/pages/notification_settings_page.dart';
 import 'package:hananote/features/photo/domain/entities/photo_entry.dart';
 import 'package:hananote/features/photo/presentation/blocs/photo_bloc.dart';
 import 'package:hananote/features/photo/presentation/pages/photo_page.dart';
@@ -43,8 +46,6 @@ import 'package:hananote/features/simulator/presentation/pages/simulator_page.da
 import 'package:hananote/features/timeline/presentation/bloc/timeline_bloc.dart';
 import 'package:hananote/features/timeline/presentation/bloc/timeline_event.dart';
 import 'package:hananote/features/timeline/presentation/pages/timeline_page.dart';
-import 'package:hananote/features/notification/presentation/bloc/notification_settings_cubit.dart';
-import 'package:hananote/features/notification/presentation/pages/notification_settings_page.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -66,6 +67,14 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/',
       builder: (context, state) => const AuthWrapperPage(),
+    ),
+    GoRoute(
+      path: '/onboarding',
+      parentNavigatorKey: _rootNavigatorKey,
+      builder: (context, state) => BlocProvider.value(
+        value: getIt<SettingsBloc>(),
+        child: const OnboardingPage(),
+      ),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {

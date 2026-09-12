@@ -32,7 +32,7 @@ class DataPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: HanaColors.background,
+      backgroundColor: HanaColors.backgroundOf(context),
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(64),
@@ -41,30 +41,30 @@ class DataPage extends StatelessWidget {
             filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
             child: AppBar(
               backgroundColor:
-                  HanaColors.background.withAlpha((255 * 0.8).round()),
+                  HanaColors.backgroundOf(context).withAlpha((255 * 0.8).round()),
               elevation: 0,
               scrolledUnderElevation: 0,
               centerTitle: true,
               leading: IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.notifications_none,
-                  color: HanaColors.primary,
+                  color: HanaColors.primaryOf(context),
                 ),
                 onPressed: () => context.push('/settings'),
               ),
               title: Text(
                 l10n.dataAndTrends,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Plus Jakarta Sans',
                   fontWeight: FontWeight.w600,
                   fontSize: 18,
-                  color: HanaColors.primary,
+                  color: HanaColors.primaryOf(context),
                   letterSpacing: -0.5,
                 ),
               ),
               actions: [
                 IconButton(
-                  icon: const Icon(Icons.add_circle, color: HanaColors.primary),
+                  icon: Icon(Icons.add_circle, color: HanaColors.primaryOf(context)),
                   onPressed: () => context.push('/data/add_report'),
                 ),
               ],
@@ -76,8 +76,8 @@ class DataPage extends StatelessWidget {
         builder: (context, state) {
           return state.map(
             initial: (_) => const SizedBox.shrink(),
-            loading: (_) => const Center(
-              child: CircularProgressIndicator(color: HanaColors.primary),
+            loading: (_) => Center(
+              child: CircularProgressIndicator(color: HanaColors.primaryOf(context)),
             ),
             error: (error) => Center(child: Text(error.message)),
             loaded: (loaded) => _LoadedView(
@@ -122,14 +122,14 @@ class _LoadedView extends StatelessWidget {
                 l10n.myStatus,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w800,
-                      color: HanaColors.primary,
+                      color: HanaColors.primaryOf(context),
                       fontFamily: 'Plus Jakarta Sans',
                     ),
               ),
               Text(
                 lastUpdatedText,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: HanaColors.onSurfaceVariant
+                      color: HanaColors.onSurfaceVariantOf(context)
                           .withAlpha((255 * 0.6).round()), // 60%
                     ),
               ),
@@ -139,7 +139,7 @@ class _LoadedView extends StatelessWidget {
           Text(
             l10n.bodyChanging,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: HanaColors.primary.withAlpha(204), // 80%
+                  color: HanaColors.primaryOf(context).withAlpha(204), // 80%
                 ),
           ),
           const SizedBox(height: 24),
@@ -165,8 +165,8 @@ class _LoadedView extends StatelessWidget {
                 subtitle: status.localizedName(l10n),
                 statusColor: switch (status) {
                   HormoneStatus.normal => const Color(0xFF34D399),
-                  HormoneStatus.warning => HanaColors.tertiary,
-                  HormoneStatus.critical => HanaColors.error,
+                  HormoneStatus.warning => HanaColors.tertiaryOf(context),
+                  HormoneStatus.critical => HanaColors.errorOf(context),
                 },
                 bgIcon:
                     isWarning ? Icons.warning_amber_rounded : Icons.water_drop,
@@ -189,7 +189,7 @@ class _LoadedView extends StatelessWidget {
             l10n.trendSection,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w800,
-                  color: HanaColors.primary,
+                  color: HanaColors.primaryOf(context),
                   fontFamily: 'Plus Jakarta Sans',
                 ),
           ),
@@ -207,7 +207,7 @@ class _LoadedView extends StatelessWidget {
                 l10n.historyReports,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w800,
-                      color: HanaColors.primary,
+                      color: HanaColors.primaryOf(context),
                       fontFamily: 'Plus Jakarta Sans',
                     ),
               ),
@@ -293,7 +293,7 @@ class _StitchHormoneCardState extends State<_StitchHormoneCard>
         child: Container(
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
-            color: HanaColors.surfaceContainerLowest,
+            color: HanaColors.surfaceContainerLowestOf(context),
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
               color: widget.statusColor.withAlpha(77), // 30%
@@ -336,7 +336,7 @@ class _StitchHormoneCardState extends State<_StitchHormoneCard>
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
-                              color: HanaColors.onSurfaceVariant
+                              color: HanaColors.onSurfaceVariantOf(context)
                                   .withAlpha((255 * 0.8).round()), // 80%
                             ),
                             maxLines: 2,
@@ -368,11 +368,11 @@ class _StitchHormoneCardState extends State<_StitchHormoneCard>
                       children: [
                         Text(
                           widget.value,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Plus Jakarta Sans',
                             fontSize: 32,
                             fontWeight: FontWeight.w900,
-                            color: HanaColors.primary,
+                            color: HanaColors.primaryOf(context),
                             height: 1.1,
                           ),
                         ),
@@ -383,7 +383,7 @@ class _StitchHormoneCardState extends State<_StitchHormoneCard>
                             fontFamily: 'Plus Jakarta Sans',
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
-                            color: HanaColors.onSurfaceVariant
+                            color: HanaColors.onSurfaceVariantOf(context)
                                 .withAlpha(153), // 60%
                           ),
                         ),
@@ -417,10 +417,10 @@ class _StitchSimulatorCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
+            gradient: LinearGradient(
               colors: [
-                HanaColors.primaryContainer,
-                HanaColors.secondaryContainer,
+                HanaColors.primaryContainerOf(context),
+                HanaColors.secondaryContainerOf(context),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -428,7 +428,7 @@ class _StitchSimulatorCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(24),
             boxShadow: [
               BoxShadow(
-                color: HanaColors.primaryContainer.withAlpha(77), // 30%
+                color: HanaColors.primaryContainerOf(context).withAlpha(77), // 30%
                 blurRadius: 16,
                 offset: const Offset(0, 8),
               ),
@@ -442,7 +442,7 @@ class _StitchSimulatorCard extends StatelessWidget {
                   color: Colors.white.withAlpha(128), // 50%
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: const Icon(Icons.science, color: HanaColors.primary),
+                child: Icon(Icons.science, color: HanaColors.primaryOf(context)),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -451,8 +451,8 @@ class _StitchSimulatorCard extends StatelessWidget {
                   children: [
                     Text(
                       l10n.pkSimulatorTitle,
-                      style: const TextStyle(
-                        color: HanaColors.primary,
+                      style: TextStyle(
+                        color: HanaColors.primaryOf(context),
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -461,7 +461,7 @@ class _StitchSimulatorCard extends StatelessWidget {
                     Text(
                       l10n.pkSimulatorSubtitle,
                       style: TextStyle(
-                        color: HanaColors.primary.withAlpha(153), // 60%
+                        color: HanaColors.primaryOf(context).withAlpha(153), // 60%
                         fontSize: 12,
                       ),
                     ),
@@ -474,9 +474,9 @@ class _StitchSimulatorCard extends StatelessWidget {
                   color: Colors.white.withAlpha(128), // 50%
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.arrow_forward_ios,
-                  color: HanaColors.primary,
+                  color: HanaColors.primaryOf(context),
                   size: 14,
                 ),
               ),
@@ -545,12 +545,12 @@ class _TrendChart extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: HanaColors.surfaceContainerLowest,
+        color: HanaColors.surfaceContainerLowestOf(context),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: Colors.white, width: 2),
         boxShadow: [
           BoxShadow(
-            color: HanaColors.primary.withAlpha(10), // 4%
+            color: HanaColors.primaryOf(context).withAlpha(10), // 4%
             blurRadius: 24,
             offset: const Offset(0, 8),
           ),
@@ -566,22 +566,22 @@ class _TrendChart extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: HanaColors.primaryContainer.withAlpha(128), // 50%
+                      color: HanaColors.primaryContainerOf(context).withAlpha(128), // 50%
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.trending_up,
-                      color: HanaColors.primary,
+                      color: HanaColors.primaryOf(context),
                       size: 20,
                     ),
                   ),
                   const SizedBox(width: 12),
                   Text(
                     trendLabel,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
-                      color: HanaColors.onSurface,
+                      color: HanaColors.onSurfaceOf(context),
                     ),
                   ),
                 ],
@@ -590,7 +590,7 @@ class _TrendChart extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: HanaColors.surfaceContainerHigh,
+                  color: HanaColors.surfaceContainerHighOf(context),
                   borderRadius: BorderRadius.circular(9999),
                 ),
                 child: Row(
@@ -601,7 +601,7 @@ class _TrendChart extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
-                        color: HanaColors.onSurfaceVariant
+                        color: HanaColors.onSurfaceVariantOf(context)
                             .withAlpha((255 * 0.8).round()),
                       ),
                     ),
@@ -609,7 +609,7 @@ class _TrendChart extends StatelessWidget {
                     Icon(
                       Icons.keyboard_arrow_down,
                       size: 14,
-                      color: HanaColors.onSurfaceVariant
+                      color: HanaColors.onSurfaceVariantOf(context)
                           .withAlpha((255 * 0.8).round()),
                     ),
                   ],
@@ -631,7 +631,7 @@ class _TrendChart extends StatelessWidget {
                       gridData: FlGridData(
                         drawVerticalLine: false,
                         getDrawingHorizontalLine: (_) => FlLine(
-                          color: HanaColors.outlineVariant.withAlpha(90),
+                          color: HanaColors.outlineVariantOf(context).withAlpha(90),
                           strokeWidth: 1,
                           dashArray: const [4, 4],
                         ),
@@ -648,7 +648,7 @@ class _TrendChart extends StatelessWidget {
                                 '${value.toStringAsFixed(0)} $currentUnit',
                                 style: TextStyle(
                                   fontSize: 10,
-                                  color: HanaColors.onSurfaceVariant
+                                  color: HanaColors.onSurfaceVariantOf(context)
                                       .withAlpha((255 * 0.8).round()),
                                 ),
                               ),
@@ -672,7 +672,7 @@ class _TrendChart extends StatelessWidget {
                                       .format(points[index].date),
                                   style: TextStyle(
                                     fontSize: 10,
-                                    color: HanaColors.onSurfaceVariant
+                                    color: HanaColors.onSurfaceVariantOf(context)
                                         .withAlpha((255 * 0.8).round()),
                                   ),
                                 ),
@@ -685,7 +685,7 @@ class _TrendChart extends StatelessWidget {
                         LineChartBarData(
                           spots: spots,
                           isCurved: true,
-                          color: HanaColors.primary,
+                          color: HanaColors.primaryOf(context),
                           barWidth: 3,
                           belowBarData: BarAreaData(
                             show: true,
@@ -693,8 +693,8 @@ class _TrendChart extends StatelessWidget {
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
-                                HanaColors.primary.withAlpha(51),
-                                HanaColors.primary.withAlpha(0),
+                                HanaColors.primaryOf(context).withAlpha(51),
+                                HanaColors.primaryOf(context).withAlpha(0),
                               ],
                             ),
                           ),
@@ -702,7 +702,7 @@ class _TrendChart extends StatelessWidget {
                             getDotPainter: (_, __, ___, ____) =>
                                 FlDotCirclePainter(
                               radius: 4,
-                              color: HanaColors.primary,
+                              color: HanaColors.primaryOf(context),
                               strokeWidth: 1.5,
                               strokeColor: Colors.white,
                             ),
@@ -718,7 +718,7 @@ class _TrendChart extends StatelessWidget {
                         Icon(
                           Icons.show_chart_outlined,
                           size: 48,
-                          color: HanaColors.onSurfaceVariant.withAlpha(128),
+                          color: HanaColors.onSurfaceVariantOf(context).withAlpha(128),
                         ),
                         const SizedBox(height: 12),
                         Text(
@@ -727,7 +727,7 @@ class _TrendChart extends StatelessWidget {
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                             color:
-                                HanaColors.onSurfaceVariant.withAlpha(204),
+                                HanaColors.onSurfaceVariantOf(context).withAlpha(204),
                           ),
                         ),
                       ],
@@ -794,12 +794,12 @@ class _StitchHistoryCardState extends State<_StitchHistoryCard>
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: HanaColors.surfaceContainerLowest,
+            color: HanaColors.surfaceContainerLowestOf(context),
             borderRadius: BorderRadius.circular(24), // rounded-3xl
             boxShadow: [
               BoxShadow(
                 color:
-                    HanaColors.primary.withAlpha(5), // extremely subtle shadow
+                    HanaColors.primaryOf(context).withAlpha(5), // extremely subtle shadow
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -810,10 +810,10 @@ class _StitchHistoryCardState extends State<_StitchHistoryCard>
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: HanaColors.primaryContainer.withAlpha(77), // 30%
+                  color: HanaColors.primaryContainerOf(context).withAlpha(77), // 30%
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: const Icon(Icons.description, color: HanaColors.primary),
+                child: Icon(Icons.description, color: HanaColors.primaryOf(context)),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -823,11 +823,11 @@ class _StitchHistoryCardState extends State<_StitchHistoryCard>
                     Text(
                       DateFormat.yMMMd(widget.localeName)
                           .format(widget.report.testDate),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'Plus Jakarta Sans',
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        color: HanaColors.onSurface,
+                        color: HanaColors.onSurfaceOf(context),
                       ),
                     ),
                     const SizedBox(height: 6),
@@ -841,7 +841,7 @@ class _StitchHistoryCardState extends State<_StitchHistoryCard>
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: HanaColors.surfaceContainerHighest,
+                            color: HanaColors.surfaceContainerHighestOf(context),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
@@ -849,7 +849,7 @@ class _StitchHistoryCardState extends State<_StitchHistoryCard>
                             style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
-                              color: HanaColors.onSurfaceVariant
+                              color: HanaColors.onSurfaceVariantOf(context)
                                   .withAlpha((255 * 0.8).round()),
                             ),
                           ),
@@ -859,7 +859,7 @@ class _StitchHistoryCardState extends State<_StitchHistoryCard>
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, color: HanaColors.outlineVariant),
+              Icon(Icons.chevron_right, color: HanaColors.outlineVariantOf(context)),
             ],
           ),
         ),
@@ -878,15 +878,15 @@ class _EmptyHistoryCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: HanaColors.surfaceContainerLowest,
+        color: HanaColors.surfaceContainerLowestOf(context),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: HanaColors.outlineVariant.withAlpha(26)),
+        border: Border.all(color: HanaColors.outlineVariantOf(context).withAlpha(26)),
       ),
       child: Text(
         label,
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: HanaColors.onSurfaceVariant,
+              color: HanaColors.onSurfaceVariantOf(context),
             ),
       ),
     );

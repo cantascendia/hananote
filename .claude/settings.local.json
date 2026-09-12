@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/projects/HanaNote/**)",
+      "Bash(flutter build:*)",
+      "Bash(gh release:*)",
+      "Bash(gh run:*)",
+      "Bash(gh api:*)",
+      "Bash(python3 -c ':*)",
+      "Bash(python -c \"print\\('ok'\\)\")",
+      "Bash(python -c ':*)"
+    ]
+  }
+}

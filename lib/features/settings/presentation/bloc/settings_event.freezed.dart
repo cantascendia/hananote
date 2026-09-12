@@ -26,6 +26,9 @@ mixin _$SettingsEvent {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function() exportData,
+    required TResult Function() importData,
+    required TResult Function() generatePdf,
+    required TResult Function() markOnboardingComplete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -38,6 +41,9 @@ mixin _$SettingsEvent {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function()? exportData,
+    TResult? Function()? importData,
+    TResult? Function()? generatePdf,
+    TResult? Function()? markOnboardingComplete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -50,6 +56,9 @@ mixin _$SettingsEvent {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function()? exportData,
+    TResult Function()? importData,
+    TResult Function()? generatePdf,
+    TResult Function()? markOnboardingComplete,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -63,6 +72,10 @@ mixin _$SettingsEvent {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ExportDataEvent value) exportData,
+    required TResult Function(ImportDataEvent value) importData,
+    required TResult Function(GeneratePdfEvent value) generatePdf,
+    required TResult Function(MarkOnboardingComplete value)
+        markOnboardingComplete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -75,6 +88,9 @@ mixin _$SettingsEvent {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ExportDataEvent value)? exportData,
+    TResult? Function(ImportDataEvent value)? importData,
+    TResult? Function(GeneratePdfEvent value)? generatePdf,
+    TResult? Function(MarkOnboardingComplete value)? markOnboardingComplete,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -87,6 +103,9 @@ mixin _$SettingsEvent {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ExportDataEvent value)? exportData,
+    TResult Function(ImportDataEvent value)? importData,
+    TResult Function(GeneratePdfEvent value)? generatePdf,
+    TResult Function(MarkOnboardingComplete value)? markOnboardingComplete,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -164,6 +183,9 @@ class _$LoadSettingsDashboardImpl implements LoadSettingsDashboard {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function() exportData,
+    required TResult Function() importData,
+    required TResult Function() generatePdf,
+    required TResult Function() markOnboardingComplete,
   }) {
     return loadDashboard();
   }
@@ -179,6 +201,9 @@ class _$LoadSettingsDashboardImpl implements LoadSettingsDashboard {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function()? exportData,
+    TResult? Function()? importData,
+    TResult? Function()? generatePdf,
+    TResult? Function()? markOnboardingComplete,
   }) {
     return loadDashboard?.call();
   }
@@ -194,6 +219,9 @@ class _$LoadSettingsDashboardImpl implements LoadSettingsDashboard {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function()? exportData,
+    TResult Function()? importData,
+    TResult Function()? generatePdf,
+    TResult Function()? markOnboardingComplete,
     required TResult orElse(),
   }) {
     if (loadDashboard != null) {
@@ -213,6 +241,10 @@ class _$LoadSettingsDashboardImpl implements LoadSettingsDashboard {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ExportDataEvent value) exportData,
+    required TResult Function(ImportDataEvent value) importData,
+    required TResult Function(GeneratePdfEvent value) generatePdf,
+    required TResult Function(MarkOnboardingComplete value)
+        markOnboardingComplete,
   }) {
     return loadDashboard(this);
   }
@@ -228,6 +260,9 @@ class _$LoadSettingsDashboardImpl implements LoadSettingsDashboard {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ExportDataEvent value)? exportData,
+    TResult? Function(ImportDataEvent value)? importData,
+    TResult? Function(GeneratePdfEvent value)? generatePdf,
+    TResult? Function(MarkOnboardingComplete value)? markOnboardingComplete,
   }) {
     return loadDashboard?.call(this);
   }
@@ -243,6 +278,9 @@ class _$LoadSettingsDashboardImpl implements LoadSettingsDashboard {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ExportDataEvent value)? exportData,
+    TResult Function(ImportDataEvent value)? importData,
+    TResult Function(GeneratePdfEvent value)? generatePdf,
+    TResult Function(MarkOnboardingComplete value)? markOnboardingComplete,
     required TResult orElse(),
   }) {
     if (loadDashboard != null) {
@@ -332,6 +370,9 @@ class _$ToggleAppLockImpl implements ToggleAppLock {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function() exportData,
+    required TResult Function() importData,
+    required TResult Function() generatePdf,
+    required TResult Function() markOnboardingComplete,
   }) {
     return toggleAppLock(enabled);
   }
@@ -347,6 +388,9 @@ class _$ToggleAppLockImpl implements ToggleAppLock {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function()? exportData,
+    TResult? Function()? importData,
+    TResult? Function()? generatePdf,
+    TResult? Function()? markOnboardingComplete,
   }) {
     return toggleAppLock?.call(enabled);
   }
@@ -362,6 +406,9 @@ class _$ToggleAppLockImpl implements ToggleAppLock {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function()? exportData,
+    TResult Function()? importData,
+    TResult Function()? generatePdf,
+    TResult Function()? markOnboardingComplete,
     required TResult orElse(),
   }) {
     if (toggleAppLock != null) {
@@ -381,6 +428,10 @@ class _$ToggleAppLockImpl implements ToggleAppLock {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ExportDataEvent value) exportData,
+    required TResult Function(ImportDataEvent value) importData,
+    required TResult Function(GeneratePdfEvent value) generatePdf,
+    required TResult Function(MarkOnboardingComplete value)
+        markOnboardingComplete,
   }) {
     return toggleAppLock(this);
   }
@@ -396,6 +447,9 @@ class _$ToggleAppLockImpl implements ToggleAppLock {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ExportDataEvent value)? exportData,
+    TResult? Function(ImportDataEvent value)? importData,
+    TResult? Function(GeneratePdfEvent value)? generatePdf,
+    TResult? Function(MarkOnboardingComplete value)? markOnboardingComplete,
   }) {
     return toggleAppLock?.call(this);
   }
@@ -411,6 +465,9 @@ class _$ToggleAppLockImpl implements ToggleAppLock {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ExportDataEvent value)? exportData,
+    TResult Function(ImportDataEvent value)? importData,
+    TResult Function(GeneratePdfEvent value)? generatePdf,
+    TResult Function(MarkOnboardingComplete value)? markOnboardingComplete,
     required TResult orElse(),
   }) {
     if (toggleAppLock != null) {
@@ -510,6 +567,9 @@ class _$TogglePrivacyModeImpl implements TogglePrivacyMode {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function() exportData,
+    required TResult Function() importData,
+    required TResult Function() generatePdf,
+    required TResult Function() markOnboardingComplete,
   }) {
     return togglePrivacyMode(enabled);
   }
@@ -525,6 +585,9 @@ class _$TogglePrivacyModeImpl implements TogglePrivacyMode {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function()? exportData,
+    TResult? Function()? importData,
+    TResult? Function()? generatePdf,
+    TResult? Function()? markOnboardingComplete,
   }) {
     return togglePrivacyMode?.call(enabled);
   }
@@ -540,6 +603,9 @@ class _$TogglePrivacyModeImpl implements TogglePrivacyMode {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function()? exportData,
+    TResult Function()? importData,
+    TResult Function()? generatePdf,
+    TResult Function()? markOnboardingComplete,
     required TResult orElse(),
   }) {
     if (togglePrivacyMode != null) {
@@ -559,6 +625,10 @@ class _$TogglePrivacyModeImpl implements TogglePrivacyMode {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ExportDataEvent value) exportData,
+    required TResult Function(ImportDataEvent value) importData,
+    required TResult Function(GeneratePdfEvent value) generatePdf,
+    required TResult Function(MarkOnboardingComplete value)
+        markOnboardingComplete,
   }) {
     return togglePrivacyMode(this);
   }
@@ -574,6 +644,9 @@ class _$TogglePrivacyModeImpl implements TogglePrivacyMode {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ExportDataEvent value)? exportData,
+    TResult? Function(ImportDataEvent value)? importData,
+    TResult? Function(GeneratePdfEvent value)? generatePdf,
+    TResult? Function(MarkOnboardingComplete value)? markOnboardingComplete,
   }) {
     return togglePrivacyMode?.call(this);
   }
@@ -589,6 +662,9 @@ class _$TogglePrivacyModeImpl implements TogglePrivacyMode {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ExportDataEvent value)? exportData,
+    TResult Function(ImportDataEvent value)? importData,
+    TResult Function(GeneratePdfEvent value)? generatePdf,
+    TResult Function(MarkOnboardingComplete value)? markOnboardingComplete,
     required TResult orElse(),
   }) {
     if (togglePrivacyMode != null) {
@@ -688,6 +764,9 @@ class _$ToggleBlurOverlayImpl implements ToggleBlurOverlay {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function() exportData,
+    required TResult Function() importData,
+    required TResult Function() generatePdf,
+    required TResult Function() markOnboardingComplete,
   }) {
     return toggleBlurOverlay(enabled);
   }
@@ -703,6 +782,9 @@ class _$ToggleBlurOverlayImpl implements ToggleBlurOverlay {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function()? exportData,
+    TResult? Function()? importData,
+    TResult? Function()? generatePdf,
+    TResult? Function()? markOnboardingComplete,
   }) {
     return toggleBlurOverlay?.call(enabled);
   }
@@ -718,6 +800,9 @@ class _$ToggleBlurOverlayImpl implements ToggleBlurOverlay {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function()? exportData,
+    TResult Function()? importData,
+    TResult Function()? generatePdf,
+    TResult Function()? markOnboardingComplete,
     required TResult orElse(),
   }) {
     if (toggleBlurOverlay != null) {
@@ -737,6 +822,10 @@ class _$ToggleBlurOverlayImpl implements ToggleBlurOverlay {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ExportDataEvent value) exportData,
+    required TResult Function(ImportDataEvent value) importData,
+    required TResult Function(GeneratePdfEvent value) generatePdf,
+    required TResult Function(MarkOnboardingComplete value)
+        markOnboardingComplete,
   }) {
     return toggleBlurOverlay(this);
   }
@@ -752,6 +841,9 @@ class _$ToggleBlurOverlayImpl implements ToggleBlurOverlay {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ExportDataEvent value)? exportData,
+    TResult? Function(ImportDataEvent value)? importData,
+    TResult? Function(GeneratePdfEvent value)? generatePdf,
+    TResult? Function(MarkOnboardingComplete value)? markOnboardingComplete,
   }) {
     return toggleBlurOverlay?.call(this);
   }
@@ -767,6 +859,9 @@ class _$ToggleBlurOverlayImpl implements ToggleBlurOverlay {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ExportDataEvent value)? exportData,
+    TResult Function(ImportDataEvent value)? importData,
+    TResult Function(GeneratePdfEvent value)? generatePdf,
+    TResult Function(MarkOnboardingComplete value)? markOnboardingComplete,
     required TResult orElse(),
   }) {
     if (toggleBlurOverlay != null) {
@@ -866,6 +961,9 @@ class _$UpdateDisplayNameImpl implements UpdateDisplayName {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function() exportData,
+    required TResult Function() importData,
+    required TResult Function() generatePdf,
+    required TResult Function() markOnboardingComplete,
   }) {
     return updateDisplayName(name);
   }
@@ -881,6 +979,9 @@ class _$UpdateDisplayNameImpl implements UpdateDisplayName {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function()? exportData,
+    TResult? Function()? importData,
+    TResult? Function()? generatePdf,
+    TResult? Function()? markOnboardingComplete,
   }) {
     return updateDisplayName?.call(name);
   }
@@ -896,6 +997,9 @@ class _$UpdateDisplayNameImpl implements UpdateDisplayName {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function()? exportData,
+    TResult Function()? importData,
+    TResult Function()? generatePdf,
+    TResult Function()? markOnboardingComplete,
     required TResult orElse(),
   }) {
     if (updateDisplayName != null) {
@@ -915,6 +1019,10 @@ class _$UpdateDisplayNameImpl implements UpdateDisplayName {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ExportDataEvent value) exportData,
+    required TResult Function(ImportDataEvent value) importData,
+    required TResult Function(GeneratePdfEvent value) generatePdf,
+    required TResult Function(MarkOnboardingComplete value)
+        markOnboardingComplete,
   }) {
     return updateDisplayName(this);
   }
@@ -930,6 +1038,9 @@ class _$UpdateDisplayNameImpl implements UpdateDisplayName {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ExportDataEvent value)? exportData,
+    TResult? Function(ImportDataEvent value)? importData,
+    TResult? Function(GeneratePdfEvent value)? generatePdf,
+    TResult? Function(MarkOnboardingComplete value)? markOnboardingComplete,
   }) {
     return updateDisplayName?.call(this);
   }
@@ -945,6 +1056,9 @@ class _$UpdateDisplayNameImpl implements UpdateDisplayName {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ExportDataEvent value)? exportData,
+    TResult Function(ImportDataEvent value)? importData,
+    TResult Function(GeneratePdfEvent value)? generatePdf,
+    TResult Function(MarkOnboardingComplete value)? markOnboardingComplete,
     required TResult orElse(),
   }) {
     if (updateDisplayName != null) {
@@ -1044,6 +1158,9 @@ class _$UpdateHrtStartDateImpl implements UpdateHrtStartDate {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function() exportData,
+    required TResult Function() importData,
+    required TResult Function() generatePdf,
+    required TResult Function() markOnboardingComplete,
   }) {
     return updateHrtStartDate(date);
   }
@@ -1059,6 +1176,9 @@ class _$UpdateHrtStartDateImpl implements UpdateHrtStartDate {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function()? exportData,
+    TResult? Function()? importData,
+    TResult? Function()? generatePdf,
+    TResult? Function()? markOnboardingComplete,
   }) {
     return updateHrtStartDate?.call(date);
   }
@@ -1074,6 +1194,9 @@ class _$UpdateHrtStartDateImpl implements UpdateHrtStartDate {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function()? exportData,
+    TResult Function()? importData,
+    TResult Function()? generatePdf,
+    TResult Function()? markOnboardingComplete,
     required TResult orElse(),
   }) {
     if (updateHrtStartDate != null) {
@@ -1093,6 +1216,10 @@ class _$UpdateHrtStartDateImpl implements UpdateHrtStartDate {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ExportDataEvent value) exportData,
+    required TResult Function(ImportDataEvent value) importData,
+    required TResult Function(GeneratePdfEvent value) generatePdf,
+    required TResult Function(MarkOnboardingComplete value)
+        markOnboardingComplete,
   }) {
     return updateHrtStartDate(this);
   }
@@ -1108,6 +1235,9 @@ class _$UpdateHrtStartDateImpl implements UpdateHrtStartDate {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ExportDataEvent value)? exportData,
+    TResult? Function(ImportDataEvent value)? importData,
+    TResult? Function(GeneratePdfEvent value)? generatePdf,
+    TResult? Function(MarkOnboardingComplete value)? markOnboardingComplete,
   }) {
     return updateHrtStartDate?.call(this);
   }
@@ -1123,6 +1253,9 @@ class _$UpdateHrtStartDateImpl implements UpdateHrtStartDate {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ExportDataEvent value)? exportData,
+    TResult Function(ImportDataEvent value)? importData,
+    TResult Function(GeneratePdfEvent value)? generatePdf,
+    TResult Function(MarkOnboardingComplete value)? markOnboardingComplete,
     required TResult orElse(),
   }) {
     if (updateHrtStartDate != null) {
@@ -1194,6 +1327,9 @@ class _$WipeSettingsDataImpl implements WipeSettingsData {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function() exportData,
+    required TResult Function() importData,
+    required TResult Function() generatePdf,
+    required TResult Function() markOnboardingComplete,
   }) {
     return wipeData();
   }
@@ -1209,6 +1345,9 @@ class _$WipeSettingsDataImpl implements WipeSettingsData {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function()? exportData,
+    TResult? Function()? importData,
+    TResult? Function()? generatePdf,
+    TResult? Function()? markOnboardingComplete,
   }) {
     return wipeData?.call();
   }
@@ -1224,6 +1363,9 @@ class _$WipeSettingsDataImpl implements WipeSettingsData {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function()? exportData,
+    TResult Function()? importData,
+    TResult Function()? generatePdf,
+    TResult Function()? markOnboardingComplete,
     required TResult orElse(),
   }) {
     if (wipeData != null) {
@@ -1243,6 +1385,10 @@ class _$WipeSettingsDataImpl implements WipeSettingsData {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ExportDataEvent value) exportData,
+    required TResult Function(ImportDataEvent value) importData,
+    required TResult Function(GeneratePdfEvent value) generatePdf,
+    required TResult Function(MarkOnboardingComplete value)
+        markOnboardingComplete,
   }) {
     return wipeData(this);
   }
@@ -1258,6 +1404,9 @@ class _$WipeSettingsDataImpl implements WipeSettingsData {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ExportDataEvent value)? exportData,
+    TResult? Function(ImportDataEvent value)? importData,
+    TResult? Function(GeneratePdfEvent value)? generatePdf,
+    TResult? Function(MarkOnboardingComplete value)? markOnboardingComplete,
   }) {
     return wipeData?.call(this);
   }
@@ -1273,6 +1422,9 @@ class _$WipeSettingsDataImpl implements WipeSettingsData {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ExportDataEvent value)? exportData,
+    TResult Function(ImportDataEvent value)? importData,
+    TResult Function(GeneratePdfEvent value)? generatePdf,
+    TResult Function(MarkOnboardingComplete value)? markOnboardingComplete,
     required TResult orElse(),
   }) {
     if (wipeData != null) {
@@ -1335,6 +1487,9 @@ class _$ExportDataEventImpl implements ExportDataEvent {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function() exportData,
+    required TResult Function() importData,
+    required TResult Function() generatePdf,
+    required TResult Function() markOnboardingComplete,
   }) {
     return exportData();
   }
@@ -1350,6 +1505,9 @@ class _$ExportDataEventImpl implements ExportDataEvent {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function()? exportData,
+    TResult? Function()? importData,
+    TResult? Function()? generatePdf,
+    TResult? Function()? markOnboardingComplete,
   }) {
     return exportData?.call();
   }
@@ -1365,6 +1523,9 @@ class _$ExportDataEventImpl implements ExportDataEvent {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function()? exportData,
+    TResult Function()? importData,
+    TResult Function()? generatePdf,
+    TResult Function()? markOnboardingComplete,
     required TResult orElse(),
   }) {
     if (exportData != null) {
@@ -1384,6 +1545,10 @@ class _$ExportDataEventImpl implements ExportDataEvent {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ExportDataEvent value) exportData,
+    required TResult Function(ImportDataEvent value) importData,
+    required TResult Function(GeneratePdfEvent value) generatePdf,
+    required TResult Function(MarkOnboardingComplete value)
+        markOnboardingComplete,
   }) {
     return exportData(this);
   }
@@ -1399,6 +1564,9 @@ class _$ExportDataEventImpl implements ExportDataEvent {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ExportDataEvent value)? exportData,
+    TResult? Function(ImportDataEvent value)? importData,
+    TResult? Function(GeneratePdfEvent value)? generatePdf,
+    TResult? Function(MarkOnboardingComplete value)? markOnboardingComplete,
   }) {
     return exportData?.call(this);
   }
@@ -1414,6 +1582,9 @@ class _$ExportDataEventImpl implements ExportDataEvent {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ExportDataEvent value)? exportData,
+    TResult Function(ImportDataEvent value)? importData,
+    TResult Function(GeneratePdfEvent value)? generatePdf,
+    TResult Function(MarkOnboardingComplete value)? markOnboardingComplete,
     required TResult orElse(),
   }) {
     if (exportData != null) {
@@ -1425,4 +1596,487 @@ class _$ExportDataEventImpl implements ExportDataEvent {
 
 abstract class ExportDataEvent implements SettingsEvent {
   const factory ExportDataEvent() = _$ExportDataEventImpl;
+}
+
+/// @nodoc
+abstract class _$$ImportDataEventImplCopyWith<$Res> {
+  factory _$$ImportDataEventImplCopyWith(_$ImportDataEventImpl value,
+          $Res Function(_$ImportDataEventImpl) then) =
+      __$$ImportDataEventImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$ImportDataEventImplCopyWithImpl<$Res>
+    extends _$SettingsEventCopyWithImpl<$Res, _$ImportDataEventImpl>
+    implements _$$ImportDataEventImplCopyWith<$Res> {
+  __$$ImportDataEventImplCopyWithImpl(
+      _$ImportDataEventImpl _value, $Res Function(_$ImportDataEventImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SettingsEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$ImportDataEventImpl implements ImportDataEvent {
+  const _$ImportDataEventImpl();
+
+  @override
+  String toString() {
+    return 'SettingsEvent.importData()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$ImportDataEventImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loadDashboard,
+    required TResult Function(bool enabled) toggleAppLock,
+    required TResult Function(bool enabled) togglePrivacyMode,
+    required TResult Function(bool enabled) toggleBlurOverlay,
+    required TResult Function(String name) updateDisplayName,
+    required TResult Function(DateTime date) updateHrtStartDate,
+    required TResult Function() wipeData,
+    required TResult Function() exportData,
+    required TResult Function() importData,
+    required TResult Function() generatePdf,
+    required TResult Function() markOnboardingComplete,
+  }) {
+    return importData();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadDashboard,
+    TResult? Function(bool enabled)? toggleAppLock,
+    TResult? Function(bool enabled)? togglePrivacyMode,
+    TResult? Function(bool enabled)? toggleBlurOverlay,
+    TResult? Function(String name)? updateDisplayName,
+    TResult? Function(DateTime date)? updateHrtStartDate,
+    TResult? Function()? wipeData,
+    TResult? Function()? exportData,
+    TResult? Function()? importData,
+    TResult? Function()? generatePdf,
+    TResult? Function()? markOnboardingComplete,
+  }) {
+    return importData?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadDashboard,
+    TResult Function(bool enabled)? toggleAppLock,
+    TResult Function(bool enabled)? togglePrivacyMode,
+    TResult Function(bool enabled)? toggleBlurOverlay,
+    TResult Function(String name)? updateDisplayName,
+    TResult Function(DateTime date)? updateHrtStartDate,
+    TResult Function()? wipeData,
+    TResult Function()? exportData,
+    TResult Function()? importData,
+    TResult Function()? generatePdf,
+    TResult Function()? markOnboardingComplete,
+    required TResult orElse(),
+  }) {
+    if (importData != null) {
+      return importData();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(LoadSettingsDashboard value) loadDashboard,
+    required TResult Function(ToggleAppLock value) toggleAppLock,
+    required TResult Function(TogglePrivacyMode value) togglePrivacyMode,
+    required TResult Function(ToggleBlurOverlay value) toggleBlurOverlay,
+    required TResult Function(UpdateDisplayName value) updateDisplayName,
+    required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
+    required TResult Function(WipeSettingsData value) wipeData,
+    required TResult Function(ExportDataEvent value) exportData,
+    required TResult Function(ImportDataEvent value) importData,
+    required TResult Function(GeneratePdfEvent value) generatePdf,
+    required TResult Function(MarkOnboardingComplete value)
+        markOnboardingComplete,
+  }) {
+    return importData(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(LoadSettingsDashboard value)? loadDashboard,
+    TResult? Function(ToggleAppLock value)? toggleAppLock,
+    TResult? Function(TogglePrivacyMode value)? togglePrivacyMode,
+    TResult? Function(ToggleBlurOverlay value)? toggleBlurOverlay,
+    TResult? Function(UpdateDisplayName value)? updateDisplayName,
+    TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
+    TResult? Function(WipeSettingsData value)? wipeData,
+    TResult? Function(ExportDataEvent value)? exportData,
+    TResult? Function(ImportDataEvent value)? importData,
+    TResult? Function(GeneratePdfEvent value)? generatePdf,
+    TResult? Function(MarkOnboardingComplete value)? markOnboardingComplete,
+  }) {
+    return importData?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(LoadSettingsDashboard value)? loadDashboard,
+    TResult Function(ToggleAppLock value)? toggleAppLock,
+    TResult Function(TogglePrivacyMode value)? togglePrivacyMode,
+    TResult Function(ToggleBlurOverlay value)? toggleBlurOverlay,
+    TResult Function(UpdateDisplayName value)? updateDisplayName,
+    TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
+    TResult Function(WipeSettingsData value)? wipeData,
+    TResult Function(ExportDataEvent value)? exportData,
+    TResult Function(ImportDataEvent value)? importData,
+    TResult Function(GeneratePdfEvent value)? generatePdf,
+    TResult Function(MarkOnboardingComplete value)? markOnboardingComplete,
+    required TResult orElse(),
+  }) {
+    if (importData != null) {
+      return importData(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ImportDataEvent implements SettingsEvent {
+  const factory ImportDataEvent() = _$ImportDataEventImpl;
+}
+
+/// @nodoc
+abstract class _$$GeneratePdfEventImplCopyWith<$Res> {
+  factory _$$GeneratePdfEventImplCopyWith(_$GeneratePdfEventImpl value,
+          $Res Function(_$GeneratePdfEventImpl) then) =
+      __$$GeneratePdfEventImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$GeneratePdfEventImplCopyWithImpl<$Res>
+    extends _$SettingsEventCopyWithImpl<$Res, _$GeneratePdfEventImpl>
+    implements _$$GeneratePdfEventImplCopyWith<$Res> {
+  __$$GeneratePdfEventImplCopyWithImpl(_$GeneratePdfEventImpl _value,
+      $Res Function(_$GeneratePdfEventImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SettingsEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$GeneratePdfEventImpl implements GeneratePdfEvent {
+  const _$GeneratePdfEventImpl();
+
+  @override
+  String toString() {
+    return 'SettingsEvent.generatePdf()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$GeneratePdfEventImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loadDashboard,
+    required TResult Function(bool enabled) toggleAppLock,
+    required TResult Function(bool enabled) togglePrivacyMode,
+    required TResult Function(bool enabled) toggleBlurOverlay,
+    required TResult Function(String name) updateDisplayName,
+    required TResult Function(DateTime date) updateHrtStartDate,
+    required TResult Function() wipeData,
+    required TResult Function() exportData,
+    required TResult Function() importData,
+    required TResult Function() generatePdf,
+    required TResult Function() markOnboardingComplete,
+  }) {
+    return generatePdf();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadDashboard,
+    TResult? Function(bool enabled)? toggleAppLock,
+    TResult? Function(bool enabled)? togglePrivacyMode,
+    TResult? Function(bool enabled)? toggleBlurOverlay,
+    TResult? Function(String name)? updateDisplayName,
+    TResult? Function(DateTime date)? updateHrtStartDate,
+    TResult? Function()? wipeData,
+    TResult? Function()? exportData,
+    TResult? Function()? importData,
+    TResult? Function()? generatePdf,
+    TResult? Function()? markOnboardingComplete,
+  }) {
+    return generatePdf?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadDashboard,
+    TResult Function(bool enabled)? toggleAppLock,
+    TResult Function(bool enabled)? togglePrivacyMode,
+    TResult Function(bool enabled)? toggleBlurOverlay,
+    TResult Function(String name)? updateDisplayName,
+    TResult Function(DateTime date)? updateHrtStartDate,
+    TResult Function()? wipeData,
+    TResult Function()? exportData,
+    TResult Function()? importData,
+    TResult Function()? generatePdf,
+    TResult Function()? markOnboardingComplete,
+    required TResult orElse(),
+  }) {
+    if (generatePdf != null) {
+      return generatePdf();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(LoadSettingsDashboard value) loadDashboard,
+    required TResult Function(ToggleAppLock value) toggleAppLock,
+    required TResult Function(TogglePrivacyMode value) togglePrivacyMode,
+    required TResult Function(ToggleBlurOverlay value) toggleBlurOverlay,
+    required TResult Function(UpdateDisplayName value) updateDisplayName,
+    required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
+    required TResult Function(WipeSettingsData value) wipeData,
+    required TResult Function(ExportDataEvent value) exportData,
+    required TResult Function(ImportDataEvent value) importData,
+    required TResult Function(GeneratePdfEvent value) generatePdf,
+    required TResult Function(MarkOnboardingComplete value)
+        markOnboardingComplete,
+  }) {
+    return generatePdf(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(LoadSettingsDashboard value)? loadDashboard,
+    TResult? Function(ToggleAppLock value)? toggleAppLock,
+    TResult? Function(TogglePrivacyMode value)? togglePrivacyMode,
+    TResult? Function(ToggleBlurOverlay value)? toggleBlurOverlay,
+    TResult? Function(UpdateDisplayName value)? updateDisplayName,
+    TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
+    TResult? Function(WipeSettingsData value)? wipeData,
+    TResult? Function(ExportDataEvent value)? exportData,
+    TResult? Function(ImportDataEvent value)? importData,
+    TResult? Function(GeneratePdfEvent value)? generatePdf,
+    TResult? Function(MarkOnboardingComplete value)? markOnboardingComplete,
+  }) {
+    return generatePdf?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(LoadSettingsDashboard value)? loadDashboard,
+    TResult Function(ToggleAppLock value)? toggleAppLock,
+    TResult Function(TogglePrivacyMode value)? togglePrivacyMode,
+    TResult Function(ToggleBlurOverlay value)? toggleBlurOverlay,
+    TResult Function(UpdateDisplayName value)? updateDisplayName,
+    TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
+    TResult Function(WipeSettingsData value)? wipeData,
+    TResult Function(ExportDataEvent value)? exportData,
+    TResult Function(ImportDataEvent value)? importData,
+    TResult Function(GeneratePdfEvent value)? generatePdf,
+    TResult Function(MarkOnboardingComplete value)? markOnboardingComplete,
+    required TResult orElse(),
+  }) {
+    if (generatePdf != null) {
+      return generatePdf(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class GeneratePdfEvent implements SettingsEvent {
+  const factory GeneratePdfEvent() = _$GeneratePdfEventImpl;
+}
+
+/// @nodoc
+abstract class _$$MarkOnboardingCompleteImplCopyWith<$Res> {
+  factory _$$MarkOnboardingCompleteImplCopyWith(
+          _$MarkOnboardingCompleteImpl value,
+          $Res Function(_$MarkOnboardingCompleteImpl) then) =
+      __$$MarkOnboardingCompleteImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$MarkOnboardingCompleteImplCopyWithImpl<$Res>
+    extends _$SettingsEventCopyWithImpl<$Res, _$MarkOnboardingCompleteImpl>
+    implements _$$MarkOnboardingCompleteImplCopyWith<$Res> {
+  __$$MarkOnboardingCompleteImplCopyWithImpl(
+      _$MarkOnboardingCompleteImpl _value,
+      $Res Function(_$MarkOnboardingCompleteImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SettingsEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$MarkOnboardingCompleteImpl implements MarkOnboardingComplete {
+  const _$MarkOnboardingCompleteImpl();
+
+  @override
+  String toString() {
+    return 'SettingsEvent.markOnboardingComplete()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$MarkOnboardingCompleteImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loadDashboard,
+    required TResult Function(bool enabled) toggleAppLock,
+    required TResult Function(bool enabled) togglePrivacyMode,
+    required TResult Function(bool enabled) toggleBlurOverlay,
+    required TResult Function(String name) updateDisplayName,
+    required TResult Function(DateTime date) updateHrtStartDate,
+    required TResult Function() wipeData,
+    required TResult Function() exportData,
+    required TResult Function() importData,
+    required TResult Function() generatePdf,
+    required TResult Function() markOnboardingComplete,
+  }) {
+    return markOnboardingComplete();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadDashboard,
+    TResult? Function(bool enabled)? toggleAppLock,
+    TResult? Function(bool enabled)? togglePrivacyMode,
+    TResult? Function(bool enabled)? toggleBlurOverlay,
+    TResult? Function(String name)? updateDisplayName,
+    TResult? Function(DateTime date)? updateHrtStartDate,
+    TResult? Function()? wipeData,
+    TResult? Function()? exportData,
+    TResult? Function()? importData,
+    TResult? Function()? generatePdf,
+    TResult? Function()? markOnboardingComplete,
+  }) {
+    return markOnboardingComplete?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadDashboard,
+    TResult Function(bool enabled)? toggleAppLock,
+    TResult Function(bool enabled)? togglePrivacyMode,
+    TResult Function(bool enabled)? toggleBlurOverlay,
+    TResult Function(String name)? updateDisplayName,
+    TResult Function(DateTime date)? updateHrtStartDate,
+    TResult Function()? wipeData,
+    TResult Function()? exportData,
+    TResult Function()? importData,
+    TResult Function()? generatePdf,
+    TResult Function()? markOnboardingComplete,
+    required TResult orElse(),
+  }) {
+    if (markOnboardingComplete != null) {
+      return markOnboardingComplete();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(LoadSettingsDashboard value) loadDashboard,
+    required TResult Function(ToggleAppLock value) toggleAppLock,
+    required TResult Function(TogglePrivacyMode value) togglePrivacyMode,
+    required TResult Function(ToggleBlurOverlay value) toggleBlurOverlay,
+    required TResult Function(UpdateDisplayName value) updateDisplayName,
+    required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
+    required TResult Function(WipeSettingsData value) wipeData,
+    required TResult Function(ExportDataEvent value) exportData,
+    required TResult Function(ImportDataEvent value) importData,
+    required TResult Function(GeneratePdfEvent value) generatePdf,
+    required TResult Function(MarkOnboardingComplete value)
+        markOnboardingComplete,
+  }) {
+    return markOnboardingComplete(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(LoadSettingsDashboard value)? loadDashboard,
+    TResult? Function(ToggleAppLock value)? toggleAppLock,
+    TResult? Function(TogglePrivacyMode value)? togglePrivacyMode,
+    TResult? Function(ToggleBlurOverlay value)? toggleBlurOverlay,
+    TResult? Function(UpdateDisplayName value)? updateDisplayName,
+    TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
+    TResult? Function(WipeSettingsData value)? wipeData,
+    TResult? Function(ExportDataEvent value)? exportData,
+    TResult? Function(ImportDataEvent value)? importData,
+    TResult? Function(GeneratePdfEvent value)? generatePdf,
+    TResult? Function(MarkOnboardingComplete value)? markOnboardingComplete,
+  }) {
+    return markOnboardingComplete?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(LoadSettingsDashboard value)? loadDashboard,
+    TResult Function(ToggleAppLock value)? toggleAppLock,
+    TResult Function(TogglePrivacyMode value)? togglePrivacyMode,
+    TResult Function(ToggleBlurOverlay value)? toggleBlurOverlay,
+    TResult Function(UpdateDisplayName value)? updateDisplayName,
+    TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
+    TResult Function(WipeSettingsData value)? wipeData,
+    TResult Function(ExportDataEvent value)? exportData,
+    TResult Function(ImportDataEvent value)? importData,
+    TResult Function(GeneratePdfEvent value)? generatePdf,
+    TResult Function(MarkOnboardingComplete value)? markOnboardingComplete,
+    required TResult orElse(),
+  }) {
+    if (markOnboardingComplete != null) {
+      return markOnboardingComplete(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class MarkOnboardingComplete implements SettingsEvent {
+  const factory MarkOnboardingComplete() = _$MarkOnboardingCompleteImpl;
 }

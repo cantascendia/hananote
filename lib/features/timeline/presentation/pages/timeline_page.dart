@@ -25,7 +25,7 @@ class TimelinePage extends StatelessWidget {
     // Removed showComingSoon as buttons now use real navigation
 
     return Scaffold(
-      backgroundColor: HanaColors.background,
+      backgroundColor: HanaColors.backgroundOf(context),
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(64),
@@ -34,29 +34,29 @@ class TimelinePage extends StatelessWidget {
             filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
             child: AppBar(
               backgroundColor:
-                  HanaColors.background.withAlpha((255 * 0.8).round()),
+                  HanaColors.backgroundOf(context).withAlpha((255 * 0.8).round()),
               elevation: 0,
               scrolledUnderElevation: 0,
               centerTitle: true,
               leading: IconButton(
-                icon: const Icon(Icons.settings, color: HanaColors.primary),
+                icon: Icon(Icons.settings, color: HanaColors.primaryOf(context)),
                 onPressed: () => context.push('/settings'),
               ),
               title: Text(
                 l10n.myGrowthTrajectory,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Plus Jakarta Sans',
                   fontWeight: FontWeight.w600,
                   fontSize: 18,
-                  color: HanaColors.primary,
+                  color: HanaColors.primaryOf(context),
                   letterSpacing: -0.5,
                 ),
               ),
               actions: [
                 IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.calendar_today,
-                    color: HanaColors.primary,
+                    color: HanaColors.primaryOf(context),
                   ),
                   onPressed: () => showDatePicker(
                     context: context,
@@ -85,9 +85,9 @@ class TimelinePage extends StatelessWidget {
           child: Container(
             width: 56,
             height: 56,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [HanaColors.primary, HanaColors.secondary],
+                colors: [HanaColors.primaryOf(context), HanaColors.secondaryOf(context)],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -99,8 +99,8 @@ class TimelinePage extends StatelessWidget {
       body: BlocBuilder<TimelineBloc, TimelineState>(
         builder: (context, state) {
           return switch (state) {
-            TimelineInitial() || TimelineLoading() => const Center(
-                child: CircularProgressIndicator(color: HanaColors.primary),
+            TimelineInitial() || TimelineLoading() => Center(
+                child: CircularProgressIndicator(color: HanaColors.primaryOf(context)),
               ),
             TimelineError(:final message) => Center(child: Text(message)),
             TimelineLoaded(:final events, :final selectedRange) => _TimelineLoadedView(
@@ -120,7 +120,7 @@ class TimelinePage extends StatelessWidget {
   ) {
     return showModalBottomSheet<void>(
       context: context,
-      backgroundColor: HanaColors.surfaceContainerLowest,
+      backgroundColor: HanaColors.surfaceContainerLowestOf(context),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
       ),
@@ -136,14 +136,14 @@ class TimelinePage extends StatelessWidget {
                   height: 4,
                   margin: const EdgeInsets.only(bottom: 24),
                   decoration: BoxDecoration(
-                    color: HanaColors.outlineVariant.withAlpha(128),
+                    color: HanaColors.outlineVariantOf(context).withAlpha(128),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
                 ListTile(
-                  leading: const Icon(
+                  leading: Icon(
                     Icons.medication_outlined,
-                    color: HanaColors.primary,
+                    color: HanaColors.primaryOf(context),
                   ),
                   title: Text(
                     l10n.logMedication,
@@ -156,7 +156,7 @@ class TimelinePage extends StatelessWidget {
                 ),
                 ListTile(
                   leading:
-                      const Icon(Icons.edit_note, color: HanaColors.primary),
+                      Icon(Icons.edit_note, color: HanaColors.primaryOf(context)),
                   title: Text(
                     l10n.writeJournal,
                     style: const TextStyle(fontWeight: FontWeight.w600),
@@ -167,9 +167,9 @@ class TimelinePage extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(
+                  leading: Icon(
                     Icons.science_outlined,
-                    color: HanaColors.primary,
+                    color: HanaColors.primaryOf(context),
                   ),
                   title: Text(
                     l10n.addBloodTest,
@@ -206,7 +206,7 @@ class _TimelineLoadedView extends StatelessWidget {
       return Center(
         child: Text(
           emptyLabel,
-          style: TextStyle(color: HanaColors.onSurfaceVariant.withAlpha(153)),
+          style: TextStyle(color: HanaColors.onSurfaceVariantOf(context).withAlpha(153)),
         ),
       );
     }
@@ -221,11 +221,11 @@ class _TimelineLoadedView extends StatelessWidget {
             alignment: Alignment.topCenter,
             child: Container(
               width: 2,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    HanaColors.primaryContainer,
-                    HanaColors.secondaryContainer,
+                    HanaColors.primaryContainerOf(context),
+                    HanaColors.secondaryContainerOf(context),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -313,13 +313,13 @@ class _FilterPills extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     fontSize: 12,
                     color: isSelected
-                        ? HanaColors.onPrimaryContainer
-                        : HanaColors.onSurfaceVariant,
+                        ? HanaColors.onPrimaryContainerOf(context)
+                        : HanaColors.onSurfaceVariantOf(context),
                   ),
                 ),
                 backgroundColor: isSelected
-                    ? HanaColors.primaryContainer
-                    : HanaColors.surfaceContainerHigh,
+                    ? HanaColors.primaryContainerOf(context)
+                    : HanaColors.surfaceContainerHighOf(context),
                 side: BorderSide.none,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(9999),
@@ -435,7 +435,7 @@ class _EventCard extends StatelessWidget {
       child: InkWell(
         onTap: () => showModalBottomSheet<void>(
           context: context,
-          backgroundColor: HanaColors.surfaceContainerLowest,
+          backgroundColor: HanaColors.surfaceContainerLowestOf(context),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
           ),
@@ -453,7 +453,7 @@ class _EventCard extends StatelessWidget {
                         height: 4,
                         margin: const EdgeInsets.only(bottom: 24),
                         decoration: BoxDecoration(
-                          color: HanaColors.outlineVariant.withAlpha(128),
+                          color: HanaColors.outlineVariantOf(context).withAlpha(128),
                           borderRadius: BorderRadius.circular(999),
                         ),
                       ),
@@ -475,10 +475,10 @@ class _EventCard extends StatelessWidget {
                         const SizedBox(width: 12),
                         Text(
                           event.type.localizedName(l10n),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
-                            color: HanaColors.onSurface,
+                            color: HanaColors.onSurfaceOf(context),
                           ),
                         ),
                       ],
@@ -486,29 +486,29 @@ class _EventCard extends StatelessWidget {
                     const SizedBox(height: 20),
                     Text(
                       event.title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
-                        color: HanaColors.onSurface,
+                        color: HanaColors.onSurfaceOf(context),
                       ),
                     ),
                     if (event.subtitle != null) ...[
                       const SizedBox(height: 8),
                       Text(
                         event.subtitle!,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
-                          color: HanaColors.onSurfaceVariant,
+                          color: HanaColors.onSurfaceVariantOf(context),
                         ),
                       ),
                     ],
                     const SizedBox(height: 16),
                     Text(
                       DateFormat.yMMMd(localeName).format(event.date),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
-                        color: HanaColors.onSurfaceVariant,
+                        color: HanaColors.onSurfaceVariantOf(context),
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -529,7 +529,7 @@ class _EventCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: HanaColors.surfaceContainerLowest,
+            color: HanaColors.surfaceContainerLowestOf(context),
             borderRadius: BorderRadius.circular(12),
             border: isAlignedRight
                 ? Border(
@@ -540,7 +540,7 @@ class _EventCard extends StatelessWidget {
                   ),
             boxShadow: [
               BoxShadow(
-                color: HanaColors.primary.withAlpha(10), // 4%
+                color: HanaColors.primaryOf(context).withAlpha(10), // 4%
                 blurRadius: 20,
                 offset: const Offset(0, 4),
               ),
@@ -595,10 +595,10 @@ class _EventCard extends StatelessWidget {
               Text(
                 event.title,
                 textAlign: isAlignedRight ? TextAlign.left : TextAlign.right,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: HanaColors.onSurface,
+                  color: HanaColors.onSurfaceOf(context),
                 ),
               ),
               if (event.subtitle != null) ...[
@@ -608,7 +608,7 @@ class _EventCard extends StatelessWidget {
                   textAlign: isAlignedRight ? TextAlign.left : TextAlign.right,
                   style: TextStyle(
                     fontSize: 10,
-                    color: HanaColors.onSurfaceVariant.withAlpha(204), // 80%
+                    color: HanaColors.onSurfaceVariantOf(context).withAlpha(204), // 80%
                   ),
                 ),
               ],
@@ -632,29 +632,29 @@ class _TimelineStartPoint extends StatelessWidget {
         Container(
           width: 40,
           height: 40,
-          decoration: const BoxDecoration(
-            color: HanaColors.surfaceContainerHigh,
+          decoration: BoxDecoration(
+            color: HanaColors.surfaceContainerHighOf(context),
             shape: BoxShape.circle,
           ),
-          child: const Center(
-            child: Icon(Icons.psychology, color: HanaColors.primary),
+          child: Center(
+            child: Icon(Icons.psychology, color: HanaColors.primaryOf(context)),
           ),
         ),
         const SizedBox(height: 12),
         Text(
           l10n.journeyStart,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w500,
-            color: HanaColors.onSurfaceVariant,
+            color: HanaColors.onSurfaceVariantOf(context),
           ),
         ),
         const SizedBox(height: 16),
         Container(
           width: 8,
           height: 8,
-          decoration: const BoxDecoration(
-            color: HanaColors.primary,
+          decoration: BoxDecoration(
+            color: HanaColors.primaryOf(context),
             shape: BoxShape.circle,
           ),
         ),

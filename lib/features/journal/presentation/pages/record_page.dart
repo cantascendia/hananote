@@ -52,7 +52,7 @@ class RecordPage extends StatelessWidget {
         );
 
         return Scaffold(
-          backgroundColor: HanaColors.background,
+          backgroundColor: HanaColors.backgroundOf(context),
           extendBodyBehindAppBar: true,
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(64),
@@ -60,14 +60,14 @@ class RecordPage extends StatelessWidget {
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
                 child: AppBar(
-                  backgroundColor: HanaColors.background.withAlpha(
+                  backgroundColor: HanaColors.backgroundOf(context).withAlpha(
                     (255 * 0.8).round(),
                   ),
                   elevation: 0,
                   scrolledUnderElevation: 0,
                   centerTitle: true,
                   leading: IconButton(
-                    icon: const Icon(Icons.notes, color: HanaColors.primary),
+                    icon: Icon(Icons.notes, color: HanaColors.primaryOf(context)),
                     onPressed: showComingSoon,
                   ),
                   title: Column(
@@ -75,11 +75,11 @@ class RecordPage extends StatelessWidget {
                     children: [
                       Text(
                         l10n.recordTitle,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Plus Jakarta Sans',
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
-                          color: HanaColors.primary,
+                          color: HanaColors.primaryOf(context),
                           letterSpacing: -0.5,
                         ),
                       ),
@@ -89,7 +89,7 @@ class RecordPage extends StatelessWidget {
                           fontFamily: 'Plus Jakarta Sans',
                           fontWeight: FontWeight.w500,
                           fontSize: 10,
-                          color: HanaColors.primary.withAlpha(
+                          color: HanaColors.primaryOf(context).withAlpha(
                             (255 * 0.6).round(),
                           ),
                           letterSpacing: 2,
@@ -99,9 +99,9 @@ class RecordPage extends StatelessWidget {
                   ),
                   actions: [
                     IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.history_edu,
-                        color: HanaColors.primary,
+                        color: HanaColors.primaryOf(context),
                       ),
                       onPressed: showComingSoon,
                     ),
@@ -123,7 +123,7 @@ class RecordPage extends StatelessWidget {
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                           fontFamily: 'Plus Jakarta Sans',
                           fontWeight: FontWeight.w800,
-                          color: HanaColors.primary,
+                          color: HanaColors.primaryOf(context),
                           letterSpacing: -0.5,
                           height: 1.2,
                         ),
@@ -135,10 +135,10 @@ class RecordPage extends StatelessWidget {
                   title: l10n.recordPhoto,
                   subtitle: l10n.recordPhotoSub,
                   tag: photoTag,
-                  accentColor: HanaColors.primaryContainer,
-                  bgShapeColor: HanaColors.primaryContainer.withAlpha(26),
-                  tagBgColor: HanaColors.primaryContainer.withAlpha(77),
-                  tagTextColor: HanaColors.primary,
+                  accentColor: HanaColors.primaryContainerOf(context),
+                  bgShapeColor: HanaColors.primaryContainerOf(context).withAlpha(26),
+                  tagBgColor: HanaColors.primaryContainerOf(context).withAlpha(77),
+                  tagTextColor: HanaColors.primaryOf(context),
                   bgIcon: Icons.photo_library,
                   bgIconRotation: 12 * 3.14159 / 180,
                   bgShapeAlignment: Alignment.topRight,
@@ -150,10 +150,10 @@ class RecordPage extends StatelessWidget {
                   title: l10n.recordMeasurement,
                   subtitle: l10n.recordMeasurementSub,
                   tag: measureTag,
-                  accentColor: HanaColors.secondary,
-                  bgShapeColor: HanaColors.secondaryContainer.withAlpha(51),
-                  tagBgColor: HanaColors.secondaryContainer.withAlpha(128),
-                  tagTextColor: HanaColors.secondary,
+                  accentColor: HanaColors.secondaryOf(context),
+                  bgShapeColor: HanaColors.secondaryContainerOf(context).withAlpha(51),
+                  tagBgColor: HanaColors.secondaryContainerOf(context).withAlpha(128),
+                  tagTextColor: HanaColors.secondaryOf(context),
                   bgIcon: Icons.monitor_weight_outlined,
                   bgIconRotation: -12 * 3.14159 / 180,
                   bgShapeAlignment: Alignment.bottomLeft,
@@ -165,11 +165,11 @@ class RecordPage extends StatelessWidget {
                   title: l10n.recordDiary,
                   subtitle: l10n.recordDiarySub,
                   tag: moodTag,
-                  accentColor: HanaColors.primary,
-                  bgShapeColor: HanaColors.secondaryContainer.withAlpha(26),
-                  tagBgColor: HanaColors.surfaceContainerHigh,
-                  tagTextColor: HanaColors.onSurfaceVariant,
-                  iconContainerColor: HanaColors.surfaceContainerHigh,
+                  accentColor: HanaColors.primaryOf(context),
+                  bgShapeColor: HanaColors.secondaryContainerOf(context).withAlpha(26),
+                  tagBgColor: HanaColors.surfaceContainerHighOf(context),
+                  tagTextColor: HanaColors.onSurfaceVariantOf(context),
+                  iconContainerColor: HanaColors.surfaceContainerHighOf(context),
                   bgIcon: Icons.auto_stories,
                   bgIconRotation: 6 * 3.14159 / 180,
                   bgShapeAlignment: Alignment.center,
@@ -183,7 +183,7 @@ class RecordPage extends StatelessWidget {
                       Icon(
                         Icons.spa,
                         size: 64,
-                        color: HanaColors.primary.withAlpha(77),
+                        color: HanaColors.primaryOf(context).withAlpha(77),
                       ),
                       Positioned(
                         top: 0,
@@ -191,8 +191,8 @@ class RecordPage extends StatelessWidget {
                         child: Container(
                           width: 12,
                           height: 12,
-                          decoration: const BoxDecoration(
-                            color: HanaColors.primaryContainer,
+                          decoration: BoxDecoration(
+                            color: HanaColors.primaryContainerOf(context),
                             shape: BoxShape.circle,
                           ),
                         ),
@@ -205,7 +205,7 @@ class RecordPage extends StatelessWidget {
                   child: Text(
                     l10n.recordFooter,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: HanaColors.primary.withAlpha(153),
+                          color: HanaColors.primaryOf(context).withAlpha(153),
                           letterSpacing: 2,
                         ),
                   ),
@@ -304,7 +304,7 @@ class _StitchRecordCardState extends State<_StitchRecordCard>
             clipBehavior: Clip.hardEdge,
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: HanaColors.surfaceContainerLowest,
+              color: HanaColors.surfaceContainerLowestOf(context),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: widget.bgShapeColor),
               boxShadow: [
@@ -373,7 +373,7 @@ class _StitchRecordCardState extends State<_StitchRecordCard>
                                 .titleLarge
                                 ?.copyWith(
                                   fontWeight: FontWeight.bold,
-                                  color: HanaColors.onSurface,
+                                  color: HanaColors.onSurfaceOf(context),
                                 ),
                           ),
                           const SizedBox(height: 4),
@@ -383,7 +383,7 @@ class _StitchRecordCardState extends State<_StitchRecordCard>
                                 .textTheme
                                 .bodySmall
                                 ?.copyWith(
-                                  color: HanaColors.onSurfaceVariant
+                                  color: HanaColors.onSurfaceVariantOf(context)
                                       .withAlpha((255 * 0.7).round()),
                                 ),
                           ),

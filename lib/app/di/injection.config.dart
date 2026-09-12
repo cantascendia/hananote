@@ -139,8 +139,12 @@ import 'package:hananote/features/settings/domain/repositories/settings_reposito
     as _i755;
 import 'package:hananote/features/settings/domain/usecases/export_data.dart'
     as _i671;
+import 'package:hananote/features/settings/domain/usecases/generate_pdf_report.dart'
+    as _i13;
 import 'package:hananote/features/settings/domain/usecases/get_profile_dashboard.dart'
     as _i287;
+import 'package:hananote/features/settings/domain/usecases/import_data.dart'
+    as _i414;
 import 'package:hananote/features/settings/domain/usecases/update_app_settings.dart'
     as _i695;
 import 'package:hananote/features/settings/domain/usecases/update_user_profile.dart'
@@ -339,6 +343,20 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i502.MeasurementRepository>(),
           gh<_i755.SettingsRepository>(),
         ));
+    gh.factory<_i13.GeneratePdfReport>(() => _i13.GeneratePdfReport(
+          gh<_i160.MedicationRepository>(),
+          gh<_i979.BloodTestRepository>(),
+          gh<_i1032.JournalRepository>(),
+          gh<_i502.MeasurementRepository>(),
+          gh<_i755.SettingsRepository>(),
+        ));
+    gh.factory<_i414.ImportData>(() => _i414.ImportData(
+          gh<_i160.MedicationRepository>(),
+          gh<_i979.BloodTestRepository>(),
+          gh<_i1032.JournalRepository>(),
+          gh<_i502.MeasurementRepository>(),
+          gh<_i755.SettingsRepository>(),
+        ));
     gh.factory<_i1026.BloodTestBloc>(() => _i1026.BloodTestBloc(
           getAllReports: gh<_i712.GetAllBloodTestReports>(),
           getTrend: gh<_i341.GetHormoneTrend>(),
@@ -375,6 +393,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i254.UpdateUserProfile>(),
           gh<_i135.WipeAllData>(),
           gh<_i671.ExportData>(),
+          gh<_i414.ImportData>(),
+          gh<_i13.GeneratePdfReport>(),
         ));
     return this;
   }

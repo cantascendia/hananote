@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hananote/app/theme/hana_colors.dart';
 import 'package:hananote/core/l10n/arb/app_localizations.dart';
 import 'package:hananote/core/l10n/enum_l10n.dart';
+import 'package:hananote/core/widgets/petal_celebration.dart';
 import 'package:hananote/features/medication/domain/usecases/get_today_schedule.dart';
 import 'package:hananote/features/medication/presentation/bloc/today_schedule_bloc.dart';
 import 'package:hananote/features/medication/presentation/bloc/today_schedule_event.dart';
@@ -41,15 +42,30 @@ class TodayPage extends StatelessWidget {
     final greeting = _greetingForHour(DateTime.now().hour, l10n);
 
     return Scaffold(
-      backgroundColor: HanaColors.background,
-      body: BlocBuilder<TodayScheduleBloc, TodayScheduleState>(
+      backgroundColor: HanaColors.backgroundOf(context),
+      body: BlocListener<TodayScheduleBloc, TodayScheduleState>(
+        listenWhen: (previous, current) {
+          final prevCompleted = previous.whenOrNull(
+            loaded: (_, __, completedCount, ___) => completedCount,
+          );
+          final currCompleted = current.whenOrNull(
+            loaded: (_, __, completedCount, ___) => completedCount,
+          );
+          return prevCompleted != null &&
+              currCompleted != null &&
+              currCompleted > prevCompleted;
+        },
+        listener: (context, state) {
+          PetalCelebration.show(context);
+        },
+        child: BlocBuilder<TodayScheduleBloc, TodayScheduleState>(
         builder: (context, state) {
           return CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
               SliverAppBar(
                 backgroundColor:
-                    HanaColors.background.withAlpha((255 * 0.8).round()),
+                    HanaColors.backgroundOf(context).withAlpha((255 * 0.8).round()),
                 pinned: true,
                 elevation: 0,
                 scrolledUnderElevation: 0,
@@ -63,28 +79,28 @@ class TodayPage extends StatelessWidget {
                 ),
                 title: Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.auto_awesome,
-                      color: HanaColors.primary,
+                      color: HanaColors.primaryOf(context),
                       size: 24,
                     ),
                     const SizedBox(width: 8),
                     Text(
                       l10n.appTitle,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontFamily: 'PlusJakartaSans',
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: HanaColors.primary,
+                        color: HanaColors.primaryOf(context),
                       ),
                     ),
                   ],
                 ),
                 actions: [
                   IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.calendar_today,
-                      color: HanaColors.primary,
+                      color: HanaColors.primaryOf(context),
                     ),
                     onPressed: () => context.go('/timeline'),
                   ),
@@ -107,21 +123,21 @@ class TodayPage extends StatelessWidget {
                               '$greeting，$displayName',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.w800,
                                 fontFamily: 'PlusJakartaSans',
-                                color: HanaColors.primary,
+                                color: HanaColors.primaryOf(context),
                                 letterSpacing: -0.5,
                               ),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               l10n.hrtDay(hrtDays),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: HanaColors.onSurfaceVariant,
+                                color: HanaColors.onSurfaceVariantOf(context),
                               ),
                             ),
                           ],
@@ -138,17 +154,17 @@ class TodayPage extends StatelessWidget {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
-                                color: HanaColors.primaryContainer
+                                color: HanaColors.primaryContainerOf(context)
                                     .withAlpha((255 * 0.3).round()),
                                 width: 2,
                               ),
                             ),
-                            child: const CircleAvatar(
+                            child: CircleAvatar(
                               radius: 26,
-                              backgroundColor: HanaColors.primaryContainer,
+                              backgroundColor: HanaColors.primaryContainerOf(context),
                               child: Icon(
                                 Icons.person,
-                                color: HanaColors.onPrimaryContainer,
+                                color: HanaColors.onPrimaryContainerOf(context),
                               ),
                             ),
                           ),
@@ -166,6 +182,7 @@ class TodayPage extends StatelessWidget {
             ],
           );
         },
+      ),
       ),
     );
   }
@@ -196,7 +213,7 @@ class TodayPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(message, style: const TextStyle(color: HanaColors.error)),
+                Text(message, style: TextStyle(color: HanaColors.errorOf(context))),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () => context
@@ -221,13 +238,13 @@ class TodayPage extends StatelessWidget {
                     Icon(
                       Icons.medication_outlined,
                       size: 64,
-                      color: HanaColors.primary.withAlpha(77),
+                      color: HanaColors.primaryOf(context).withAlpha(77),
                     ),
                     const SizedBox(height: 16),
                     Text(
                       l10n.noMedicationRecords,
                       style: theme.textTheme.titleMedium?.copyWith(
-                        color: HanaColors.onSurfaceVariant,
+                        color: HanaColors.onSurfaceVariantOf(context),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -320,19 +337,19 @@ class TodayPage extends StatelessWidget {
                       children: [
                         Text(
                           l10n.takenDoses,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: HanaColors.onSurface,
+                            color: HanaColors.onSurfaceOf(context),
                           ),
                         ),
                         const SizedBox(width: 8),
                         Container(
                           width: 6,
                           height: 6,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: HanaColors.secondary,
+                            color: HanaColors.secondaryOf(context),
                           ),
                         ),
                       ],
@@ -342,7 +359,7 @@ class TodayPage extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: HanaColors.onSurfaceVariant
+                        color: HanaColors.onSurfaceVariantOf(context)
                             .withAlpha((255 * 0.6).round()),
                         letterSpacing: 1.2,
                       ),
@@ -365,7 +382,7 @@ class TodayPage extends StatelessWidget {
                         dosage: dosageLabel(item),
                         time: timeLabel(firstTime),
                         isTaken: true,
-                        accentColor: HanaColors.primaryFixed,
+                        accentColor: HanaColors.primaryFixedOf(context),
                       ),
                     );
                   }).toList(),
@@ -385,19 +402,19 @@ class TodayPage extends StatelessWidget {
                   children: [
                     Text(
                       l10n.pendingDoses,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: HanaColors.onSurface,
+                        color: HanaColors.onSurfaceOf(context),
                       ),
                     ),
                     const SizedBox(width: 8),
                     Container(
                       width: 6,
                       height: 6,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: HanaColors.tertiary,
+                        color: HanaColors.tertiaryOf(context),
                       ),
                     ),
                   ],

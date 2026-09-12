@@ -25,79 +25,16 @@ class ProfilePage extends StatelessWidget {
       ..showSnackBar(SnackBar(content: Text(message)));
   }
 
-  void _showFeaturePlannedSheet(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    showModalBottomSheet<void>(
-      context: context,
-      backgroundColor: HanaColors.surfaceContainerLowest,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
-      ),
-      builder: (sheetContext) {
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 40,
-                  height: 4,
-                  margin: const EdgeInsets.only(bottom: 32),
-                  decoration: BoxDecoration(
-                    color: HanaColors.outlineVariant.withAlpha(128),
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-                ),
-                const Icon(
-                  Icons.construction_outlined,
-                  size: 64,
-                  color: HanaColors.primary,
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  l10n.featureInDevelopment,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: HanaColors.onSurface,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  l10n.featureInDevelopmentDesc,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: HanaColors.onSurfaceVariant,
-                  ),
-                ),
-                const SizedBox(height: 32),
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    onPressed: () => Navigator.of(sheetContext).pop(),
-                    child: Text(l10n.closeAction),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  BoxDecoration _bentoDecoration() {
+  BoxDecoration _bentoDecoration(BuildContext context) {
     return BoxDecoration(
-      color: HanaColors.surfaceContainerLowest,
+      color: HanaColors.surfaceContainerLowestOf(context),
       borderRadius: BorderRadius.circular(24),
       border: Border.all(
-        color: HanaColors.primaryContainer.withAlpha(77),
+        color: HanaColors.primaryContainerOf(context).withAlpha(77),
       ), // 30% border
       boxShadow: [
         BoxShadow(
-          color: HanaColors.primary.withAlpha(10), // 4% shadow
+          color: HanaColors.primaryOf(context).withAlpha(10), // 4% shadow
           blurRadius: 16,
           offset: const Offset(0, 4),
         ),
@@ -105,11 +42,11 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _bentoSeparator() {
+  Widget _bentoSeparator(BuildContext context) {
     return Container(
       height: 1,
       margin: const EdgeInsets.symmetric(horizontal: 24),
-      color: HanaColors.primary.withAlpha(13), // 5% band, not a hard line
+      color: HanaColors.primaryOf(context).withAlpha(13), // 5% band, not a hard line
     );
   }
 
@@ -129,6 +66,18 @@ class ProfilePage extends StatelessWidget {
             _showSnackBar(context, l10n.exportSuccess);
           } else if (state.actionKey == 'export_failed') {
             _showSnackBar(context, l10n.exportFailed);
+          } else if (state.actionKey == 'import_in_progress') {
+            _showSnackBar(context, l10n.importInProgress);
+          } else if (state.actionKey == 'import_success') {
+            _showSnackBar(context, l10n.importSuccess);
+          } else if (state.actionKey == 'import_failed') {
+            _showSnackBar(context, l10n.importFailed);
+          } else if (state.actionKey == 'pdf_generating') {
+            _showSnackBar(context, l10n.pdfGenerating);
+          } else if (state.actionKey == 'pdf_success') {
+            _showSnackBar(context, l10n.pdfSuccess);
+          } else if (state.actionKey == 'pdf_failed') {
+            _showSnackBar(context, l10n.pdfFailed);
           }
         }
       },
@@ -138,7 +87,7 @@ class ProfilePage extends StatelessWidget {
 
         if (state is SettingsError) {
           return Scaffold(
-            backgroundColor: HanaColors.background,
+            backgroundColor: HanaColors.backgroundOf(context),
             body: Center(
               child: Padding(
                 padding: const EdgeInsets.all(24),
@@ -166,10 +115,10 @@ class ProfilePage extends StatelessWidget {
         }
 
         if (state is! SettingsLoaded) {
-          return const Scaffold(
-            backgroundColor: HanaColors.background,
+          return Scaffold(
+            backgroundColor: HanaColors.backgroundOf(context),
             body: Center(
-              child: CircularProgressIndicator(color: HanaColors.primary),
+              child: CircularProgressIndicator(color: HanaColors.primaryOf(context)),
             ),
           );
         }
@@ -187,7 +136,7 @@ class ProfilePage extends StatelessWidget {
             : l10n.noUpdatesYet;
 
         return Scaffold(
-          backgroundColor: HanaColors.background,
+          backgroundColor: HanaColors.backgroundOf(context),
           extendBodyBehindAppBar: true,
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(64),
@@ -196,29 +145,29 @@ class ProfilePage extends StatelessWidget {
                 filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
                 child: AppBar(
                   backgroundColor:
-                      HanaColors.background.withAlpha((255 * 0.8).round()),
+                      HanaColors.backgroundOf(context).withAlpha((255 * 0.8).round()),
                   elevation: 0,
                   scrolledUnderElevation: 0,
                   centerTitle: true,
                   leading: IconButton(
-                    icon: const Icon(Icons.settings, color: HanaColors.primary),
+                    icon: Icon(Icons.settings, color: HanaColors.primaryOf(context)),
                     onPressed: () => context.push('/settings'),
                   ),
                   title: Text(
                     l10n.profile,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Plus Jakarta Sans',
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
-                      color: HanaColors.primary,
+                      color: HanaColors.primaryOf(context),
                       letterSpacing: -0.5,
                     ),
                   ),
                   actions: [
                     IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.notifications,
-                        color: HanaColors.primary,
+                        color: HanaColors.primaryOf(context),
                       ),
                       onPressed: () =>
                           context.push('/notification_settings'),
@@ -236,13 +185,13 @@ class ProfilePage extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 48,
-                        backgroundColor: HanaColors.primaryContainer,
+                        backgroundColor: HanaColors.primaryContainerOf(context),
                         child: Icon(
                           Icons.person,
                           size: 48,
-                          color: HanaColors.primary,
+                          color: HanaColors.primaryOf(context),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -250,7 +199,7 @@ class ProfilePage extends StatelessWidget {
                         state.profile.displayName,
                         style: theme.textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: HanaColors.primary,
+                          color: HanaColors.primaryOf(context),
                           fontFamily: 'Plus Jakarta Sans',
                         ),
                       ),
@@ -261,14 +210,14 @@ class ProfilePage extends StatelessWidget {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: HanaColors.surfaceContainerHigh,
+                          color: HanaColors.surfaceContainerHighOf(context),
                           borderRadius: BorderRadius.circular(9999),
                         ),
                         child: Text(
                           l10n.hrtDay(state.profile.hrtDayCount),
                           style: theme.textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: HanaColors.onSurfaceVariant
+                            color: HanaColors.onSurfaceVariantOf(context)
                                 .withAlpha((255 * 0.8).round()),
                           ),
                         ),
@@ -280,7 +229,7 @@ class ProfilePage extends StatelessWidget {
                     l10n.medications,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w800,
-                      color: HanaColors.primary,
+                      color: HanaColors.primaryOf(context),
                       fontFamily: 'Plus Jakarta Sans',
                     ),
                   ),
@@ -290,19 +239,19 @@ class ProfilePage extends StatelessWidget {
                     onTap: () => context.push('/drugs'),
                     child: Container(
                       padding: const EdgeInsets.all(20),
-                      decoration: _bentoDecoration(),
+                      decoration: _bentoDecoration(context),
                       child: Row(
                         children: [
                           Container(
                             width: 56,
                             height: 56,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: HanaColors.primaryContainer,
+                              color: HanaColors.primaryContainerOf(context),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.medication,
-                              color: HanaColors.primary,
+                              color: HanaColors.primaryOf(context),
                             ),
                           ),
                           const SizedBox(width: 16),
@@ -315,23 +264,23 @@ class ProfilePage extends StatelessWidget {
                                   style: theme.textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.w800,
                                     fontFamily: 'Plus Jakarta Sans',
-                                    color: HanaColors.onSurface,
+                                    color: HanaColors.onSurfaceOf(context),
                                   ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   l10n.drugCount(state.activeDrugCount),
                                   style: theme.textTheme.bodySmall?.copyWith(
-                                    color: HanaColors.onSurfaceVariant
+                                    color: HanaColors.onSurfaceVariantOf(context)
                                         .withAlpha(204),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          const Icon(
+                          Icon(
                             Icons.chevron_right,
-                            color: HanaColors.outlineVariant,
+                            color: HanaColors.outlineVariantOf(context),
                           ),
                         ],
                       ),
@@ -343,13 +292,13 @@ class ProfilePage extends StatelessWidget {
                       Expanded(
                         child: _SquareCard(
                           icon: Icons.inventory_2,
-                          iconColor: HanaColors.secondary,
-                          iconBgColor: HanaColors.secondaryContainer
+                          iconColor: HanaColors.secondaryOf(context),
+                          iconBgColor: HanaColors.secondaryContainerOf(context)
                               .withAlpha(128), // 50%
                           title: l10n.inventory,
                           subtitle: inventoryText,
-                          subtitleColor: HanaColors.secondary,
-                          bentoDecoration: _bentoDecoration(),
+                          subtitleColor: HanaColors.secondaryOf(context),
+                          bentoDecoration: _bentoDecoration(context),
                           onTap: () => context.push('/inventory'),
                         ),
                       ),
@@ -357,13 +306,13 @@ class ProfilePage extends StatelessWidget {
                       Expanded(
                         child: _SquareCard(
                           icon: Icons.view_quilt,
-                          iconColor: HanaColors.primary,
+                          iconColor: HanaColors.primaryOf(context),
                           iconBgColor:
-                              HanaColors.primaryContainer.withAlpha(128), // 50%
+                              HanaColors.primaryContainerOf(context).withAlpha(128), // 50%
                           title: l10n.medicationPlan,
                           subtitle: l10n.manageEditSchedules,
-                          subtitleColor: HanaColors.onSurfaceVariant,
-                          bentoDecoration: _bentoDecoration(),
+                          subtitleColor: HanaColors.onSurfaceVariantOf(context),
+                          bentoDecoration: _bentoDecoration(context),
                           onTap: () => context.push('/drugs'),
                         ),
                       ),
@@ -374,23 +323,23 @@ class ProfilePage extends StatelessWidget {
                     l10n.privacySecurity,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w800,
-                      color: HanaColors.primary,
+                      color: HanaColors.primaryOf(context),
                       fontFamily: 'Plus Jakarta Sans',
                     ),
                   ),
                   const SizedBox(height: 16),
                   Container(
-                    decoration: _bentoDecoration(),
+                    decoration: _bentoDecoration(context),
                     child: Column(
                       children: [
                         _ListTileItem(
                           icon: Icons.lock,
-                          iconColor: HanaColors.primary,
+                          iconColor: HanaColors.primaryOf(context),
                           title: l10n.appLock,
                           trailing: Switch(
                             value: state.settings.appLockEnabled,
-                            activeThumbColor: HanaColors.primary,
-                            activeTrackColor: HanaColors.primaryContainer,
+                            activeThumbColor: HanaColors.primaryOf(context),
+                            activeTrackColor: HanaColors.primaryContainerOf(context),
                             onChanged: (enabled) {
                               context
                                   .read<SettingsBloc>()
@@ -398,10 +347,10 @@ class ProfilePage extends StatelessWidget {
                             },
                           ),
                         ),
-                        _bentoSeparator(),
+                        _bentoSeparator(context),
                         _ListTileItem(
                           icon: Icons.visibility_off,
-                          iconColor: HanaColors.primary,
+                          iconColor: HanaColors.primaryOf(context),
                           title: l10n.privacyMode,
                           subtitle: state.settings.privacyModeEnabled
                               ? l10n.privacyModeEnabled
@@ -415,20 +364,20 @@ class ProfilePage extends StatelessWidget {
                                 );
                           },
                         ),
-                        _bentoSeparator(),
+                        _bentoSeparator(context),
                         _ListTileItem(
                           icon: Icons.warning,
-                          iconColor: HanaColors.error,
+                          iconColor: HanaColors.errorOf(context),
                           title: l10n.wipeAllData,
-                          titleColor: HanaColors.error,
+                          titleColor: HanaColors.errorOf(context),
                           isChevron: true,
-                          chevronColor: HanaColors.error,
+                          chevronColor: HanaColors.errorOf(context),
                           onTap: () async {
                             final confirm = await showDialog<bool>(
                               context: context,
                               builder: (dialogContext) => AlertDialog(
                                 backgroundColor:
-                                    HanaColors.surfaceContainerLowest,
+                                    HanaColors.surfaceContainerLowestOf(context),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(24),
                                 ),
@@ -440,8 +389,8 @@ class ProfilePage extends StatelessWidget {
                                         Navigator.of(dialogContext).pop(false),
                                     child: Text(
                                       l10n.cancel,
-                                      style: const TextStyle(
-                                        color: HanaColors.onSurfaceVariant,
+                                      style: TextStyle(
+                                        color: HanaColors.onSurfaceVariantOf(context),
                                       ),
                                     ),
                                   ),
@@ -450,8 +399,8 @@ class ProfilePage extends StatelessWidget {
                                         Navigator.of(dialogContext).pop(true),
                                     child: Text(
                                       l10n.delete,
-                                      style: const TextStyle(
-                                        color: HanaColors.error,
+                                      style: TextStyle(
+                                        color: HanaColors.errorOf(context),
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -475,7 +424,7 @@ class ProfilePage extends StatelessWidget {
                     l10n.dataBackup,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w800,
-                      color: HanaColors.primary,
+                      color: HanaColors.primaryOf(context),
                       fontFamily: 'Plus Jakarta Sans',
                     ),
                   ),
@@ -484,7 +433,7 @@ class ProfilePage extends StatelessWidget {
                     icon: Icons.cloud_upload,
                     title: l10n.exportBackup,
                     trailingText: lastBackupText,
-                    decoration: _bentoDecoration(),
+                    decoration: _bentoDecoration(context),
                     onTap: () =>
                         context.read<SettingsBloc>().add(const ExportDataEvent()),
                   ),
@@ -493,38 +442,40 @@ class ProfilePage extends StatelessWidget {
                     icon: Icons.cloud_download,
                     title: l10n.importBackup,
                     isChevron: true,
-                    decoration: _bentoDecoration(),
-                    onTap: () =>
-                        _showFeaturePlannedSheet(context),
+                    decoration: _bentoDecoration(context),
+                    onTap: () => context
+                        .read<SettingsBloc>()
+                        .add(const ImportDataEvent()),
                   ),
                   const SizedBox(height: 12),
                   _ButtonRowItem(
                     icon: Icons.description,
                     title: l10n.generatePdf,
                     isChevron: true,
-                    decoration: _bentoDecoration(),
-                    onTap: () =>
-                        _showFeaturePlannedSheet(context),
+                    decoration: _bentoDecoration(context),
+                    onTap: () => context
+                        .read<SettingsBloc>()
+                        .add(const GeneratePdfEvent()),
                   ),
                   const SizedBox(height: 40),
                   Text(
                     l10n.about,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w800,
-                      color: HanaColors.primary,
+                      color: HanaColors.primaryOf(context),
                       fontFamily: 'Plus Jakarta Sans',
                     ),
                   ),
                   const SizedBox(height: 16),
                   Container(
-                    decoration: _bentoDecoration(),
+                    decoration: _bentoDecoration(context),
                     child: Column(
                       children: [
                         _ListTileItem(
                           title: l10n.version,
                           trailingText: 'v1.0.0',
                         ),
-                        _bentoSeparator(),
+                        _bentoSeparator(context),
                         _ListTileItem(
                           title: l10n.privacyPolicy,
                           isChevron: true,
@@ -533,7 +484,7 @@ class ProfilePage extends StatelessWidget {
                             mode: LaunchMode.externalApplication,
                           ),
                         ),
-                        _bentoSeparator(),
+                        _bentoSeparator(context),
                         _ListTileItem(
                           title: l10n.termsOfUse,
                           isChevron: true,
@@ -606,10 +557,10 @@ class _SquareCard extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w800,
                         fontFamily: 'Plus Jakarta Sans',
-                        color: HanaColors.onSurface,
+                        color: HanaColors.onSurfaceOf(context),
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -669,12 +620,12 @@ class _ListTileItem extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: (iconColor ?? HanaColors.primary).withAlpha(26), // 10%
+                  color: (iconColor ?? HanaColors.primaryOf(context)).withAlpha(26), // 10%
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   icon,
-                  color: iconColor ?? HanaColors.primary,
+                  color: iconColor ?? HanaColors.primaryOf(context),
                   size: 20,
                 ),
               ),
@@ -689,7 +640,7 @@ class _ListTileItem extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
-                      color: titleColor ?? HanaColors.onSurface,
+                      color: titleColor ?? HanaColors.onSurfaceOf(context),
                     ),
                   ),
                   if (subtitle != null) ...[
@@ -698,7 +649,7 @@ class _ListTileItem extends StatelessWidget {
                       subtitle!,
                       style: TextStyle(
                         fontSize: 12,
-                        color: HanaColors.onSurfaceVariant.withAlpha(179),
+                        color: HanaColors.onSurfaceVariantOf(context).withAlpha(179),
                       ),
                     ),
                   ],
@@ -710,14 +661,14 @@ class _ListTileItem extends StatelessWidget {
               Text(
                 trailingText!,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: HanaColors.onSurfaceVariant,
+                      color: HanaColors.onSurfaceVariantOf(context),
                     ),
               ),
             if (isChevron)
               Icon(
                 Icons.chevron_right,
                 size: 20,
-                color: chevronColor ?? HanaColors.outlineVariant,
+                color: chevronColor ?? HanaColors.outlineVariantOf(context),
               ),
           ],
         ),
@@ -758,19 +709,19 @@ class _ButtonRowItem extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: HanaColors.primaryContainer.withAlpha(77), // 30%
+                  color: HanaColors.primaryContainerOf(context).withAlpha(77), // 30%
                   shape: BoxShape.circle,
                 ),
-                child: Icon(icon, color: HanaColors.primary, size: 20),
+                child: Icon(icon, color: HanaColors.primaryOf(context), size: 20),
               ),
               const SizedBox(width: 16),
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
-                    color: HanaColors.onSurface,
+                    color: HanaColors.onSurfaceOf(context),
                   ),
                 ),
               ),
@@ -780,16 +731,16 @@ class _ButtonRowItem extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
-                    color: HanaColors.onSurfaceVariant.withAlpha(204),
+                    color: HanaColors.onSurfaceVariantOf(context).withAlpha(204),
                   ),
                 ),
                 const SizedBox(width: 8),
               ],
               if (isChevron)
-                const Icon(
+                Icon(
                   Icons.chevron_right,
                   size: 20,
-                  color: HanaColors.outlineVariant,
+                  color: HanaColors.outlineVariantOf(context),
                 ),
             ],
           ),

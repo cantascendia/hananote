@@ -294,5 +294,40 @@
   "darkModeComingSoon": "Dark Mode coming soon",
   "featureInDevelopment": "Under Development",
   "featureInDevelopmentDesc": "This feature is under development and will be available in the next release",
-  "closeAction": "Close"
+  "closeAction": "Close",
+
+  "onboardingWelcome": "Welcome to HanaNote",
+  "onboardingWelcomeSub": "Let's set up your profile",
+  "onboardingSetName": "What should we call you?",
+  "onboardingNameHint": "Enter your name",
+  "onboardingNameNote": "You can change this anytime in settings",
+  "onboardingSetHrtDate": "When did you start HRT?",
+  "onboardingSkipHrt": "Haven't started yet, skip",
+  "onboardingAddDrug": "Add your first medication",
+  "onboardingDrugOptional": "I'll add later",
+  "onboardingComplete": "All set!",
+  "onboardingNext": "Next",
+  "onboardingDone": "Get Started",
+
+  "importInProgress": "Importing...",
+  "importSuccess": "Import successful",
+  "importFailed": "Import failed",
+  "importedCount": "{count} items imported",
+  "@importedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "pdfGenerating": "Generating report...",
+  "pdfSuccess": "Report generated",
+  "pdfFailed": "Failed to generate report",
+  "pdfTitle": "HanaNote Health Report",
+  "pdfMedSection": "Medication Plan",
+  "pdfBloodSection": "Blood Test Records",
+  "pdfMeasureSection": "Body Measurements",
+  "pdfJournalSection": "Mood Diary",
+  "pdfNoData": "No data"
 }

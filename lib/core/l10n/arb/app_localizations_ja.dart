@@ -703,4 +703,81 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get featureInDevelopmentDesc => 'この機能は開発中です。次のバージョンで利用可能になります';
+
+  @override
+  String get onboardingWelcome => 'HanaNote へようこそ';
+
+  @override
+  String get onboardingWelcomeSub => 'プロフィールを設定しましょう';
+
+  @override
+  String get onboardingSetName => 'あなたの呼び名は？';
+
+  @override
+  String get onboardingNameHint => 'ニックネームを入力';
+
+  @override
+  String get onboardingNameNote => '設定でいつでも変更できます';
+
+  @override
+  String get onboardingSetHrtDate => 'HRTはいつ始めましたか？';
+
+  @override
+  String get onboardingSkipHrt => 'まだ始めていません、スキップ';
+
+  @override
+  String get onboardingAddDrug => '最初のお薬を追加';
+
+  @override
+  String get onboardingDrugOptional => 'あとで追加する';
+
+  @override
+  String get onboardingComplete => '設定完了！';
+
+  @override
+  String get onboardingNext => '次へ';
+
+  @override
+  String get onboardingDone => 'はじめる';
+
+  @override
+  String get importInProgress => 'インポート中...';
+
+  @override
+  String get importSuccess => 'インポート成功';
+
+  @override
+  String get importFailed => 'インポート失敗';
+
+  @override
+  String importedCount(int count) {
+    return '$count 件インポートしました';
+  }
+
+  @override
+  String get pdfGenerating => 'レポート生成中...';
+
+  @override
+  String get pdfSuccess => 'レポート生成完了';
+
+  @override
+  String get pdfFailed => 'レポート生成失敗';
+
+  @override
+  String get pdfTitle => 'HanaNote ヘルスレポート';
+
+  @override
+  String get pdfMedSection => '服薬プラン';
+
+  @override
+  String get pdfBloodSection => '血液検査記録';
+
+  @override
+  String get pdfMeasureSection => 'ボディ測定';
+
+  @override
+  String get pdfJournalSection => '気持ち日記';
+
+  @override
+  String get pdfNoData => 'データなし';
 }

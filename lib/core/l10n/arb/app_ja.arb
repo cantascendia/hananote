@@ -294,5 +294,40 @@
   "darkModeComingSoon": "ダークモードは近日公開",
   "featureInDevelopment": "開発中",
   "featureInDevelopmentDesc": "この機能は開発中です。次のバージョンで利用可能になります",
-  "closeAction": "閉じる"
+  "closeAction": "閉じる",
+
+  "onboardingWelcome": "HanaNote へようこそ",
+  "onboardingWelcomeSub": "プロフィールを設定しましょう",
+  "onboardingSetName": "あなたの呼び名は？",
+  "onboardingNameHint": "ニックネームを入力",
+  "onboardingNameNote": "設定でいつでも変更できます",
+  "onboardingSetHrtDate": "HRTはいつ始めましたか？",
+  "onboardingSkipHrt": "まだ始めていません、スキップ",
+  "onboardingAddDrug": "最初のお薬を追加",
+  "onboardingDrugOptional": "あとで追加する",
+  "onboardingComplete": "設定完了！",
+  "onboardingNext": "次へ",
+  "onboardingDone": "はじめる",
+
+  "importInProgress": "インポート中...",
+  "importSuccess": "インポート成功",
+  "importFailed": "インポート失敗",
+  "importedCount": "{count} 件インポートしました",
+  "@importedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "pdfGenerating": "レポート生成中...",
+  "pdfSuccess": "レポート生成完了",
+  "pdfFailed": "レポート生成失敗",
+  "pdfTitle": "HanaNote ヘルスレポート",
+  "pdfMedSection": "服薬プラン",
+  "pdfBloodSection": "血液検査記録",
+  "pdfMeasureSection": "ボディ測定",
+  "pdfJournalSection": "気持ち日記",
+  "pdfNoData": "データなし"
 }

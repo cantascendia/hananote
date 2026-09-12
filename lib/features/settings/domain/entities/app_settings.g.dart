@@ -14,6 +14,7 @@ _$AppSettingsImpl _$$AppSettingsImplFromJson(Map<String, dynamic> json) =>
       lastBackupDate: json['lastBackupDate'] == null
           ? null
           : DateTime.parse(json['lastBackupDate'] as String),
+      onboardingComplete: json['onboardingComplete'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
@@ -22,4 +23,5 @@ Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
       'privacyModeEnabled': instance.privacyModeEnabled,
       'blurOverlayEnabled': instance.blurOverlayEnabled,
       'lastBackupDate': instance.lastBackupDate?.toIso8601String(),
+      'onboardingComplete': instance.onboardingComplete,
     };
