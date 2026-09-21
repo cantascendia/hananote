@@ -39,4 +39,16 @@ void main() {
       expect(normalized.hrtStartDate, profile.hrtStartDate);
     });
   });
+
+  test('test: unknown HRT date has zero derived days without a fallback date',
+      () {
+    final profile = UserProfile.withCalculatedHrtDayCount(
+      displayName: '',
+      today: DateTime(2026, 9, 22),
+    );
+
+    expect(profile.hrtStartDate, isNull);
+    expect(profile.hrtDayCount, 0);
+    expect(profile.normalized(today: DateTime(2027)).hrtDayCount, 0);
+  });
 }

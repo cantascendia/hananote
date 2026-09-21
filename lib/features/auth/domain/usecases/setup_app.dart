@@ -51,6 +51,16 @@ class SetupApp {
       );
     }
 
+    final protectedDataResult = await _repository.hasProtectedSetupData();
+    if (protectedDataResult.isLeft()) {
+      return protectedDataResult.fold(left, (_) => right(null));
+    }
+    if (protectedDataResult.getOrElse((_) => true)) {
+      return left(
+        const Failure.auth(message: 'existing_credentials_require_unlock'),
+      );
+    }
+
     final setupResult = await _repository.setupPassword(params.pin);
     if (setupResult.isLeft()) {
       return setupResult;
@@ -67,10 +77,15 @@ class SetupApp {
       ),
     );
     if (saveResult.isLeft()) {
+      await _repository.discardIncompleteSetup();
       return saveResult;
     }
 
-    return _repository.openDatabase();
+    final openResult = await _repository.openDatabase();
+    if (openResult.isLeft()) {
+      await _repository.discardIncompleteSetup();
+    }
+    return openResult;
   }
 
   bool _isValidPin(String pin) => RegExp(r'^\d{6}$').hasMatch(pin);

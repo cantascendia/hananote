@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HanaNote · Stacked wordmark lockup (含 tagline 数码纸笺) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" width="240" height="200">
+  <defs>
+    <linearGradient id="petalS" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE8EE"/>
+      <stop offset="100%" stop-color="#FFB7C5"/>
+    </linearGradient>
+    <radialGradient id="sealS" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#FBF1DC"/>
+      <stop offset="50%" stop-color="#E8C887"/>
+      <stop offset="100%" stop-color="#C99A4D"/>
+    </radialGradient>
+  </defs>
+  <!-- Petal Stamp glyph (top center) -->
+  <g transform="translate(120,52) scale(0.7)">
+    <path d="M0,-44 C12,-40 16,-22 0,-12 C-16,-22 -12,-40 0,-44 Z" fill="url(#petalS)" stroke="#C99A4D" stroke-width="0.8" stroke-opacity="0.55"/>
+    <g transform="rotate(72)"><path d="M0,-44 C12,-40 16,-22 0,-12 C-16,-22 -12,-40 0,-44 Z" fill="url(#petalS)" stroke="#C99A4D" stroke-width="0.8" stroke-opacity="0.55"/></g>
+    <g transform="rotate(144)"><path d="M0,-44 C12,-40 16,-22 0,-12 C-16,-22 -12,-40 0,-44 Z" fill="url(#petalS)" stroke="#C99A4D" stroke-width="0.8" stroke-opacity="0.55"/></g>
+    <g transform="rotate(216)"><path d="M0,-44 C12,-40 16,-22 0,-12 C-16,-22 -12,-40 0,-44 Z" fill="url(#petalS)" stroke="#C99A4D" stroke-width="0.8" stroke-opacity="0.55"/></g>
+    <g transform="rotate(288)"><path d="M0,-44 C12,-40 16,-22 0,-12 C-16,-22 -12,-40 0,-44 Z" fill="url(#petalS)" stroke="#C99A4D" stroke-width="0.8" stroke-opacity="0.55"/></g>
+    <circle cx="0" cy="0" r="13" fill="url(#sealS)" stroke="#8E6A2B" stroke-width="0.6"/>
+    <text x="0" y="4.5" text-anchor="middle" font-family="'Plus Jakarta Sans', 'PingFang SC', sans-serif" font-weight="800" font-size="13" fill="#2A1820">花</text>
+  </g>
+  <!-- 花笺 wordmark -->
+  <text x="120" y="135" text-anchor="middle" font-family="'Plus Jakarta Sans', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', sans-serif" font-weight="800" font-size="36" fill="#864E5A" letter-spacing="0.04em">花笺 HanaNote</text>
+  <!-- gold rule -->
+  <line x1="80" y1="156" x2="160" y2="156" stroke="#C99A4D" stroke-width="0.8" stroke-opacity="0.6"/>
+  <!-- tagline -->
+  <text x="120" y="178" text-anchor="middle" font-family="'Be Vietnam Pro', 'PingFang SC', sans-serif" font-weight="600" font-size="11" fill="#8E6A2B" letter-spacing="0.32em">数 码 纸 笺</text>
+</svg>

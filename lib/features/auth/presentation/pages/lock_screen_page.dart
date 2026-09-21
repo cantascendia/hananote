@@ -1,12 +1,25 @@
+// HanaNote v2 — Lock screen page (HoYo redesign).
+// Cream background + Petal Stamp SVG + HoyoEyebrow + headline +
+// 6-dot indicator (gold-light when filled) + HoyoPinPad.
+// Per CONSTITUTION §1 + privacy policy: this is the gate to all
+// encrypted local data.
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hananote/app/theme/hana_colors.dart';
+import 'package:hananote/app/theme/hana_colors_v2.dart';
+import 'package:hananote/app/theme/hana_typography.dart';
 import 'package:hananote/core/l10n/arb/app_localizations.dart';
+import 'package:hananote/core/widgets/hoyo/hoyo_eyebrow.dart';
+import 'package:hananote/core/widgets/hoyo/hoyo_pin_pad.dart';
 import 'package:hananote/features/auth/presentation/bloc/auth_cubit.dart';
+import 'package:hananote/features/auth/presentation/auth_error_message.dart';
 import 'package:hananote/features/auth/presentation/bloc/auth_state.dart';
 
-/// Lock screen with a custom PIN keypad.
+/// Lock screen with a custom HoYo-styled PIN keypad.
 class LockScreenPage extends StatefulWidget {
   /// Creates [LockScreenPage].
   const LockScreenPage({
@@ -14,7 +27,7 @@ class LockScreenPage extends StatefulWidget {
     super.key,
   });
 
-  /// Whether the biometric button should be shown.
+  /// Whether the biometric button should be enabled.
   final bool biometricAvailable;
 
   @override
@@ -27,18 +40,26 @@ class _LockScreenPageState extends State<LockScreenPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final dots = List.generate(
       6,
       (index) => AnimatedContainer(
         duration: const Duration(milliseconds: 160),
-        width: 14,
-        height: 14,
+        width: 12,
+        height: 12,
         decoration: BoxDecoration(
           color: index < _pin.length
-              ? HanaColors.primary
-              : HanaColors.outlineVariant,
-          borderRadius: BorderRadius.circular(999),
+              ? HanaColorsV2.goldLight
+              : HanaColors.outlineVariantOf(context),
+          shape: BoxShape.circle,
+          boxShadow: index < _pin.length
+              ? const [
+                  BoxShadow(
+                    color: Color(0x66E8C887),
+                    blurRadius: 8,
+                  ),
+                ]
+              : null,
         ),
       ),
     );
@@ -46,87 +67,88 @@ class _LockScreenPageState extends State<LockScreenPage> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthError) {
-          showError(state.message);
+          showError(authErrorMessage(l10n, state.message));
         }
       },
       child: Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                HanaColors.background,
-                HanaColors.surfaceContainerLow,
-              ],
-            ),
-          ),
-          child: SafeArea(
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 420),
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 92,
-                        height: 92,
-                        decoration: BoxDecoration(
-                          color: HanaColors.surfaceContainerLowest,
-                          borderRadius: BorderRadius.circular(30),
+        backgroundColor: HanaColors.backgroundOf(context),
+        body: SafeArea(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 360),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 24),
+                    // Petal Stamp logo
+                    SvgPicture.asset(
+                      'assets/logo/hana_petal_stamp.svg',
+                      width: 72,
+                      height: 72,
+                    ),
+                    const SizedBox(height: 18),
+                    const HoyoEyebrow('Verify identity', center: true),
+                    const SizedBox(height: 10),
+                    Text(
+                      l10n.welcomeBack,
+                      textAlign: TextAlign.center,
+                      style: HanaTypography.headlineMd.copyWith(
+                        color: HanaColors.primaryOf(context),
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: -0.24,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Text(
+                        // The single place we use 您 — privacy is solemn.
+                        '为了保护您的健康隐私，请验证身份',
+                        textAlign: TextAlign.center,
+                        style: HanaTypography.labelMd.copyWith(
+                          color: HanaColorsV2.goldDeep,
+                          letterSpacing: 0.66,
+                          fontWeight: FontWeight.w600,
                         ),
-                        child: const Icon(
-                          Icons.shield_moon_rounded,
-                          size: 44,
-                          color: HanaColors.primary,
-                        ),
                       ),
-                      const SizedBox(height: 28),
-                      Text(
-                        AppLocalizations.of(context)!.welcomeBack,
-                        style: theme.textTheme.headlineMedium?.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: HanaColors.onSurface,
-                            ) ??
-                            const TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.w700,
-                              color: HanaColors.onSurface,
-                            ),
-                      ),
-                      const SizedBox(height: 12),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: dots
-                            .expand((dot) => [dot, const SizedBox(width: 10)])
-                            .toList()
-                          ..removeLast(),
-                      ),
-                      const SizedBox(height: 14),
-                      AnimatedOpacity(
+                    ),
+                    const SizedBox(height: 28),
+                    // 6-dot indicator
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: dots
+                          .expand((dot) => [dot, const SizedBox(width: 12)])
+                          .toList()
+                        ..removeLast(),
+                    ),
+                    const SizedBox(height: 12),
+                    // Error message slot (always-on layout)
+                    SizedBox(
+                      height: 22,
+                      child: AnimatedOpacity(
                         opacity: _errorMessage == null ? 0 : 1,
                         duration: const Duration(milliseconds: 180),
                         child: Text(
                           _errorMessage ?? '',
-                          style: const TextStyle(
-                            color: HanaColors.error,
-                            fontWeight: FontWeight.w600,
+                          style: HanaTypography.labelMd.copyWith(
+                            color: HanaColors.tertiaryOf(context),
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 28),
-                      _PinKeypad(
-                        biometricAvailable: widget.biometricAvailable,
-                        onNumberTap: _handleNumberTap,
-                        onBackspace: _handleBackspace,
-                        onConfirm: _handleConfirm,
-                        onBiometric: () =>
-                            context.read<AuthCubit>().unlockBiometric(),
-                      ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 16),
+                    HoyoPinPad(
+                      onDigit: _handleDigit,
+                      onBackspace: _handleBackspace,
+                      onBiometric: widget.biometricAvailable
+                          ? () => context.read<AuthCubit>().unlockBiometric()
+                          : null,
+                    ),
+                    const SizedBox(height: 16),
+                  ],
                 ),
               ),
             ),
@@ -147,10 +169,10 @@ class _LockScreenPageState extends State<LockScreenPage> {
     setState(() => _errorMessage = null);
   }
 
-  void _handleNumberTap(String digit) {
+  void _handleDigit(int digit) {
     if (_pin.length >= 6) return;
     clearError();
-    final newPin = _pin + digit;
+    final newPin = _pin + digit.toString();
     setState(() => _pin = newPin);
     if (newPin.length == 6) {
       Future.microtask(_handleConfirm);
@@ -171,116 +193,5 @@ class _LockScreenPageState extends State<LockScreenPage> {
     final pin = _pin;
     setState(() => _pin = '');
     context.read<AuthCubit>().unlock(pin);
-  }
-}
-
-class _PinKeypad extends StatelessWidget {
-  const _PinKeypad({
-    required this.biometricAvailable,
-    required this.onNumberTap,
-    required this.onBackspace,
-    required this.onConfirm,
-    required this.onBiometric,
-  });
-
-  final bool biometricAvailable;
-  final ValueChanged<String> onNumberTap;
-  final VoidCallback onBackspace;
-  final VoidCallback onConfirm;
-  final VoidCallback onBiometric;
-
-  @override
-  Widget build(BuildContext context) {
-    final buttons = <String>[
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-    ];
-    if (biometricAvailable) {
-      buttons.add('bio');
-    } else {
-      buttons.add('');
-    }
-    buttons
-      ..add('0')
-      ..add('back');
-
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: buttons.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        childAspectRatio: 1.15,
-      ),
-      itemBuilder: (context, index) {
-        final token = buttons[index];
-        if (token.isEmpty) {
-          return const SizedBox.shrink();
-        }
-        if (token == 'bio') {
-          return _KeyButton(
-            onTap: onBiometric,
-            child: const Icon(
-              Icons.fingerprint_rounded,
-              size: 28,
-              color: HanaColors.primary,
-            ),
-          );
-        }
-        if (token == 'back') {
-          return _KeyButton(
-            onTap: onBackspace,
-            child: const Icon(
-              Icons.backspace_outlined,
-              size: 24,
-              color: HanaColors.onSurfaceVariant,
-            ),
-          );
-        }
-        return _KeyButton(
-          onTap: () => onNumberTap(token),
-          child: Text(
-            token,
-            style: const TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.w600,
-              color: HanaColors.onSurface,
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _KeyButton extends StatelessWidget {
-  const _KeyButton({
-    required this.child,
-    required this.onTap,
-  });
-
-  final Widget child;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: HanaColors.surfaceContainerLowest,
-      borderRadius: BorderRadius.circular(24),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(24),
-        onTap: onTap,
-        child: Center(child: child),
-      ),
-    );
   }
 }

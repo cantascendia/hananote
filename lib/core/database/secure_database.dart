@@ -19,7 +19,7 @@ class SecureDatabase {
   /// Constructor for [SecureDatabase].
   SecureDatabase(this._keyManager);
 
-  static const int _databaseVersion = 3;
+  static const int _databaseVersion = 4;
 
   final KeyManager _keyManager;
   Database? _db;
@@ -93,6 +93,13 @@ class SecureDatabase {
     } catch (e) {
       return left(DatabaseFailure(message: e.toString()));
     }
+  }
+
+  /// Runs [action] inside one SQL transaction on the open database.
+  ///
+  /// Any exception thrown by [action] rolls back all writes in the transaction.
+  Future<T> runInTransaction<T>(Future<T> Function(Transaction txn) action) {
+    return database.transaction<T>(action);
   }
 
   /// Runs database migrations explicitly against the current open connection.
@@ -171,6 +178,17 @@ class SecureDatabase {
       }
 
       for (final statement in PhotoTables.createIndices) {
+        await db.execute(statement);
+      }
+    }
+
+    // v4 — R52-C-1 cloud sync prototype.
+    // Adds dirty / synced_at / is_deleted / updated_at columns to the
+    // three user-mutable medication tables, plus partial indices on
+    // `dirty=1` for the SyncQueue takeDirty() query path.
+    // Per SPEC-cloud-sync.md Appendix E.
+    if (oldVersion < 4 && newVersion >= 4) {
+      for (final statement in MedicationTables.v4Migration) {
         await db.execute(statement);
       }
     }

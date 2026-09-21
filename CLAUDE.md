@@ -6,12 +6,51 @@
 
 ## 完整手册
 
-CTO 操作手册（工作流程、输出格式、配置规范、决策框架、快捷命令）见：
-`C:/projects/ai-playbook/playbook/handbook.md`
+CTO 操作手册见 ai-playbook 仓库的 `playbook/handbook.md`。
+
+**Claude 在本机查找手册的顺序**（用 Read 工具按序尝试，第一个成功即用）：
+
+1. `~/.claude/playbook/handbook.md` — 推荐（symlink 或 clone 到此）
+2. `~/ai-playbook/playbook/handbook.md`
+3. `~/projects/ai-playbook/playbook/handbook.md`
+4. `C:/projects/ai-playbook/playbook/handbook.md`（Windows 常用）
+5. 下方 LINK 区块中的本机缓存路径
+
+<!-- AI-PLAYBOOK-LINK:START — 由 /cto-link 自动维护，勿手改 -->
+<!-- 本机已发现路径：C:/projects/ai-playbook/playbook/handbook.md -->
+<!-- AI-PLAYBOOK-LINK:END -->
+
+> ⚠️ 如以上全部读取失败：运行 `/cto-link [可选绝对路径]`，命令会探测并写入本机路径。
+> 详见手册 §29.8 多机器配置。
 
 ## 项目记忆
 
 `docs/ai-cto/` 目录下的文件是 CTO 的项目状态记忆，新会话时优先读取恢复上下文。
+
+**按需载入指引**（避免一次塞进全部文件）：
+
+| 任务类型 | 必读文件 |
+|---|---|
+| 任何会话启动 | `STATUS.md` + `CONSTITUTION.md`（SessionStart hook 已自动 head 150 行） |
+| 架构 / 技术决策 | + `ARCHITECTURE.md` + `DECISIONS.md`（按 DEC-NN 跳读） |
+| 产品 / 竞品决策 | + `PRODUCT-VISION.md` + `VISION.md` + `COMPETITORS.md` |
+| Spec-driven 开发（forbidden 路径） | + `SPEC-*.md`（如 `SPEC-cloud-sync.md`） |
+| Harness / agent 配置变更 | + `HARNESS-CHANGELOG.md` + `evals/golden-trajectories/*.yaml` |
+| Cross-review 后续 | + `REVIEW-QUEUE.md`（如存在）+ `REVIEW-BACKLOG.md` |
+
+## Slash 命令 vs Sub-agent 选择
+
+`.claude/commands/cto-*` 与 `.claude/agents/*-auditor` 部分功能重叠，但定位不同：
+
+| 场景 | 选 | 理由 |
+|---|---|---|
+| 单线 ad-hoc，结果立刻要 | `/cto-xxx` slash | 主线执行，context 共享 |
+| 主线 context 不能被占用 | `xxx-auditor` agent | 隔离 context，主线可继续 |
+| 需要并行多条任务 | sub-agent ×N | Agent 工具本身支持并行 |
+| 跨模型审视（Claude → Codex） | `/cto-cross-review` 或 codex-bridge skill | Stop hook 自动触发，§48 |
+| 修改 settings.json / hook | `update-config` skill 或直接 Edit | hook 是 harness 执行，非 LLM |
+
+举例：`/cto-harness-audit`（slash，本次会话同步出报告）vs `harness-auditor` agent（sub-agent，可并行跑多个项目；月度审计建议用 agent + 后台模式）。
 
 ## 铁律
 

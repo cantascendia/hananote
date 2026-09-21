@@ -1,0 +1,59 @@
+# HanaNote v2 — Supabase project config.
+# Run `supabase start` for local dev; `supabase db push` to deploy
+# migrations to staging/production.
+
+project_id = "hananote"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+extra_search_path = ["public"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[auth]
+enabled = true
+site_url = "https://hrtyaku.com"
+additional_redirect_urls = [
+  "io.hananote.app://callback",
+  "http://localhost:3000",
+]
+jwt_expiry = 3600
+enable_signup = true
+enable_anonymous_sign_ins = false
+enable_manual_linking = false
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = true
+
+[auth.external.apple]
+enabled = true
+client_id = "env(SUPABASE_AUTH_APPLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_APPLE_SECRET)"
+
+[auth.external.google]
+enabled = true
+client_id = "env(SUPABASE_AUTH_GOOGLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_GOOGLE_SECRET)"
+
+[storage]
+enabled = true
+file_size_limit = "10MiB"
+
+[edge_runtime]
+enabled = true
+inspector_port = 8083
+
+[experimental]
+orioledb_version = ""
+s3_host = ""
+s3_region = ""
+s3_access_key = ""
+s3_secret_key = ""

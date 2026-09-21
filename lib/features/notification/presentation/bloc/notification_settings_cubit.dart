@@ -15,7 +15,7 @@ class NotificationSettingsCubit extends Cubit<NotificationSettingsState> {
     emit(const NotificationSettingsState.loading());
     try {
       final drugsResult = await _repository.getAllDrugs();
-      
+
       await drugsResult.fold(
         (failure) async {
           emit(NotificationSettingsState.error(message: failure.message));
@@ -23,7 +23,7 @@ class NotificationSettingsCubit extends Cubit<NotificationSettingsState> {
         (allDrugs) async {
           final activeDrugs = allDrugs.where((d) => d.isActive).toList();
           final schedules = <String, MedicationSchedule>{};
-          
+
           for (final drug in activeDrugs) {
             final schedResult = await _repository.getScheduleForDrug(drug.id);
             schedResult.fold(
@@ -35,11 +35,13 @@ class NotificationSettingsCubit extends Cubit<NotificationSettingsState> {
               },
             );
           }
-          
-          emit(NotificationSettingsState.loaded(
-            drugs: activeDrugs,
-            schedules: schedules,
-          ),);
+
+          emit(
+            NotificationSettingsState.loaded(
+              drugs: activeDrugs,
+              schedules: schedules,
+            ),
+          );
         },
       );
     } catch (e) {

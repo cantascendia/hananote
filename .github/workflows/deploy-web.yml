@@ -1,0 +1,35 @@
+name: Deploy Web
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  deploy-web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.4'
+          cache: true
+
+      - run: flutter pub get
+
+      - name: Build Web
+        run: flutter build web --release
+
+      - name: Copy WASM assets
+        run: |
+          cp web/sqlite3.wasm build/web/
+          cp web/sqflite_sw.js build/web/
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.R2_ACCOUNT_ID }}
+          command: pages deploy build/web --project-name=hananote-web --branch=main

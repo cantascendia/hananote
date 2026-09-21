@@ -3,12 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hananote/app/di/injection.dart';
 import 'package:hananote/app/theme/hana_colors.dart';
+import 'package:hananote/core/auth/supabase_client.dart';
 import 'package:hananote/core/l10n/arb/app_localizations.dart';
+import 'package:hananote/core/widgets/hoyo/hoyo_pill_button.dart';
 import 'package:hananote/features/medication/domain/entities/drug.dart';
 import 'package:hananote/features/medication/domain/entities/enums.dart';
 import 'package:hananote/features/medication/domain/repositories/medication_repository.dart';
 import 'package:hananote/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:hananote/features/settings/presentation/bloc/settings_event.dart';
+import 'package:hananote/features/settings/presentation/bloc/settings_state.dart';
 import 'package:uuid/uuid.dart';
 
 /// Three-step onboarding wizard shown on first launch.
@@ -23,6 +26,8 @@ class OnboardingPage extends StatefulWidget {
 class _OnboardingPageState extends State<OnboardingPage> {
   final _pageController = PageController();
   int _currentPage = 0;
+  bool _saving = false;
+  bool _drugSaved = false;
 
   final _nameController = TextEditingController();
   DateTime? _hrtStartDate;
@@ -47,19 +52,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
   }
 
   Future<void> _completeOnboarding() async {
+    if (_saving) return;
     final bloc = context.read<SettingsBloc>();
-
-    final name = _nameController.text.trim();
-    if (name.isNotEmpty) {
-      bloc.add(UpdateDisplayName(name: name));
+    if (bloc.state is! SettingsLoaded) {
+      bloc.add(const LoadSettingsDashboard());
+      _showSaveError();
+      return;
     }
-
-    if (_hrtStartDate != null) {
-      bloc.add(UpdateHrtStartDate(date: _hrtStartDate!));
-    }
+    setState(() => _saving = true);
 
     final drugName = _drugNameController.text.trim();
-    if (drugName.isNotEmpty) {
+    if (drugName.isNotEmpty && !_drugSaved) {
       final drug = Drug(
         id: const Uuid().v4(),
         name: drugName,
@@ -70,14 +73,39 @@ class _OnboardingPageState extends State<OnboardingPage> {
         isActive: true,
         createdAt: DateTime.now(),
       );
-      await getIt<MedicationRepository>().addDrug(drug);
+      final result = await getIt<MedicationRepository>().addDrug(drug);
+      if (!mounted) return;
+      if (result.isLeft()) {
+        setState(() => _saving = false);
+        _showSaveError();
+        return;
+      }
+      _drugSaved = true;
     }
-
-    bloc.add(const MarkOnboardingComplete());
-
-    if (mounted) {
-      context.go('/today');
+    if (!mounted) return;
+    final completed = bloc.stream.firstWhere((state) =>
+        state is SettingsError ||
+        state is SettingsLoaded && state.settings.hasCompletedOnboarding);
+    final name = _nameController.text.trim();
+    bloc.add(MarkOnboardingComplete(
+      displayName: name.isEmpty ? null : name,
+      hrtStartDate: _hrtStartDate,
+    ));
+    final result = await completed;
+    if (!mounted) return;
+    setState(() => _saving = false);
+    if (result is SettingsError) {
+      _showSaveError();
+    } else {
+      context.go(HanaSupabase.isConfigured ? '/auth' : '/today');
     }
+  }
+
+  void _showSaveError() {
+    final l10n = AppLocalizations.of(context)!;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(l10n.saveFailed(l10n.retry))),
+    );
   }
 
   @override
@@ -170,38 +198,22 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   Widget _buildButtons(AppLocalizations l10n) {
     if (_currentPage == 0) {
-      return SizedBox(
-        width: double.infinity,
-        height: 52,
-        child: FilledButton(
-          onPressed: () => _goToPage(1),
-          style: FilledButton.styleFrom(
-            backgroundColor: HanaColors.primaryOf(context),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-          ),
-          child: Text(l10n.onboardingNext),
-        ),
+      return HoyoPillButton(
+        label: l10n.onboardingNext,
+        icon: Icons.arrow_forward,
+        expand: true,
+        onPressed: () => _goToPage(1),
       );
     }
 
     if (_currentPage == 1) {
       return Column(
         children: [
-          SizedBox(
-            width: double.infinity,
-            height: 52,
-            child: FilledButton(
-              onPressed: () => _goToPage(2),
-              style: FilledButton.styleFrom(
-                backgroundColor: HanaColors.primaryOf(context),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-              ),
-              child: Text(l10n.onboardingNext),
-            ),
+          HoyoPillButton(
+            label: l10n.onboardingNext,
+            icon: Icons.arrow_forward,
+            expand: true,
+            onPressed: () => _goToPage(2),
           ),
           const SizedBox(height: 8),
           TextButton(
@@ -219,23 +231,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
     return Column(
       children: [
-        SizedBox(
-          width: double.infinity,
-          height: 52,
-          child: FilledButton(
-            onPressed: _completeOnboarding,
-            style: FilledButton.styleFrom(
-              backgroundColor: HanaColors.primaryOf(context),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-            child: Text(l10n.onboardingDone),
-          ),
+        // Final CTA — gold variant marks the journey's threshold.
+        HoyoPillButton(
+          label: l10n.onboardingDone,
+          icon: Icons.auto_awesome,
+          variant: HoyoPillVariant.gold,
+          expand: true,
+          onPressed: _saving ? null : _completeOnboarding,
         ),
         const SizedBox(height: 8),
         TextButton(
-          onPressed: _completeOnboarding,
+          onPressed: _saving ? null : _completeOnboarding,
           child: Text(
             l10n.onboardingDrugOptional,
             style: TextStyle(

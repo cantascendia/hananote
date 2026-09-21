@@ -101,7 +101,8 @@ class _ScheduleEditorPageState extends State<ScheduleEditorPage> {
                               ),
                               if (state.administrationRoute != null)
                                 Text(
-                                  state.administrationRoute!.localizedName(l10n),
+                                  state.administrationRoute!
+                                      .localizedName(l10n),
                                   style: theme.textTheme.bodySmall?.copyWith(
                                     color: theme.colorScheme.onSurfaceVariant,
                                   ),
@@ -132,9 +133,7 @@ class _ScheduleEditorPageState extends State<ScheduleEditorPage> {
                 onChanged: (val) {
                   final parsed = double.tryParse(val);
                   if (parsed != null) {
-                    context
-                        .read<ScheduleEditorCubit>()
-                        .setDosageAmount(parsed);
+                    context.read<ScheduleEditorCubit>().setDosageAmount(parsed);
                   }
                 },
               ),

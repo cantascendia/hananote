@@ -127,7 +127,9 @@ class GetTimelineEvents {
     return profileResult.fold(
       (_) => <TimelineEvent>[],
       (profile) {
-        final startDate = _normalizeDate(profile.hrtStartDate);
+        final hrtStartDate = profile.hrtStartDate;
+        if (hrtStartDate == null) return <TimelineEvent>[];
+        final startDate = _normalizeDate(hrtStartDate);
         final endDate = _normalizeDate(to ?? DateTime.now());
         if (endDate.isBefore(startDate)) {
           return <TimelineEvent>[];

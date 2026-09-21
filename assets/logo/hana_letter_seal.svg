@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HanaNote · Letter Seal alternate (信物折角 + 金色封蜡) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="paper" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFCF6"/>
+      <stop offset="100%" stop-color="#FBF6EE"/>
+    </linearGradient>
+    <linearGradient id="paperFold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F4EDE5"/>
+      <stop offset="100%" stop-color="#EEE7DF"/>
+    </linearGradient>
+    <radialGradient id="wax" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#FFE8EE"/>
+      <stop offset="60%" stop-color="#C99A4D"/>
+      <stop offset="100%" stop-color="#8E6A2B"/>
+    </radialGradient>
+    <filter id="paperShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="1" result="b"/>
+      <feOffset dx="0" dy="2"/>
+    </filter>
+  </defs>
+  <!-- letter envelope body -->
+  <g filter="url(#paperShadow)">
+    <rect x="14" y="22" width="92" height="74" rx="10" fill="url(#paper)" stroke="#E8C887" stroke-width="0.6" stroke-opacity="0.7"/>
+  </g>
+  <!-- folded triangle flap -->
+  <path d="M14,32 L60,68 L106,32" fill="none" stroke="#E8C887" stroke-width="1.2" stroke-opacity="0.6"/>
+  <path d="M14,32 L60,68 L106,32 L106,32 L60,72 L14,32 Z" fill="url(#paperFold)" opacity="0.4"/>
+  <!-- gold wax seal -->
+  <g transform="translate(60,72)">
+    <circle cx="0" cy="0" r="14" fill="url(#wax)" stroke="#8E6A2B" stroke-width="0.8"/>
+    <!-- 5-petal sakura mark embossed -->
+    <g opacity="0.85">
+      <circle cx="0" cy="-7" r="3" fill="#FBF1DC"/>
+      <circle cx="6.7" cy="-2.2" r="3" fill="#FBF1DC"/>
+      <circle cx="4.1" cy="5.7" r="3" fill="#FBF1DC"/>
+      <circle cx="-4.1" cy="5.7" r="3" fill="#FBF1DC"/>
+      <circle cx="-6.7" cy="-2.2" r="3" fill="#FBF1DC"/>
+      <circle cx="0" cy="0" r="2.2" fill="#2A1820"/>
+    </g>
+  </g>
+</svg>

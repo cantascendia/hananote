@@ -18,6 +18,15 @@ class AppLocalizationsJa extends AppLocalizations {
   String get error => 'エラー';
 
   @override
+  String get reminderSyncFailed => 'リマインダーを更新できませんでした。もう一度お試しください。';
+
+  @override
+  String get authOperationFailed => '保護されたストレージにアクセスできませんでした。もう一度お試しください。';
+
+  @override
+  String get authIncorrectPin => 'PIN が正しくありません。もう一度お試しください。';
+
+  @override
   String get ok => 'OK';
 
   @override
@@ -264,10 +273,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get dataBackup => 'データバックアップ';
 
   @override
-  String get exportBackup => 'バックアップを書き出す';
+  String get exportBackup => '暗号化した記録を保存';
 
   @override
-  String get importBackup => 'バックアップを読み込む';
+  String get importBackup => '記録バックアップを取込';
 
   @override
   String get generatePdf => 'PDF を生成';
@@ -939,12 +948,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get reminderChannelDesc => '毎日の服薬リマインダー通知';
 
   @override
-  String get reminderNotifTitle => 'HanaNote 服薬リマインダー';
+  String get reminderNotifTitle => 'HanaNote';
 
   @override
-  String reminderNotifBody(String drugName, String dosage, String unit) {
-    return '$drugName $dosage$unit — お薬の時間です 💊';
-  }
+  String get reminderNotifBody => 'お知らせがあります';
 
   @override
   String get milestoneSubtitle => 'ここまで来たあなたは素晴らしい';
@@ -1039,7 +1046,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get privacyPolicyContent =>
-      'プライバシーポリシー\n\n最終更新日：2026年4月\n\nHanaNote（以下「本アプリ」）は、お客様のプライバシーの保護に努めています。本プライバシーポリシーは、お客様の情報の取り扱い方法について説明します。\n\n1. データの保存\n服薬記録、日記、身体測定、写真、血液検査結果を含むすべての個人健康データは、お客様のデバイスにローカルで保存されます。健康データを外部サーバーに送信することはありません。\n\n2. 暗号化\nお客様のデータは業界標準の暗号化で保護されています。写真はエンドツーエンドで暗号化され、お客様のみが閲覧できます。\n\n3. データの収集\n本アプリは、個人を特定できる情報を収集、共有、販売しません。分析トラッカーや広告SDKは使用していません。\n\n4. 権限\n本アプリは、カメラ（写真記録用）、生体認証センサー（アプリロック用）、通知システム（服薬リマインダー用）へのアクセスを要求する場合があります。これらの権限は記載された目的のみに使用されます。\n\n5. データのエクスポート\n内蔵のエクスポート機能を使用して、いつでもデータをエクスポートできます。データの完全な所有権はお客様にあります。\n\n6. データの削除\n設定の「すべてのデータを削除」オプションを使用して、すべてのデータを完全に削除できます。この操作は元に戻せません。\n\n7. 変更\n本プライバシーポリシーは随時更新される場合があります。本アプリの継続使用は、更新されたポリシーの承認とみなされます。\n\n8. お問い合わせ\n本プライバシーポリシーについてご質問がある場合は、公式チャネルからお問い合わせください。';
+      'プライバシーについて — Android v1.2.3\n\n更新：2026年9月\n\nHanaNote は健康記録を端末内の暗号化データベースに保存し、保存するプライベート写真も暗号化します。PIN でローカル暗号鍵を解除します。アプリを再起動した後は PIN が必要です。対応端末では、同じメモリー内のセッションを生体認証で再解除できます。\n\nクラウドアカウントと同期は別の v2 開発範囲であり、この v1 Android 版では有効になっていません。クラッシュ送信は初期設定で無効で、このビルドには送信先を含めていません。新規インストールでは更新の自動確認も無効です。手動で確認するか、設定で有効にできます。外部の情報ページやダウンロードリンクを開くとネットワークを使用します。\n\nAndroid のシステムバックアップと端末移行バックアップからアプリデータを除外します。バックグラウンドでは内容を覆い隠し、アプリロックが有効な通常のバックグラウンド移行では PIN 画面に戻ります。利用者が開いたカメラ、ファイル選択、共有画面では、背景を隠したまま操作開始時のセッションを保ちます。システムの写真ライブラリからは取り込みません。カメラがアプリのキャッシュに作成する一時ファイルは読み取り後に削除します。\n\n記録バックアップは独立したパスワードと AES-256-GCM で暗号化した .vault ファイルです。薬、服用計画、服用履歴、在庫、血液検査、日記、身体測定を含みます。写真、プロフィール、アプリ設定はこの形式では復元されません。パスワードは復旧できないため大切に保管してください。旧版 JSON は明示的な互換取り込みで読み込めます。\n\nPDF レポートや記念画像は読み取れる形式の書き出しです。選択した相手だけに共有してください。共有画面が閉じた後、アプリ自身の一時コピーを削除します。受信側アプリが保存・送信したコピーは HanaNote では管理できません。\n\n通知には薬名や用量を含めず、一般的な文面を使います。カメラ、生体認証、通知の権限は対応する機能に使われ、Android 設定で管理できます。\n\n連絡先：https://hrtyaku.com';
 
   @override
   String get downloadingUpdate => 'アップデートをダウンロード中...';
@@ -1109,8 +1116,22 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get termsOfUseContent =>
-      '利用規約\n\n最終更新日：2026年4月\n\nHanaNote（以下「本アプリ」）を使用することにより、以下の利用規約に同意したものとみなされます。\n\n1. 目的\n本アプリは、ホルモン補充療法（HRT）管理のために設計された個人健康追跡ツールです。医療機器ではなく、医療上のアドバイスを提供するものではありません。\n\n2. 医療上の免責事項\n本アプリは、専門的な医療アドバイス、診断、または治療の代替ではありません。服薬レジメンを変更する前に、必ず医療提供者にご相談ください。薬物動態シミュレーションの結果は参考値です。\n\n3. ユーザーの責任\n入力するデータの正確性、およびデバイスとアプリパスワードのセキュリティの維持は、お客様の責任です。\n\n4. データの所有権\n本アプリ内で作成されたすべてのデータの完全な所有権はお客様にあります。お客様のコンテンツに対する権利を主張しません。\n\n5. 可用性\n本アプリは、いかなる種類の保証もなく「現状のまま」提供されます。中断なしまたはエラーなしの動作を保証しません。\n\n6. 責任の制限\n法律で認められる最大限の範囲において、本アプリの開発者は、本アプリの使用または使用不能から生じるいかなる損害についても責任を負いません。\n\n7. 更新\n機能改善のためにアップデートをリリースする場合があります。アップデート後の継続使用は、変更された規約の承認とみなされます。\n\n8. 準拠法\n本規約は、適用される現地法に準拠します。\n\n9. お問い合わせ\n本規約についてご質問がある場合は、公式チャネルからお問い合わせください。';
+  String get webDownloadBannerTitle => 'HanaNote Android版をダウンロード';
+
+  @override
+  String get webDownloadBannerSubtitle => 'ネイティブアプリで最高の体験を';
+
+  @override
+  String get webDownloadButton => 'ダウンロード';
+
+  @override
+  String get downloadApp => 'アプリダウンロード';
+
+  @override
+  String get downloadAndroidApp => 'Android版をダウンロード';
+
+  @override
+  String get downloadAndroidAppDesc => '最高の体験をお楽しみください';
 
   @override
   String get onboardingNext => '次へ';
@@ -1176,6 +1197,16 @@ class AppLocalizationsJa extends AppLocalizations {
   String get pdfFailed => 'PDF 生成失敗';
 
   @override
+  String get pdfPlaintextConfirmTitle => '共有用 PDF を生成しますか？';
+
+  @override
+  String get pdfPlaintextConfirmMessage =>
+      'PDF は HanaNote の外に保存・共有できる平文レポートです。保存先を信頼できる場合のみ続行してください。';
+
+  @override
+  String get pdfPlaintextConfirmAction => 'PDF を生成';
+
+  @override
   String get importInProgress => 'インポート中...';
 
   @override
@@ -1194,8 +1225,40 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get importConfirmMessage =>
-      'バックアップを既存データに統合します。同じ ID の項目は上書きされる可能性があります。';
+      '記録のみを取り込みます。写真、プロフィール、アプリ設定は復元されません。同じ ID の既存記録は置き換えられる場合があります。';
 
   @override
   String get importConfirmAction => 'インポート';
+
+  @override
+  String get backupPasswordTitle => 'バックアップパスワードを作成';
+
+  @override
+  String get backupPasswordUnlockTitle => 'バックアップを解除';
+
+  @override
+  String get backupPasswordRememberWarning =>
+      '薬、服用計画、服用履歴、在庫、血液検査、日記、身体測定をバックアップします。写真とアプリ設定は含まれません。パスワードはアプリの PIN とは別です。復旧できないため、大切に保管してください。';
+
+  @override
+  String get backupPasswordLabel => 'バックアップパスワード';
+
+  @override
+  String get backupPasswordConfirmLabel => 'バックアップパスワード確認';
+
+  @override
+  String get backupPasswordTooShort => '8文字以上で入力してください。';
+
+  @override
+  String get backupPasswordMismatch => 'バックアップパスワードが一致しません。';
+
+  @override
+  String get backupPasswordCreateAction => '暗号化バックアップを作成';
+
+  @override
+  String get backupPasswordUnlockAction => 'バックアップを解除';
+
+  @override
+  String get termsOfUseContent =>
+      '利用規約\n\n最終更新日：2026年4月\n\nHanaNote（以下「本アプリ」）を使用することにより、以下の利用規約に同意したものとみなされます。\n\n1. 目的\n本アプリは、ホルモン補充療法（HRT）管理のために設計された個人健康追跡ツールです。医療機器ではなく、医療上のアドバイスを提供するものではありません。\n\n2. 医療上の免責事項\n本アプリは、専門的な医療アドバイス、診断、または治療の代替ではありません。服薬レジメンを変更する前に、必ず医療提供者にご相談ください。薬物動態シミュレーションの結果は参考値です。\n\n3. ユーザーの責任\n入力するデータの正確性、およびデバイスとアプリパスワードのセキュリティの維持は、お客様の責任です。\n\n4. データの所有権\n本アプリ内で作成されたすべてのデータの完全な所有権はお客様にあります。お客様のコンテンツに対する権利を主張しません。\n\n5. 可用性\n本アプリは、いかなる種類の保証もなく「現状のまま」提供されます。中断なしまたはエラーなしの動作を保証しません。\n\n6. 責任の制限\n法律で認められる最大限の範囲において、本アプリの開発者は、本アプリの使用または使用不能から生じるいかなる損害についても責任を負いません。\n\n7. 更新\n機能改善のためにアップデートをリリースする場合があります。アップデート後の継続使用は、変更された規約の承認とみなされます。\n\n8. 準拠法\n本規約は、適用される現地法に準拠します。\n\n9. お問い合わせ\n本規約についてご質問がある場合は、公式チャネルからお問い合わせください。';
 }

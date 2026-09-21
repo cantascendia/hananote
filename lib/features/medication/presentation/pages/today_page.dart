@@ -1,21 +1,29 @@
-// ignore_for_file: lines_longer_than_80_chars
-import 'dart:ui';
+// HanaNote v2 — Today page (HoYo redesign).
+// Greeting + plum hero countdown + 3-stat triplet + 已完成 med-rows
+// + 待服药 med-rows + Daily 花笺 signature card.
+// ignore_for_file: lines_longer_than_80_chars, public_member_api_docs
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hananote/app/theme/hana_colors.dart';
+import 'package:hananote/app/theme/hana_colors_v2.dart';
+import 'package:hananote/app/theme/hana_typography.dart';
+import 'package:hananote/core/data/flower_almanac.dart';
 import 'package:hananote/core/l10n/arb/app_localizations.dart';
 import 'package:hananote/core/l10n/enum_l10n.dart';
+import 'package:hananote/core/widgets/hoyo/conic_avatar_ring.dart';
+import 'package:hananote/core/widgets/hoyo/hana_daily_card.dart';
+import 'package:hananote/core/widgets/hoyo/hoyo_app_bar.dart';
+import 'package:hananote/core/widgets/hoyo/hoyo_eyebrow.dart';
+import 'package:hananote/core/widgets/hoyo/hoyo_med_row.dart';
+import 'package:hananote/core/widgets/hoyo/hoyo_section_title.dart';
 import 'package:hananote/core/widgets/petal_celebration.dart';
 import 'package:hananote/features/medication/domain/usecases/get_today_schedule.dart';
 import 'package:hananote/features/medication/presentation/bloc/today_schedule_bloc.dart';
 import 'package:hananote/features/medication/presentation/bloc/today_schedule_event.dart';
 import 'package:hananote/features/medication/presentation/bloc/today_schedule_state.dart';
 import 'package:hananote/features/medication/presentation/widgets/countdown_card.dart';
-import 'package:hananote/features/medication/presentation/widgets/medication_status_card.dart';
-import 'package:hananote/features/medication/presentation/widgets/quote_card.dart';
-import 'package:hananote/features/medication/presentation/widgets/upcoming_dose_card.dart';
 import 'package:hananote/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:hananote/features/settings/presentation/bloc/settings_state.dart';
 import 'package:intl/intl.dart';
@@ -27,156 +35,115 @@ class TodayPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
     final settingsState = context.watch<SettingsBloc>().state;
-    final displayName = settingsState is SettingsLoaded
+    final displayName = settingsState is SettingsLoaded &&
+            settingsState.profile.displayName.isNotEmpty
         ? settingsState.profile.displayName
         : l10n.defaultUserName;
     final hrtDays =
         settingsState is SettingsLoaded ? settingsState.profile.hrtDayCount : 0;
     final greeting = _greetingForHour(DateTime.now().hour, l10n);
+    final signatureChar = _signatureCharFromName(displayName);
 
     return Scaffold(
-      backgroundColor: HanaColors.background,
+      backgroundColor: HanaColors.backgroundOf(context),
+      appBar: HoyoAppBar(
+        title: l10n.appTitle,
+        subtitle: DateFormat.MMMd(
+          Localizations.localeOf(context).toLanguageTag(),
+        ).format(DateTime.now()),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.calendar_today,
+              size: 18,
+              color: HanaColors.primaryOf(context),
+            ),
+            onPressed: () => context.go('/timeline'),
+          ),
+        ],
+      ),
       body: BlocListener<TodayScheduleBloc, TodayScheduleState>(
         listenWhen: (prev, curr) {
-          final prevCount = prev.mapOrNull(
-            loaded: (s) => s.completedCount,
-          ) ?? 0;
-          final currCount = curr.mapOrNull(
-            loaded: (s) => s.completedCount,
-          ) ?? 0;
+          final prevCount =
+              prev.mapOrNull(loaded: (s) => s.completedCount) ?? 0;
+          final currCount =
+              curr.mapOrNull(loaded: (s) => s.completedCount) ?? 0;
           return currCount > prevCount;
         },
         listener: (context, state) {
           PetalCelebration.show(context);
         },
         child: BlocBuilder<TodayScheduleBloc, TodayScheduleState>(
-        builder: (context, state) {
-          return CustomScrollView(
-            physics: const BouncingScrollPhysics(),
-            slivers: [
-              SliverAppBar(
-                backgroundColor:
-                    HanaColors.background.withAlpha((255 * 0.8).round()),
-                pinned: true,
-                elevation: 0,
-                scrolledUnderElevation: 0,
-                flexibleSpace: ClipRect(
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-                    child: Container(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                ),
-                title: Row(
-                  children: [
-                    const Icon(
-                      Icons.auto_awesome,
-                      color: HanaColors.primary,
-                      size: 24,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      l10n.appTitle,
-                      style: const TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: HanaColors.primary,
-                      ),
-                    ),
-                  ],
-                ),
-                actions: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.calendar_today,
-                      color: HanaColors.primary,
-                    ),
-                    onPressed: () => context.go('/timeline'),
-                  ),
-                  const SizedBox(width: 8),
-                ],
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '$greeting，$displayName',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.w800,
-                                fontFamily: 'PlusJakartaSans',
-                                color: HanaColors.primary,
-                                letterSpacing: -0.5,
+          builder: (context, state) {
+            return CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                // Greeting row
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 14, 24, 18),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const HoyoEyebrow('Welcome back'),
+                              const SizedBox(height: 8),
+                              Text(
+                                '$greeting，$displayName',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: HanaTypography.displaySm.copyWith(
+                                  color: HanaColors.primaryOf(context),
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: -0.64,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              l10n.hrtDay(hrtDays),
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: HanaColors.onSurfaceVariant,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(28),
-                          onTap: () => context.push('/profile'),
-                          child: Container(
-                            width: 56,
-                            height: 56,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: HanaColors.primaryContainer
-                                    .withAlpha((255 * 0.3).round()),
-                                width: 2,
-                              ),
-                            ),
-                            child: const CircleAvatar(
-                              radius: 26,
-                              backgroundColor: HanaColors.primaryContainer,
-                              child: Icon(
-                                Icons.person,
-                                color: HanaColors.onPrimaryContainer,
-                              ),
-                            ),
+                              if (settingsState is SettingsLoaded &&
+                                  settingsState.profile.hrtStartDate !=
+                                      null) ...[
+                                const SizedBox(height: 4),
+                                Text(
+                                  l10n.hrtDay(hrtDays),
+                                  style: HanaTypography.labelMd.copyWith(
+                                    color:
+                                        HanaColors.onSurfaceVariantOf(context),
+                                  ),
+                                ),
+                              ],
+                            ],
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 12),
+                        GestureDetector(
+                          onTap: () => context.push('/profile'),
+                          child: ConicAvatarRing(
+                            label: signatureChar,
+                            size: 56,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(height: 16),
-              ),
-              ..._buildStateContent(context, state, theme, l10n),
-              const SliverPadding(padding: EdgeInsets.only(bottom: 24)),
-            ],
-          );
-        },
-      ),
+                ..._buildStateContent(
+                  context,
+                  state,
+                  l10n,
+                  hrtDays: hrtDays,
+                  hasHrtStartDate: settingsState is SettingsLoaded &&
+                      settingsState.profile.hrtStartDate != null,
+                  signatureChar: signatureChar,
+                ),
+                const SliverPadding(padding: EdgeInsets.only(bottom: 32)),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -184,18 +151,20 @@ class TodayPage extends StatelessWidget {
   List<Widget> _buildStateContent(
     BuildContext context,
     TodayScheduleState state,
-    ThemeData theme,
-    AppLocalizations l10n,
-  ) {
+    AppLocalizations l10n, {
+    required int hrtDays,
+    required bool hasHrtStartDate,
+    required String signatureChar,
+  }) {
     return state.when(
-      initial: () => [
-        const SliverFillRemaining(
+      initial: () => const [
+        SliverFillRemaining(
           hasScrollBody: false,
           child: Center(child: CircularProgressIndicator()),
         ),
       ],
-      loading: () => [
-        const SliverFillRemaining(
+      loading: () => const [
+        SliverFillRemaining(
           hasScrollBody: false,
           child: Center(child: CircularProgressIndicator()),
         ),
@@ -207,7 +176,10 @@ class TodayPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(message, style: const TextStyle(color: HanaColors.error)),
+                Text(
+                  message,
+                  style: TextStyle(color: HanaColors.errorOf(context)),
+                ),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () => context
@@ -232,13 +204,14 @@ class TodayPage extends StatelessWidget {
                     Icon(
                       Icons.medication_outlined,
                       size: 64,
-                      color: HanaColors.primary.withAlpha(77),
+                      color:
+                          HanaColors.primaryOf(context).withValues(alpha: 0.3),
                     ),
                     const SizedBox(height: 16),
                     Text(
                       l10n.noMedicationRecords,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        color: HanaColors.onSurfaceVariant,
+                      style: HanaTypography.titleMd.copyWith(
+                        color: HanaColors.onSurfaceVariantOf(context),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -264,9 +237,7 @@ class TodayPage extends StatelessWidget {
             items.where((item) => !item.isCompleted).toList();
         for (final item in uncompletedItems) {
           for (final dateTime in item.scheduledDateTimes) {
-            if (!dateTime.isAfter(now)) {
-              continue;
-            }
+            if (!dateTime.isAfter(now)) continue;
             if (upcomingTime == null || dateTime.isBefore(upcomingTime)) {
               upcomingTime = dateTime;
               upcoming = item;
@@ -287,23 +258,32 @@ class TodayPage extends StatelessWidget {
         widgets.addAll([
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 18),
               child: CountdownCard(
                 nextScheduledTime: upcomingTime,
                 isCompleteForToday: uncompletedItems.isEmpty,
                 drugName: countdownDrug.drug.name,
                 dosage: countdownDosage,
-                route: countdownDrug.schedule.administrationRoute.localizedName(
-                  l10n,
-                ),
+                route: countdownDrug.schedule.administrationRoute
+                    .localizedName(l10n),
                 nextDoseLabel: l10n.nextDose,
                 completedLabel: l10n.todayCompleted,
                 hourUnitLabel: l10n.hourUnit,
                 minuteUnitLabel: l10n.minuteUnit,
+                onConfirm: () {
+                  context.read<TodayScheduleBloc>().add(
+                        LogDoseTodaySchedule(
+                          drug: countdownDrug.drug,
+                          schedule: countdownDrug.schedule,
+                          scheduledDateTime:
+                              countdownDrug.scheduledDateTimes.firstOrNull,
+                        ),
+                      );
+                },
               ),
             ),
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: 32)),
+          const SliverToBoxAdapter(child: SizedBox(height: 24)),
         ]);
 
         String dosageLabel(TodayScheduleItem item) {
@@ -312,9 +292,7 @@ class TodayPage extends StatelessWidget {
         }
 
         String timeLabel(DateTime? dateTime) {
-          if (dateTime == null) {
-            return l10n.allDay;
-          }
+          if (dateTime == null) return l10n.allDay;
           return DateFormat.Hm(localeName).format(dateTime);
         }
 
@@ -323,67 +301,32 @@ class TodayPage extends StatelessWidget {
           widgets.addAll([
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          l10n.takenDoses,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: HanaColors.onSurface,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Container(
-                          width: 6,
-                          height: 6,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: HanaColors.secondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      l10n.completedDose.toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: HanaColors.onSurfaceVariant
-                            .withAlpha((255 * 0.6).round()),
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                  ],
+                padding: const EdgeInsets.symmetric(horizontal: 18),
+                child: HoyoSectionTitle(
+                  title: l10n.takenDoses,
+                  subtitle: '${completedItems.length} / ${items.length}',
                 ),
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 16)),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  children: completedItems.map((item) {
-                    final firstTime = item.scheduledDateTimes.firstOrNull;
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: MedicationStatusCard(
-                        name: item.drug.name,
-                        dosage: dosageLabel(item),
-                        time: timeLabel(firstTime),
-                        isTaken: true,
-                        accentColor: HanaColors.primaryFixed,
-                      ),
-                    );
-                  }).toList(),
-                ),
+            const SliverToBoxAdapter(child: SizedBox(height: 12)),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (ctx, i) {
+                  final item = completedItems[i];
+                  final firstTime = item.scheduledDateTimes.firstOrNull;
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(18, 0, 18, 8),
+                    child: HoyoMedRow(
+                      name: item.drug.name,
+                      meta: '${timeLabel(firstTime)} · ${dosageLabel(item)}',
+                      tone: i.isOdd ? HoyoMedTone.lavender : HoyoMedTone.pink,
+                    ),
+                  );
+                },
+                childCount: completedItems.length,
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 32)),
+            const SliverToBoxAdapter(child: SizedBox(height: 22)),
           ]);
         }
 
@@ -391,74 +334,60 @@ class TodayPage extends StatelessWidget {
           widgets.addAll([
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Row(
-                  children: [
-                    Text(
-                      l10n.pendingDoses,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: HanaColors.onSurface,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      width: 6,
-                      height: 6,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: HanaColors.tertiary,
-                      ),
-                    ),
-                  ],
+                padding: const EdgeInsets.symmetric(horizontal: 18),
+                child: HoyoSectionTitle(
+                  title: l10n.pendingDoses,
+                  subtitle: '${uncompletedItems.length}',
                 ),
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 16)),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  children: uncompletedItems.map((item) {
-                    final firstTime = item.scheduledDateTimes.firstOrNull;
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: UpcomingDoseCard(
-                        name: item.drug.name,
-                        dosage: dosageLabel(item),
-                        time: timeLabel(firstTime),
-                        period: l10n.allDay,
-                        takeLabel: l10n.takeDose,
-                        onTake: () {
-                          context.read<TodayScheduleBloc>().add(
-                                LogDoseTodaySchedule(
-                                  drug: item.drug,
-                                  schedule: item.schedule,
-                                  scheduledDateTime: firstTime,
-                                ),
-                              );
-                        },
-                      ),
-                    );
-                  }).toList(),
-                ),
+            const SliverToBoxAdapter(child: SizedBox(height: 12)),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (ctx, i) {
+                  final item = uncompletedItems[i];
+                  final firstTime = item.scheduledDateTimes.firstOrNull;
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(18, 0, 18, 8),
+                    child: HoyoMedRow(
+                      name: item.drug.name,
+                      meta: '${timeLabel(firstTime)} · ${dosageLabel(item)}',
+                      tone: HoyoMedTone.coral,
+                      icon: Icons.medication_outlined,
+                      completed: false,
+                      onTap: () {
+                        context.read<TodayScheduleBloc>().add(
+                              LogDoseTodaySchedule(
+                                drug: item.drug,
+                                schedule: item.schedule,
+                                scheduledDateTime: firstTime,
+                              ),
+                            );
+                      },
+                    ),
+                  );
+                },
+                childCount: uncompletedItems.length,
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 32)),
+            const SliverToBoxAdapter(child: SizedBox(height: 22)),
           ]);
         }
 
-        widgets.add(
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: QuoteCard(
-                quote: _quoteForToday(l10n),
+        // Daily 花笺 signature card.
+        if (hasHrtStartDate)
+          widgets.add(
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(18, 4, 18, 0),
+                child: _DailyHanaSection(
+                  day: hrtDays.clamp(1, 365),
+                  collected: hrtDays.clamp(0, 365),
+                  signatureChar: signatureChar,
+                ),
               ),
             ),
-          ),
-        );
+          );
 
         return widgets;
       },
@@ -466,30 +395,71 @@ class TodayPage extends StatelessWidget {
   }
 
   String _greetingForHour(int hour, AppLocalizations l10n) {
-    if (hour < 12) {
-      return l10n.goodMorning;
-    }
-    if (hour < 18) {
-      return l10n.goodAfternoon;
-    }
+    if (hour < 12) return l10n.goodMorning;
+    if (hour < 18) return l10n.goodAfternoon;
     return l10n.goodEvening;
   }
 
-  String _quoteForToday(AppLocalizations l10n) {
-    final quotes = [
-      l10n.dailyQuote0,
-      l10n.dailyQuote1,
-      l10n.dailyQuote2,
-      l10n.dailyQuote3,
-      l10n.dailyQuote4,
-      l10n.dailyQuote5,
-      l10n.dailyQuote6,
-      l10n.dailyQuote7,
-      l10n.dailyQuote8,
-      l10n.dailyQuote9,
-      l10n.dailyQuote10,
-      l10n.dailyQuote11,
-    ];
-    return quotes[DateTime.now().day % quotes.length];
+  String _signatureCharFromName(String name) {
+    if (name.isEmpty) return '·';
+    return name.characters.first.toUpperCase();
+  }
+}
+
+/// Loads the flower almanac asynchronously and renders the Daily 花笺
+/// card. Falls back to a placeholder Container while loading.
+class _DailyHanaSection extends StatefulWidget {
+  const _DailyHanaSection({
+    required this.day,
+    required this.collected,
+    required this.signatureChar,
+  });
+
+  final int day;
+  final int collected;
+  final String signatureChar;
+
+  @override
+  State<_DailyHanaSection> createState() => _DailyHanaSectionState();
+}
+
+class _DailyHanaSectionState extends State<_DailyHanaSection> {
+  Future<FlowerAlmanac>? _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = FlowerAlmanac.load();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<FlowerAlmanac>(
+      future: _future,
+      builder: (context, snap) {
+        if (!snap.hasData) {
+          return Container(
+            height: 220,
+            decoration: BoxDecoration(
+              color: HanaColors.surfaceContainerLowOf(context),
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(
+                color: HanaColorsV2.goldLight.withValues(alpha: 0.3),
+              ),
+            ),
+          );
+        }
+        final almanac = snap.data!;
+        final flower = almanac.forDay(widget.day);
+        return HanaDailyCard(
+          day: widget.day,
+          flower: flower,
+          collected: widget.collected,
+          totalDays: almanac.totalDays,
+          signatureChar: widget.signatureChar,
+          onShare: () => context.push('/share-poster'),
+        );
+      },
+    );
   }
 }

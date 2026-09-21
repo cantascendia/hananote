@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'settings_event.freezed.dart';
@@ -35,8 +37,15 @@ sealed class SettingsEvent with _$SettingsEvent {
   const factory SettingsEvent.toggleNotifications({required bool enabled}) =
       ToggleNotifications;
 
-  /// Exports local data to a JSON file.
-  const factory SettingsEvent.exportData() = ExportDataEvent;
+  /// Mutes or unmutes reminders for one medication.
+  const factory SettingsEvent.toggleDrugReminder({
+    required String drugId,
+    required bool enabled,
+  }) = ToggleDrugReminder;
+
+  /// Exports local data to an encrypted vault file.
+  const factory SettingsEvent.exportData({required String password}) =
+      ExportDataEvent;
 
   /// Changes the app display language.
   const factory SettingsEvent.changeLanguage({required String languageCode}) =
@@ -55,8 +64,10 @@ sealed class SettingsEvent with _$SettingsEvent {
       SkipVersion;
 
   /// Marks the first-launch onboarding wizard as completed.
-  const factory SettingsEvent.markOnboardingComplete() =
-      MarkOnboardingComplete;
+  const factory SettingsEvent.markOnboardingComplete({
+    String? displayName,
+    DateTime? hrtStartDate,
+  }) = MarkOnboardingComplete;
 
   /// Generates a PDF health report and shares it via the system sheet.
   const factory SettingsEvent.generatePdfReport({
@@ -68,9 +79,12 @@ sealed class SettingsEvent with _$SettingsEvent {
     required String noData,
   }) = GeneratePdfReportEvent;
 
-  /// Imports a JSON backup string previously produced by export.
-  const factory SettingsEvent.importBackup({required String jsonString}) =
-      ImportBackupEvent;
+  /// Imports a backup file previously produced by export.
+  const factory SettingsEvent.importBackup({
+    required Uint8List backupBytes,
+    required String password,
+    @Default(false) bool legacyJson,
+  }) = ImportBackupEvent;
 
   /// Toggles crash reporting (opt-in, privacy-first).
   const factory SettingsEvent.toggleCrashReporting({required bool enabled}) =

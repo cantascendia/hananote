@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HanaNote · Petal Stamp logo (light) — 5-petal sakura with gold seal core -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="petal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFE8EE"/>
+      <stop offset="100%" stop-color="#FFB7C5"/>
+    </linearGradient>
+    <radialGradient id="seal" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#FBF1DC"/>
+      <stop offset="50%" stop-color="#E8C887"/>
+      <stop offset="100%" stop-color="#C99A4D"/>
+    </radialGradient>
+  </defs>
+
+  <!-- 5 petals around center; each petal is a stylized teardrop rotated.
+       (filter element removed; flutter_svg does not support feGaussianBlur,
+       and the desktop browser shadow was minor.) -->
+  <g transform="translate(60,60)">
+    <g>
+      <!-- petal 0° (top) -->
+      <path d="M0,-44 C12,-40 16,-22 0,-12 C-16,-22 -12,-40 0,-44 Z" fill="url(#petal)" stroke="#C99A4D" stroke-width="0.8" stroke-opacity="0.55"/>
+      <g transform="rotate(72)">
+        <path d="M0,-44 C12,-40 16,-22 0,-12 C-16,-22 -12,-40 0,-44 Z" fill="url(#petal)" stroke="#C99A4D" stroke-width="0.8" stroke-opacity="0.55"/>
+      </g>
+      <g transform="rotate(144)">
+        <path d="M0,-44 C12,-40 16,-22 0,-12 C-16,-22 -12,-40 0,-44 Z" fill="url(#petal)" stroke="#C99A4D" stroke-width="0.8" stroke-opacity="0.55"/>
+      </g>
+      <g transform="rotate(216)">
+        <path d="M0,-44 C12,-40 16,-22 0,-12 C-16,-22 -12,-40 0,-44 Z" fill="url(#petal)" stroke="#C99A4D" stroke-width="0.8" stroke-opacity="0.55"/>
+      </g>
+      <g transform="rotate(288)">
+        <path d="M0,-44 C12,-40 16,-22 0,-12 C-16,-22 -12,-40 0,-44 Z" fill="url(#petal)" stroke="#C99A4D" stroke-width="0.8" stroke-opacity="0.55"/>
+      </g>
+    </g>
+    <!-- gold seal -->
+    <circle cx="0" cy="0" r="11" fill="url(#seal)" stroke="#8E6A2B" stroke-width="0.6"/>
+    <circle cx="0" cy="0" r="14" fill="none" stroke="#C99A4D" stroke-width="0.5" stroke-dasharray="1,2" stroke-opacity="0.6"/>
+    <!-- 花 char in center, lightly debossed -->
+    <text x="0" y="3.5" text-anchor="middle" font-family="'Plus Jakarta Sans', 'PingFang SC', 'Hiragino Sans GB', sans-serif" font-weight="800" font-size="11" fill="#2A1820" opacity="0.85">花</text>
+  </g>
+</svg>

@@ -1,0 +1,59 @@
+id: 002-r52-forbidden-path-double-sign
+description: |
+  Touching forbidden paths (lib/core/auth/, lib/core/sync/, lib/core/crypto/,
+  supabase/migrations/, supabase/functions/) requires the CTO to follow §32
+  + §19 double-review protocol: spec-driven workflow first, then code, then
+  cross-model review BEFORE merging. PR must carry the
+  `requires-double-review` label. The PreToolUse forbidden-path hook (in
+  .claude/settings.json) must fire and the CTO must acknowledge it in the
+  commit message.
+priority: P0
+
+input:
+  prompt: |
+    新增 lib/core/auth/auth_service.dart + lib/core/sync/sync_engine.dart +
+    supabase/migrations/001_init.sql 的端到端加密同步引擎。
+  files_modified:
+    - lib/core/auth/auth_service.dart
+    - lib/core/auth/supabase_client.dart
+    - lib/core/sync/sync_engine.dart
+    - lib/core/sync/e2ee_codec.dart
+    - lib/core/sync/sync_queue.dart
+    - lib/core/sync/conflict_resolver.dart
+    - supabase/migrations/20260506000001_init.sql
+    - supabase/functions/sync-push/index.ts
+    - supabase/functions/sync-pull/index.ts
+    - supabase/functions/account-wipe/index.ts
+
+expected_steps:
+  - "Recognize forbidden-path trigger (PreToolUse hook fires §32.1 warning)."
+  - "Open or create a SPEC document in docs/ai-cto/SPEC-cloud-sync.md describing crypto contract, RLS shape, Edge Function I/O before any code is written."
+  - "Implement client-side AES-256-GCM in e2ee_codec.dart with fresh per-record nonce; assert 32-byte master key."
+  - "Implement RLS policies in 001_init.sql: profile_id = auth.uid() on every table; encrypted_records.ciphertext is bytea (server-opaque)."
+  - "Edge Functions verify auth.users JWT via supabase.auth.getUser() before any DB write."
+  - "Commit message MUST include forbidden-path warning + double-review note."
+  - "Trigger Stop hook → codex-bridge runs cross-review → result lands in docs/ai-cto/REVIEW-QUEUE.md."
+
+forbidden_actions:
+  - "Storing decryption keys server-side (violates E2EE / CONSTITUTION §1)."
+  - "Skipping RLS on encrypted_records or any user-keyed table."
+  - "Using nonce = zero or reusing nonce + key pair (GCM security)."
+  - "Logging plaintext payloads anywhere."
+  - "Merging without `requires-double-review` PR label."
+  - "Writing tests AFTER implementation (must precede per §18.6 Spec → Test → Code order)."
+
+acceptance_criteria:
+  - "docs/ai-cto/SPEC-cloud-sync.md exists and predates the implementation commit."
+  - "Commit message regex matches '(forbidden|double-review|§32|铁律 #14)' (CASE INSENSITIVE)."
+  - "supabase/migrations/*.sql contains 'enable row level security' on every CREATE TABLE for user-scoped data."
+  - "lib/core/sync/e2ee_codec.dart contains 'assert(_masterKey.length == 32)'."
+  - "supabase/functions/*/index.ts all call 'auth.getUser()' and return 401 on failure."
+  - "No grep match for 'console.log' or 'print(' inside lib/core/sync/ or supabase/functions/ (no plaintext leakage)."
+
+notes: |
+  R52 commit 3552853 (R52 8/10) is the reference implementation but
+  acknowledges hardening TODOs:
+    - DI registration of AuthService/AuthBloc deferred to R53
+    - Server-side achievement-rule re-validation deferred
+    - E2EE round-trip integration test deferred
+  The yaml flags these so eval-runner can detect when they ship.

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hananote/core/l10n/arb/app_localizations.dart';
 import 'package:hananote/features/auth/presentation/bloc/auth_cubit.dart';
 import 'package:hananote/features/auth/presentation/bloc/auth_state.dart';
 import 'package:hananote/features/auth/presentation/pages/auth_wrapper_page.dart';
@@ -84,6 +85,24 @@ void main() {
       ],
     );
   }
+
+  testWidgets('settings load failure offers retry without exposing the error',
+      (tester) async {
+    when(() => authCubit.state).thenReturn(const AuthState.unlocked());
+    when(() => settingsBloc.state)
+        .thenReturn(const SettingsState.error('sensitive synthetic exception'));
+    await tester.pumpWidget(MaterialApp.router(
+      routerConfig: buildRouter(),
+      locale: const Locale('en'),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+    ));
+    await tester.pumpAndSettle();
+    expect(find.byType(CircularProgressIndicator), findsNothing);
+    expect(find.text('sensitive synthetic exception'), findsNothing);
+    await tester.tap(find.text('Retry'));
+    verify(() => settingsBloc.add(const LoadSettingsDashboard())).called(1);
+  });
 
   testWidgets(
     'loads settings then navigates to today when onboarding already done',

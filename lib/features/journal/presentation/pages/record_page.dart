@@ -3,12 +3,13 @@
 // dartdoc coverage is deferred to the documentation pass.
 // ignore_for_file: public_member_api_docs
 
-import 'dart:ui';
+import 'dart:ui' show ImageFilter;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hananote/app/theme/hana_colors.dart';
 import 'package:hananote/core/l10n/arb/app_localizations.dart';
+import 'package:hananote/core/widgets/hoyo/hoyo_app_bar.dart';
 import 'package:hananote/features/journal/presentation/bloc/record_bloc.dart';
 import 'package:hananote/features/journal/presentation/bloc/record_state.dart';
 import 'package:intl/intl.dart';
@@ -67,51 +68,11 @@ class RecordPage extends StatelessWidget {
         );
 
         return Scaffold(
-          backgroundColor: HanaColors.background,
+          backgroundColor: HanaColors.backgroundOf(context),
           extendBodyBehindAppBar: true,
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(64),
-            child: ClipRRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-                child: AppBar(
-                  backgroundColor: HanaColors.background.withAlpha(
-                    (255 * 0.8).round(),
-                  ),
-                  elevation: 0,
-                  scrolledUnderElevation: 0,
-                  centerTitle: true,
-                  title: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        l10n.recordTitle,
-                        style: const TextStyle(
-                          fontFamily: 'Plus Jakarta Sans',
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          color: HanaColors.primary,
-                          letterSpacing: -0.5,
-                        ),
-                      ),
-                      Text(
-                        todayStr,
-                        style: TextStyle(
-                          fontFamily: 'Plus Jakarta Sans',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 10,
-                          color: HanaColors.primary.withAlpha(
-                            (255 * 0.6).round(),
-                          ),
-                          letterSpacing: 2,
-                        ),
-                      ),
-                    ],
-                  ),
-                  actions: const [SizedBox(width: 8)],
-                ),
-              ),
-            ),
+          appBar: HoyoAppBar(
+            title: l10n.recordTitle,
+            subtitle: todayStr,
           ),
           body: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -382,13 +343,11 @@ class _StitchRecordCardState extends State<_StitchRecordCard>
                           const SizedBox(height: 4),
                           Text(
                             widget.subtitle,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(
-                                  color: HanaColors.onSurfaceVariant
-                                      .withAlpha((255 * 0.7).round()),
-                                ),
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      color: HanaColors.onSurfaceVariant
+                                          .withAlpha((255 * 0.7).round()),
+                                    ),
                           ),
                           const SizedBox(height: 16),
                           Container(

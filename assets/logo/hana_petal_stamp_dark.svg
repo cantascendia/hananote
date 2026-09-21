@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HanaNote · Petal Stamp logo (dark / plum hero version) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#5A3344"/>
+      <stop offset="65%" stop-color="#2A1820"/>
+      <stop offset="100%" stop-color="#1F141A"/>
+    </radialGradient>
+    <linearGradient id="petalDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD7E2"/>
+      <stop offset="100%" stop-color="#C892B0"/>
+    </linearGradient>
+    <radialGradient id="sealDark" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#FBF1DC"/>
+      <stop offset="50%" stop-color="#E8C887"/>
+      <stop offset="100%" stop-color="#C99A4D"/>
+    </radialGradient>
+  </defs>
+  <rect width="120" height="120" rx="28" fill="url(#bg)"/>
+  <g transform="translate(60,60)">
+    <g>
+      <path d="M0,-42 C12,-38 16,-22 0,-12 C-16,-22 -12,-38 0,-42 Z" fill="url(#petalDark)" stroke="#E8C887" stroke-width="0.8" stroke-opacity="0.7"/>
+      <g transform="rotate(72)">
+        <path d="M0,-42 C12,-38 16,-22 0,-12 C-16,-22 -12,-38 0,-42 Z" fill="url(#petalDark)" stroke="#E8C887" stroke-width="0.8" stroke-opacity="0.7"/>
+      </g>
+      <g transform="rotate(144)">
+        <path d="M0,-42 C12,-38 16,-22 0,-12 C-16,-22 -12,-38 0,-42 Z" fill="url(#petalDark)" stroke="#E8C887" stroke-width="0.8" stroke-opacity="0.7"/>
+      </g>
+      <g transform="rotate(216)">
+        <path d="M0,-42 C12,-38 16,-22 0,-12 C-16,-22 -12,-38 0,-42 Z" fill="url(#petalDark)" stroke="#E8C887" stroke-width="0.8" stroke-opacity="0.7"/>
+      </g>
+      <g transform="rotate(288)">
+        <path d="M0,-42 C12,-38 16,-22 0,-12 C-16,-22 -12,-38 0,-42 Z" fill="url(#petalDark)" stroke="#E8C887" stroke-width="0.8" stroke-opacity="0.7"/>
+      </g>
+    </g>
+    <circle cx="0" cy="0" r="11" fill="url(#sealDark)" stroke="#8E6A2B" stroke-width="0.6"/>
+    <circle cx="0" cy="0" r="14" fill="none" stroke="#E8C887" stroke-width="0.5" stroke-dasharray="1,2" stroke-opacity="0.7"/>
+    <text x="0" y="3.5" text-anchor="middle" font-family="'Plus Jakarta Sans', 'PingFang SC', 'Hiragino Sans GB', sans-serif" font-weight="800" font-size="11" fill="#2A1820">花</text>
+  </g>
+  <!-- Sparse star particles -->
+  <g fill="#E8C887" opacity="0.7">
+    <circle cx="22" cy="28" r="0.8"/>
+    <circle cx="98" cy="40" r="1.0"/>
+    <circle cx="36" cy="96" r="0.7"/>
+    <circle cx="92" cy="92" r="0.9"/>
+  </g>
+</svg>

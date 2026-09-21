@@ -6,15 +6,17 @@ part 'notification_settings_state.freezed.dart';
 
 @freezed
 sealed class NotificationSettingsState with _$NotificationSettingsState {
-  const factory NotificationSettingsState.initial() = NotificationSettingsInitial;
-  
-  const factory NotificationSettingsState.loading() = NotificationSettingsLoading;
-  
+  const factory NotificationSettingsState.initial() =
+      NotificationSettingsInitial;
+
+  const factory NotificationSettingsState.loading() =
+      NotificationSettingsLoading;
+
   const factory NotificationSettingsState.loaded({
     required List<Drug> drugs,
     required Map<String, MedicationSchedule> schedules,
   }) = NotificationSettingsLoaded;
-  
+
   const factory NotificationSettingsState.error({
     required String message,
   }) = NotificationSettingsError;

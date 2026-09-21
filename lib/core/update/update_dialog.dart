@@ -7,6 +7,7 @@ import 'package:hananote/core/update/apk_installer.dart';
 import 'package:hananote/core/update/update_service.dart';
 import 'package:hananote/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:hananote/features/settings/presentation/bloc/settings_event.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 /// Result of showing the update dialog.
 enum UpdateDialogResult {
@@ -204,10 +205,10 @@ class _UpdateSheetState extends State<_UpdateSheet>
         ),
         child: Icon(
           isDownloaded
-              ? Icons.check_circle_outline_rounded
+              ? Symbols.check_circle_outline_rounded
               : isDownloading
-                  ? Icons.downloading_rounded
-                  : Icons.system_update_rounded,
+                  ? Symbols.downloading_rounded
+                  : Symbols.system_update_rounded,
           size: 36,
           color: isDownloaded ? HanaColors.statusGreen : HanaColors.primary,
         ),
@@ -250,7 +251,7 @@ class _UpdateSheetState extends State<_UpdateSheet>
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Icon(
-                  Icons.arrow_forward_rounded,
+                  Symbols.arrow_forward_rounded,
                   size: 18,
                   color: HanaColors.primary.withAlpha(179),
                 ),
@@ -311,7 +312,7 @@ class _UpdateSheetState extends State<_UpdateSheet>
           Row(
             children: [
               Icon(
-                Icons.auto_awesome_rounded,
+                Symbols.auto_awesome_rounded,
                 size: 14,
                 color: HanaColors.primary.withAlpha(179),
               ),
@@ -387,7 +388,7 @@ class _UpdateSheetState extends State<_UpdateSheet>
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.download_rounded, size: 20),
+                const Icon(Symbols.download_rounded, size: 20),
                 const SizedBox(width: 8),
                 Text(
                   l10n.updateNow,
@@ -553,7 +554,7 @@ class _UpdateSheetState extends State<_UpdateSheet>
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.install_mobile_rounded, size: 20),
+                const Icon(Symbols.install_mobile_rounded, size: 20),
                 const SizedBox(width: 8),
                 Text(
                   l10n.installUpdate,
@@ -584,7 +585,7 @@ class _UpdateSheetState extends State<_UpdateSheet>
           child: Row(
             children: [
               const Icon(
-                Icons.error_outline_rounded,
+                Symbols.error_outline_rounded,
                 size: 18,
                 color: HanaColors.error,
               ),
@@ -618,7 +619,7 @@ class _UpdateSheetState extends State<_UpdateSheet>
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.refresh_rounded, size: 20),
+                const Icon(Symbols.refresh_rounded, size: 20),
                 const SizedBox(width: 8),
                 Text(
                   l10n.updateRetry,
@@ -677,9 +678,7 @@ class _VersionBadge extends StatelessWidget {
           style: TextStyle(
             fontSize: 10,
             fontWeight: FontWeight.w600,
-            color: isOld
-                ? HanaColors.onSurfaceVariant
-                : HanaColors.primary,
+            color: isOld ? HanaColors.onSurfaceVariant : HanaColors.primary,
             letterSpacing: 0.3,
           ),
         ),
@@ -697,9 +696,7 @@ class _VersionBadge extends StatelessWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w700,
-              color: isOld
-                  ? HanaColors.onSurfaceVariant
-                  : HanaColors.primary,
+              color: isOld ? HanaColors.onSurfaceVariant : HanaColors.primary,
               fontFamily: 'Plus Jakarta Sans',
             ),
           ),

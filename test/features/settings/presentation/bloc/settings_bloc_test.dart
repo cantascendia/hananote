@@ -200,8 +200,7 @@ void main() {
           (_) async => right(updatedProfile),
         );
       },
-      act: (bloc) =>
-          bloc.add(SettingsEvent.updateHrtStartDate(date: newDate)),
+      act: (bloc) => bloc.add(SettingsEvent.updateHrtStartDate(date: newDate)),
       expect: () => [
         isA<SettingsLoaded>()
             .having(
@@ -230,6 +229,56 @@ void main() {
       verify: (_) {
         verify(() => wipeAllData()).called(1);
       },
+    );
+  });
+
+  group('onboarding persistence', () {
+    final startDate = DateTime(2026, 1, 2);
+    final updatedProfile = profile.copyWith(
+      displayName: 'Test',
+      hrtStartDate: startDate,
+    );
+
+    blocTest<SettingsBloc, SettingsState>(
+      'saves both profile fields before marking onboarding complete',
+      build: buildBloc,
+      seed: buildLoadedState,
+      setUp: () {
+        when(() => updateUserProfile(any())).thenAnswer(
+          (_) async => right(updatedProfile),
+        );
+        when(() => updateAppSettings(any())).thenAnswer(
+          (invocation) async => right(
+            invocation.positionalArguments.first as AppSettings,
+          ),
+        );
+      },
+      act: (bloc) => bloc.add(MarkOnboardingComplete(
+        displayName: 'Test',
+        hrtStartDate: startDate,
+      )),
+      expect: () => [
+        isA<SettingsLoaded>()
+            .having((s) => s.profile, 'profile', updatedProfile)
+            .having((s) => s.settings.hasCompletedOnboarding, 'complete', true),
+      ],
+      verify: (_) => verifyInOrder([
+        () => updateUserProfile(updatedProfile),
+        () => updateAppSettings(any()),
+      ]),
+    );
+
+    blocTest<SettingsBloc, SettingsState>(
+      'failed profile save leaves onboarding incomplete and allows retry',
+      build: buildBloc,
+      seed: buildLoadedState,
+      setUp: () => when(() => updateUserProfile(any())).thenAnswer(
+        (_) async => left(const Failure.storage(message: 'synthetic failure')),
+      ),
+      act: (bloc) =>
+          bloc.add(const MarkOnboardingComplete(displayName: 'Test')),
+      expect: () => [isA<SettingsError>(), buildLoadedState()],
+      verify: (_) => verifyNever(() => updateAppSettings(any())),
     );
   });
 

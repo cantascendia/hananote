@@ -192,14 +192,6 @@ class _PhotoPageState extends State<PhotoPage> {
                 bloc.add(const PhotoEvent.capturePhoto());
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.photo_library),
-              title: Text(l10n.chooseFromLibrary),
-              onTap: () {
-                Navigator.of(context).pop();
-                bloc.add(const PhotoEvent.pickFromGallery());
-              },
-            ),
           ],
         ),
       ),

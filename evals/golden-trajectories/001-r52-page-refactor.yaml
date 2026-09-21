@@ -1,0 +1,52 @@
+id: 001-r52-page-refactor
+description: |
+  When user asks to refactor a Flutter page (today_page.dart) to use the v2
+  HoYo design system, the CTO must preserve the existing bloc subscription
+  contract while swapping visual primitives. Tests that depend on the old
+  visuals (e.g. daily-quote text or Icons.person avatar) may be updated under
+  Test-Lock §20.3 #1 (spec change) but ONLY with explicit reasoning and a
+  matching new assertion against the new widget tree.
+priority: P0
+
+input:
+  prompt: |
+    把 today_page 重构到新 HoYo 设计系统：plum hero countdown / 金 pill /
+    Daily 花笺签到卡 / ConicAvatarRing 头像 / HoyoMedRow 服药列表。
+    保留全部 bloc 逻辑。
+  files_modified:
+    - lib/features/medication/presentation/pages/today_page.dart
+    - lib/features/medication/presentation/widgets/countdown_card.dart
+    - lib/app/presentation/main_shell.dart
+
+expected_steps:
+  - "Read existing page + countdown_card to understand bloc subscriptions (TodayScheduleBloc, SettingsBloc)."
+  - "Identify the BlocListener / BlocBuilder / state.when shape; preserve verbatim."
+  - "Swap AppBar → HoyoAppBar; Greeting → HoyoEyebrow + ConicAvatarRing; CountdownCard → HoyoHero plum twilight; med rows → HoyoMedRow; quote → HanaDailyCard."
+  - "Run dart analyze on changed files; expect 0 errors."
+  - "Run flutter test on today_page_test.dart; if failures are due to v2 spec change (e.g. Icons.person → ConicAvatarRing), update assertions with comment citing Test-Lock §20.3 #1."
+  - "Verify 324/324 baseline still passes (or one new test added with rationale)."
+
+forbidden_actions:
+  - "Editing today_page_test.dart assertions to mask a real implementation bug (must cite spec change in commit / file)."
+  - "Removing BlocListener for PetalCelebration without preserving the dose-completion celebration UX."
+  - "Bypassing TodayScheduleBloc and reading state directly."
+  - "Hardcoding any color literal — must reference HanaColors* / HanaColorsV2.*Of(context)."
+
+acceptance_criteria:
+  # Tightened 2026-05-11 after eval-runner first real run flagged the
+  # `--fatal-infos lib/features/medication/` scope as too broad — info
+  # lints in pre-existing unrelated files (drug_templates.dart docs)
+  # were failing the criterion even though today_page.dart was clean.
+  # Per project ARB: this codebase enforces `--fatal-warnings` at CI,
+  # not `--fatal-infos`. Eval should match production gate.
+  - "git diff stats: lib/features/medication/presentation/pages/today_page.dart MUST show both insertions and deletions (full rewrite)."
+  - "dart analyze --fatal-warnings lib/features/medication/presentation/pages/today_page.dart lib/features/medication/presentation/widgets/countdown_card.dart lib/app/presentation/main_shell.dart → exit 0 (scoped to the three files actually touched by the refactor)."
+  - "flutter test test/features/medication/presentation/pages/today_page_test.dart → all pass."
+  - "grep -c 'HanaColors\\.' lib/features/medication/presentation/pages/today_page.dart → ≥ 5"
+  - "grep -c 'Color(0xFF' lib/features/medication/presentation/pages/today_page.dart → 0 (no hardcoded ARGB)"
+
+notes: |
+  This case codifies the R52 commit b89dd6b refactor pattern. Future page
+  refactors (Record/Timeline/Data/Profile body redesigns scheduled R53)
+  should match the same shape: preserve bloc, swap widgets, update tests
+  only on legitimate spec change.

@@ -11,6 +11,7 @@ class ErrorBoundary {
   static bool _appStarted = false;
   static bool _fallbackShown = false;
   static void Function(Widget app) _appLauncher = runApp;
+  static void Function(String message) _debugLogger = debugPrint;
 
   /// Marks that the main app widget has been handed to Flutter.
   static void markAppStarted() {
@@ -27,6 +28,7 @@ class ErrorBoundary {
     _appStarted = false;
     _fallbackShown = false;
     _appLauncher = runApp;
+    _debugLogger = debugPrint;
   }
 
   /// Overrides the app launcher used for fallback UI during tests.
@@ -35,43 +37,63 @@ class ErrorBoundary {
     _appLauncher = appLauncher ?? runApp;
   }
 
+  /// Overrides the debug logger used by tests.
+  @visibleForTesting
+  static void setDebugLoggerForTest(void Function(String message)? logger) {
+    _debugLogger = logger ?? debugPrint;
+  }
+
+  /// Records an abstract startup failure without including user data.
+  static void logAbstractFailure(String operation) {
+    assert(operation.isNotEmpty, 'operation must not be empty');
+    _log('startup_${operation}_failed');
+  }
+
   /// Call once in `main()` before `runApp()`.
-  static Future<void> init(Future<void> Function() appRunner) async {
+  static Future<void> init(Future<void> Function() appRunner) {
     _appStarted = false;
     _fallbackShown = false;
+    final completion = Completer<void>();
 
-    FlutterError.onError = (details) {
-      FlutterError.presentError(details);
-      debugPrint(
-        '[ErrorBoundary] FlutterError: ${details.exceptionAsString()}',
-      );
-    };
-
-    ErrorWidget.builder = (details) => MaterialApp(
-          home: ErrorFallbackPage(error: details.exception),
-        );
-
-    PlatformDispatcher.instance.onError = (error, stack) {
-      debugPrint('[ErrorBoundary] PlatformError: $error\n$stack');
-      return true;
-    };
-
-    await runZonedGuarded(
+    runZonedGuarded<void>(
       () async {
-        await appRunner();
-        _appStarted = true;
-      },
-      (error, stack) {
-        debugPrint('[ErrorBoundary] ZoneError: $error\n$stack');
-        if (!_appStarted && !_fallbackShown) {
-          _fallbackShown = true;
-          _appLauncher(
-            MaterialApp(
-              home: ErrorFallbackPage(error: error),
-            ),
-          );
+        FlutterError.onError = (_) => _log('flutter_framework_error');
+        ErrorWidget.builder = (_) => const MaterialApp(
+              home: ErrorFallbackPage(),
+            );
+        PlatformDispatcher.instance.onError = (_, __) {
+          _log('platform_error');
+          return true;
+        };
+
+        try {
+          await appRunner();
+          _appStarted = true;
+        } catch (_, __) {
+          _showFallback();
+        } finally {
+          if (!completion.isCompleted) completion.complete();
         }
       },
+      (_, __) {
+        _showFallback();
+        if (!completion.isCompleted) completion.complete();
+      },
     );
+    return completion.future;
+  }
+
+  static void _showFallback() {
+    _log('startup_error');
+    if (_appStarted || _fallbackShown) return;
+
+    _fallbackShown = true;
+    _appLauncher(
+      const MaterialApp(home: ErrorFallbackPage()),
+    );
+  }
+
+  static void _log(String operation) {
+    if (kDebugMode) _debugLogger('[ErrorBoundary] $operation');
   }
 }

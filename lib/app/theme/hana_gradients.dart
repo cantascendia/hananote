@@ -37,6 +37,7 @@ class HanaGradients {
       HanaColors.isDark(c) ? countdownGradientDark : countdownGradient;
 
   /// Returns the take-dose button gradient for the current theme.
-  static LinearGradient takeDoseOf(BuildContext c) =>
-      HanaColors.isDark(c) ? takeDoseButtonGradientDark : takeDoseButtonGradient;
+  static LinearGradient takeDoseOf(BuildContext c) => HanaColors.isDark(c)
+      ? takeDoseButtonGradientDark
+      : takeDoseButtonGradient;
 }

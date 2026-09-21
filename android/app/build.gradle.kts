@@ -59,7 +59,19 @@ android {
             signingConfig = if (keystorePropertiesFile.exists()) {
                 signingConfigs.getByName("release")
             } else {
-                signingConfigs.getByName("debug")
+                null
+            }
+        }
+    }
+}
+
+// Debug builds remain usable without release credentials. A release artifact
+// must never be produced unsigned or with an unrelated debug certificate.
+tasks.configureEach {
+    if (name == "validateSigningRelease" || name == "packageRelease" || name == "signReleaseBundle") {
+        doFirst {
+            check(keystorePropertiesFile.exists()) {
+                "Release signing requires android/key.properties and the existing release keystore."
             }
         }
     }

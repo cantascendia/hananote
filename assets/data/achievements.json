@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "achievements": [
+    {
+      "key": "novice",
+      "label_en": "DAY 1",
+      "label_zh": "第 1 天",
+      "label_ja": "1日目",
+      "name_zh": "初心者",
+      "name_en": "First Petal",
+      "name_ja": "初心者",
+      "icon": "spa",
+      "rule": {
+        "kind": "days_since_hrt_start",
+        "min": 1
+      }
+    },
+    {
+      "key": "hundred_days",
+      "label_en": "DAY 100",
+      "label_zh": "第 100 天",
+      "label_ja": "100日目",
+      "name_zh": "百日花",
+      "name_en": "Hundred-Day Bloom",
+      "name_ja": "百日の花",
+      "icon": "local_florist",
+      "rule": {
+        "kind": "days_since_hrt_start",
+        "min": 100
+      }
+    },
+    {
+      "key": "in_range",
+      "label_en": "E2 IN RANGE",
+      "label_zh": "E2 达标",
+      "label_ja": "E2 範囲内",
+      "name_zh": "达标者",
+      "name_en": "In Range",
+      "name_ja": "目標到達者",
+      "icon": "verified",
+      "rule": {
+        "kind": "blood_test_in_range",
+        "metric": "estradiol",
+        "min": 100,
+        "max": 200,
+        "unit": "pg/mL"
+      }
+    },
+    {
+      "key": "streak_7",
+      "label_en": "STREAK 7",
+      "label_zh": "连续 7 日",
+      "label_ja": "7日連続",
+      "name_zh": "连续 7 日",
+      "name_en": "Seven-Day Streak",
+      "name_ja": "七日連続",
+      "icon": "local_fire_department",
+      "rule": {
+        "kind": "consecutive_record_days",
+        "min": 7
+      }
+    },
+    {
+      "key": "year_long",
+      "label_en": "DAY 365",
+      "label_zh": "第 365 天",
+      "label_ja": "365日目",
+      "name_zh": "365 天",
+      "name_en": "Full Cycle",
+      "name_ja": "三百六十五日",
+      "icon": "auto_awesome",
+      "rule": {
+        "kind": "days_since_hrt_start",
+        "min": 365
+      }
+    },
+    {
+      "key": "all_flowers",
+      "label_en": "ALL FLOWERS",
+      "label_zh": "全收集",
+      "label_ja": "全収集",
+      "name_zh": "全收集",
+      "name_en": "All Flowers",
+      "name_ja": "花の全集",
+      "icon": "collections",
+      "rule": {
+        "kind": "flower_collection_count",
+        "min": 365
+      }
+    },
+    {
+      "key": "data_keeper",
+      "label_en": "12 BLOODWORKS",
+      "label_zh": "12 次血检",
+      "label_ja": "血液検査12回",
+      "name_zh": "数据师",
+      "name_en": "Data Keeper",
+      "name_ja": "データの守り手",
+      "icon": "science",
+      "rule": {
+        "kind": "blood_test_count",
+        "min": 12
+      }
+    },
+    {
+      "key": "sharer",
+      "label_en": "SHARE 10",
+      "label_zh": "分享 10 次",
+      "label_ja": "10回シェア",
+      "name_zh": "分享者",
+      "name_en": "Storyteller",
+      "name_ja": "語り手",
+      "icon": "share",
+      "rule": {
+        "kind": "share_poster_count",
+        "min": 10
+      }
+    }
+  ]
+}

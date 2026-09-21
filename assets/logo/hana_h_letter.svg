@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HanaNote · H-letter alternate (H 字形 + 金色花瓣交叉) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bgPlum" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5A3344"/>
+      <stop offset="100%" stop-color="#2A1820"/>
+    </linearGradient>
+    <linearGradient id="hStroke" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFE8EE"/>
+      <stop offset="100%" stop-color="#FFB7C5"/>
+    </linearGradient>
+    <linearGradient id="goldXBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#E8C887"/>
+      <stop offset="50%" stop-color="#FBF1DC"/>
+      <stop offset="100%" stop-color="#C99A4D"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="28" fill="url(#bgPlum)"/>
+  <!-- H stems -->
+  <rect x="30" y="28" width="14" height="64" rx="6" fill="url(#hStroke)"/>
+  <rect x="76" y="28" width="14" height="64" rx="6" fill="url(#hStroke)"/>
+  <!-- Gold petal crossbar replacing the H middle line -->
+  <g transform="translate(60,60)">
+    <path d="M-22,0 C-16,-7 -8,-9 0,-9 C8,-9 16,-7 22,0 C16,7 8,9 0,9 C-8,9 -16,7 -22,0 Z" fill="url(#goldXBar)" stroke="#8E6A2B" stroke-width="0.6"/>
+    <circle cx="0" cy="0" r="3" fill="#2A1820"/>
+  </g>
+</svg>

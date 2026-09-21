@@ -35,9 +35,28 @@ class AuthRepositoryImpl implements AuthRepository {
   final FlutterSecureStorage _secureStorage;
   final LocalAuthentication _localAuthentication;
 
+  bool _ownsIncompleteSetup = false;
+  bool _setupInProgress = false;
+
   @override
   Future<Either<Failure, AuthSettings>> getSettings() {
-    return _guard(_localDataSource.getSettings);
+    return _guard(() async {
+      final hasSettings = await _localDataSource.hasSettings();
+      final hasProtectedData = await _hasProtectedSetupData();
+      if (!hasSettings && hasProtectedData) {
+        throw const _AuthRepositoryException(
+          Failure.auth(message: 'auth_settings_missing'),
+        );
+      }
+
+      final settings = await _localDataSource.getSettings();
+      if (!settings.isSetup && hasProtectedData) {
+        throw const _AuthRepositoryException(
+          Failure.auth(message: 'auth_settings_missing'),
+        );
+      }
+      return settings;
+    });
   }
 
   @override
@@ -46,8 +65,55 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, bool>> hasProtectedSetupData() {
+    return _guard(_hasProtectedSetupData);
+  }
+
+  @override
   Future<Either<Failure, void>> setupPassword(String pin) {
-    return _guard(() => _keyManager.initializeKey(pin));
+    return _guard(() async {
+      if (_setupInProgress) {
+        throw const _AuthRepositoryException(
+          Failure.auth(message: 'setup_in_progress'),
+        );
+      }
+
+      _setupInProgress = true;
+      try {
+        if (await _hasProtectedSetupData()) {
+          throw const _AuthRepositoryException(
+            Failure.auth(message: 'existing_credentials_require_unlock'),
+          );
+        }
+        _ownsIncompleteSetup = true;
+        try {
+          await _keyManager.initializeKey(pin);
+        } catch (error, stackTrace) {
+          try {
+            await _discardOwnedIncompleteSetup();
+          } catch (_) {
+            // Preserve the setup failure. A later startup will still fail closed
+            // if any credential material survived cleanup.
+          }
+          Error.throwWithStackTrace(error, stackTrace);
+        }
+      } finally {
+        _setupInProgress = false;
+      }
+    });
+  }
+
+  @override
+  Future<Either<Failure, void>> discardIncompleteSetup() {
+    return _guard(() async {
+      if (!_ownsIncompleteSetup) {
+        throw const _AuthRepositoryException(
+          Failure.auth(message: 'no_incomplete_setup_owned'),
+        );
+      }
+
+      await _discardOwnedIncompleteSetup();
+    });
   }
 
   @override
@@ -57,15 +123,12 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, void>> changePassword(String oldPin, String newPin) {
-    return _guard(() async {
-      final verified = await _keyManager.verifyPassword(oldPin);
-      if (!verified) {
-        throw const _AuthRepositoryException(
-          Failure.auth(message: '\u5F53\u524D\u5BC6\u7801\u4E0D\u6B63\u786E'),
-        );
-      }
-      await _keyManager.initializeKey(newPin);
-    });
+    // Rotating only the PIN-derived key would orphan the existing database
+    // and encrypted photos. Keep credentials unchanged until a transactional
+    // migration for both stores is available. This API has no v1 UI entry.
+    return Future.value(
+      left(const Failure.auth(message: 'pin_change_unavailable')),
+    );
   }
 
   @override
@@ -84,7 +147,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, bool>> isBiometricAvailable() {
     return _guard(() async {
       // Biometric authentication is not available on web.
-      if (kIsWeb) return false;
+      if (kIsWeb || await _keyManager.getKey() == null) return false;
       final canCheck = await _localAuthentication.canCheckBiometrics;
       final supported = await _localAuthentication.isDeviceSupported();
       return canCheck && supported;
@@ -95,7 +158,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, bool>> authenticateBiometric() {
     return _guard(() async {
       // Biometric authentication is not available on web.
-      if (kIsWeb) return false;
+      if (kIsWeb || await _keyManager.getKey() == null) return false;
       return _localAuthentication.authenticate(
         localizedReason: '请验证身份以访问 HanaNote',
         options: const AuthenticationOptions(
@@ -111,9 +174,31 @@ class AuthRepositoryImpl implements AuthRepository {
     return _guard(() async {
       final result = await _secureDatabase.open();
       if (result.isLeft()) {
-        throw _AuthRepositoryException(result.getLeft().toNullable()!);
+        throw const _AuthRepositoryException(
+          Failure.database(message: 'database_open_failed'),
+        );
       }
+      _ownsIncompleteSetup = false;
     });
+  }
+
+  Future<void> _discardOwnedIncompleteSetup() async {
+    await _secureDatabase.close();
+    if (!kIsWeb) {
+      final path = await _secureDatabase.getDatabasePath();
+      if (await databaseExists(path)) {
+        await deleteDatabase(path);
+      }
+    }
+    await _keyManager.deleteKey();
+    await _localDataSource.clearSettings();
+    _ownsIncompleteSetup = false;
+  }
+
+  Future<bool> _hasProtectedSetupData() async {
+    if (await _keyManager.hasStoredCredentialMaterial()) return true;
+    if (kIsWeb) return false;
+    return databaseExists(await _secureDatabase.getDatabasePath());
   }
 
   Future<Either<Failure, T>> _guard<T>(Future<T> Function() action) async {
@@ -121,11 +206,8 @@ class AuthRepositoryImpl implements AuthRepository {
       return right(await action());
     } on _AuthRepositoryException catch (error) {
       return left(error.failure);
-    } catch (error) {
-      if (error is StateError) {
-        return left(Failure.auth(message: error.toString()));
-      }
-      return left(Failure.unexpected(message: error.toString()));
+    } catch (_) {
+      return left(const Failure.auth(message: 'auth_operation_failed'));
     }
   }
 }

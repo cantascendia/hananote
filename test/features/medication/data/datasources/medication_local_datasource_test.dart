@@ -23,17 +23,29 @@ void main() {
   });
 
   group('MedicationLocalDataSource', () {
+    // R52-C-1 v4: queries now filter `is_deleted = 0 OR is_deleted IS NULL`
+    // to hide sync tombstones from the UI. Per Test-Lock §20.3 rule #1
+    // (spec change ratified in SPEC-cloud-sync.md Appendix E).
     test('gets all drugs from the drugs table', () async {
       final drug = buildDrugModel();
       when(
-        () => database.query('drugs', orderBy: 'created_at DESC'),
+        () => database.query(
+          'drugs',
+          where: 'is_deleted = 0 OR is_deleted IS NULL',
+          orderBy: 'created_at DESC',
+        ),
       ).thenAnswer((_) async => [drug.toJson()]);
 
       final result = await dataSource.getAllDrugs();
 
       expect(result, [drug]);
-      verify(() => database.query('drugs', orderBy: 'created_at DESC'))
-          .called(1);
+      verify(
+        () => database.query(
+          'drugs',
+          where: 'is_deleted = 0 OR is_deleted IS NULL',
+          orderBy: 'created_at DESC',
+        ),
+      ).called(1);
     });
 
     test('loads the latest schedule for a drug', () async {
@@ -41,7 +53,7 @@ void main() {
       when(
         () => database.query(
           'medication_schedules',
-          where: 'drug_id = ?',
+          where: 'drug_id = ? AND (is_deleted = 0 OR is_deleted IS NULL)',
           whereArgs: [schedule.drugId],
           orderBy: 'is_active DESC, start_date DESC',
           limit: 1,
@@ -60,7 +72,9 @@ void main() {
       when(
         () => database.query(
           'medication_logs',
-          where: 'drug_id = ? AND timestamp >= ? AND timestamp <= ?',
+          where: 'drug_id = ? AND '
+              '(is_deleted = 0 OR is_deleted IS NULL) AND '
+              'timestamp >= ? AND timestamp <= ?',
           whereArgs: [
             'drug-1',
             from.toIso8601String(),

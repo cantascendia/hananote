@@ -95,6 +95,25 @@ void main() {
       expect(inMemoryStorage.containsKey('hananote_salt'), isTrue);
     });
 
+    test('test: detects stored hash credential material', () async {
+      await keyManager.initializeKey(password);
+
+      keyManager = KeyManager(mockSecureStorage);
+
+      expect(await keyManager.hasStoredCredentialMaterial(), isTrue);
+      expect(await keyManager.getKey(), isNull);
+    });
+
+    test('test: detects legacy credential material', () async {
+      inMemoryStorage['hananote_master_key'] = base64Encode(List.filled(32, 7));
+
+      expect(await keyManager.hasStoredCredentialMaterial(), isTrue);
+    });
+
+    test('test: reports no credential material on clean storage', () async {
+      expect(await keyManager.hasStoredCredentialMaterial(), isFalse);
+    });
+
     test('getKey returns null before verifyPassword is called', () async {
       await keyManager.initializeKey(password);
 

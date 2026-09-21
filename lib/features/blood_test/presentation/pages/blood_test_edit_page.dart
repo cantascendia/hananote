@@ -174,20 +174,17 @@ class _BloodTestEditPageState extends State<BloodTestEditPage> {
       testDate: _testDate,
       readings: readings,
       createdAt: createdAt,
-      labName:
-          _labNameController.text.trim().isEmpty
-              ? null
-              : _labNameController.text.trim(),
-      notes:
-          _notesController.text.trim().isEmpty
-              ? null
-              : _notesController.text.trim(),
+      labName: _labNameController.text.trim().isEmpty
+          ? null
+          : _labNameController.text.trim(),
+      notes: _notesController.text.trim().isEmpty
+          ? null
+          : _notesController.text.trim(),
     );
 
-    final result =
-        _isEditing
-            ? await getIt<UpdateBloodTestReport>()(report)
-            : await getIt<AddBloodTestReport>()(report);
+    final result = _isEditing
+        ? await getIt<UpdateBloodTestReport>()(report)
+        : await getIt<AddBloodTestReport>()(report);
 
     if (!mounted) return;
 
@@ -251,26 +248,25 @@ class _BloodTestEditPageState extends State<BloodTestEditPage> {
             ),
         ],
       ),
-      body:
-          _isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : SafeArea(
-                child: ListView(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 16,
-                  ),
-                  children: [
-                    _buildDateField(l10n),
-                    const SizedBox(height: 16),
-                    _buildLabField(l10n),
-                    const SizedBox(height: 16),
-                    _buildNotesField(l10n),
-                    const SizedBox(height: 24),
-                    _buildReadingsSection(l10n),
-                  ],
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SafeArea(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
                 ),
+                children: [
+                  _buildDateField(l10n),
+                  const SizedBox(height: 16),
+                  _buildLabField(l10n),
+                  const SizedBox(height: 16),
+                  _buildNotesField(l10n),
+                  const SizedBox(height: 24),
+                  _buildReadingsSection(l10n),
+                ],
               ),
+            ),
     );
   }
 
@@ -365,8 +361,8 @@ class _BloodTestEditPageState extends State<BloodTestEditPage> {
         ),
         const SizedBox(height: 12),
         ..._readings.asMap().entries.map(
-          (entry) => _buildReadingTile(l10n, entry.key, entry.value),
-        ),
+              (entry) => _buildReadingTile(l10n, entry.key, entry.value),
+            ),
         const SizedBox(height: 8),
         Center(
           child: TextButton.icon(
@@ -420,16 +416,15 @@ class _BloodTestEditPageState extends State<BloodTestEditPage> {
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.zero,
                       ),
-                      items:
-                          HormoneType.values.map((type) {
-                            return DropdownMenuItem(
-                              value: type,
-                              child: Text(
-                                type.localizedName(l10n),
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                            );
-                          }).toList(),
+                      items: HormoneType.values.map((type) {
+                        return DropdownMenuItem(
+                          value: type,
+                          child: Text(
+                            type.localizedName(l10n),
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        );
+                      }).toList(),
                       onChanged: (newType) {
                         if (newType != null) {
                           setState(() {

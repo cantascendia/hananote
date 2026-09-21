@@ -1,0 +1,29 @@
+# HanaNote · CN proxy worker config.
+# Deploy: cd cloudflare-proxy && wrangler deploy
+# Set secret: wrangler secret put SUPABASE_URL  (paste https://xxx.supabase.co)
+
+name = "hananote-cn-proxy"
+main = "worker.ts"
+compatibility_date = "2026-04-01"
+
+# Custom domain mapping. Add the route in Cloudflare dashboard:
+#   cn-api.hrtyaku.com/* → hananote-cn-proxy
+# (No ICP filing required — traffic terminates at CF edge anycast.)
+routes = [
+  { pattern = "cn-api.hrtyaku.com/*", custom_domain = true }
+]
+
+[vars]
+ALLOWED_ORIGINS = "https://hrtyaku.com,https://app.hrtyaku.com,capacitor://localhost,io.hananote.app"
+
+# SUPABASE_URL is a SECRET (not in git). Set with:
+#   wrangler secret put SUPABASE_URL
+#
+# Free tier limits:
+#   - 100,000 requests/day
+#   - 10ms CPU/request
+#   - More than enough for HanaNote MVP.
+
+[observability]
+enabled = true
+head_sampling_rate = 1.0

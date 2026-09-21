@@ -136,34 +136,34 @@ class GeneratePdfReport {
               _emptyText(noData)
             else
               ...journals.take(5).map(
-                (j) => pw.Container(
-                  margin: const pw.EdgeInsets.only(bottom: 8),
-                  padding: const pw.EdgeInsets.all(8),
-                  decoration: pw.BoxDecoration(
-                    border: pw.Border.all(color: PdfColors.grey300),
-                    borderRadius: pw.BorderRadius.circular(4),
-                  ),
-                  child: pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
-                    children: [
-                      pw.Text(
-                        dateFormat.format(j.date),
-                        style: pw.TextStyle(
-                          fontWeight: pw.FontWeight.bold,
-                          fontSize: 10,
-                        ),
+                    (j) => pw.Container(
+                      margin: const pw.EdgeInsets.only(bottom: 8),
+                      padding: const pw.EdgeInsets.all(8),
+                      decoration: pw.BoxDecoration(
+                        border: pw.Border.all(color: PdfColors.grey300),
+                        borderRadius: pw.BorderRadius.circular(4),
                       ),
-                      pw.SizedBox(height: 4),
-                      pw.Text(
-                        j.content.length > 200
-                            ? '${j.content.substring(0, 200)}...'
-                            : j.content,
-                        style: const pw.TextStyle(fontSize: 9),
+                      child: pw.Column(
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: [
+                          pw.Text(
+                            dateFormat.format(j.date),
+                            style: pw.TextStyle(
+                              fontWeight: pw.FontWeight.bold,
+                              fontSize: 10,
+                            ),
+                          ),
+                          pw.SizedBox(height: 4),
+                          pw.Text(
+                            j.content.length > 200
+                                ? '${j.content.substring(0, 200)}...'
+                                : j.content,
+                            style: const pw.TextStyle(fontSize: 9),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
           ],
         ),
       );
@@ -260,8 +260,7 @@ class GeneratePdfReport {
                   pw.Text('Bust: ${m.bust}', style: _valueStyle),
                 if (m.waist != null)
                   pw.Text('Waist: ${m.waist}', style: _valueStyle),
-                if (m.hip != null)
-                  pw.Text('Hip: ${m.hip}', style: _valueStyle),
+                if (m.hip != null) pw.Text('Hip: ${m.hip}', style: _valueStyle),
                 if (m.shoulder != null)
                   pw.Text('Shoulder: ${m.shoulder}', style: _valueStyle),
               ],

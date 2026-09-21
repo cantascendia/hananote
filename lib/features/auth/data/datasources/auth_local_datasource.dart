@@ -9,6 +9,9 @@ abstract interface class AuthLocalDataSource {
   /// Loads persisted auth settings or returns defaults.
   Future<AuthSettings> getSettings();
 
+  /// Returns whether persisted auth settings exist.
+  Future<bool> hasSettings();
+
   /// Persists [settings].
   Future<void> saveSettings(AuthSettings settings);
 
@@ -42,6 +45,11 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       autoLockMinutes: json['autoLockMinutes'] as int? ?? 0,
       maxFailedAttempts: json['maxFailedAttempts'] as int? ?? 0,
     );
+  }
+
+  @override
+  Future<bool> hasSettings() async {
+    return await _secureStorage.read(key: _settingsKey) != null;
   }
 
   @override

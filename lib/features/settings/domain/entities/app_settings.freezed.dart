@@ -25,6 +25,7 @@ mixin _$AppSettings {
   bool get blurOverlayEnabled => throw _privateConstructorUsedError;
   DateTime? get lastBackupDate => throw _privateConstructorUsedError;
   bool get notificationsEnabled => throw _privateConstructorUsedError;
+  List<String> get mutedReminderDrugIds => throw _privateConstructorUsedError;
   String get language => throw _privateConstructorUsedError;
   bool get darkModeEnabled => throw _privateConstructorUsedError;
   bool get autoCheckUpdate => throw _privateConstructorUsedError;
@@ -54,6 +55,7 @@ abstract class $AppSettingsCopyWith<$Res> {
       bool blurOverlayEnabled,
       DateTime? lastBackupDate,
       bool notificationsEnabled,
+      List<String> mutedReminderDrugIds,
       String language,
       bool darkModeEnabled,
       bool autoCheckUpdate,
@@ -82,6 +84,7 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
     Object? blurOverlayEnabled = null,
     Object? lastBackupDate = freezed,
     Object? notificationsEnabled = null,
+    Object? mutedReminderDrugIds = null,
     Object? language = null,
     Object? darkModeEnabled = null,
     Object? autoCheckUpdate = null,
@@ -110,6 +113,10 @@ class _$AppSettingsCopyWithImpl<$Res, $Val extends AppSettings>
           ? _value.notificationsEnabled
           : notificationsEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
+      mutedReminderDrugIds: null == mutedReminderDrugIds
+          ? _value.mutedReminderDrugIds
+          : mutedReminderDrugIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       language: null == language
           ? _value.language
           : language // ignore: cast_nullable_to_non_nullable
@@ -152,6 +159,7 @@ abstract class _$$AppSettingsImplCopyWith<$Res>
       bool blurOverlayEnabled,
       DateTime? lastBackupDate,
       bool notificationsEnabled,
+      List<String> mutedReminderDrugIds,
       String language,
       bool darkModeEnabled,
       bool autoCheckUpdate,
@@ -178,6 +186,7 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
     Object? blurOverlayEnabled = null,
     Object? lastBackupDate = freezed,
     Object? notificationsEnabled = null,
+    Object? mutedReminderDrugIds = null,
     Object? language = null,
     Object? darkModeEnabled = null,
     Object? autoCheckUpdate = null,
@@ -206,6 +215,10 @@ class __$$AppSettingsImplCopyWithImpl<$Res>
           ? _value.notificationsEnabled
           : notificationsEnabled // ignore: cast_nullable_to_non_nullable
               as bool,
+      mutedReminderDrugIds: null == mutedReminderDrugIds
+          ? _value._mutedReminderDrugIds
+          : mutedReminderDrugIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       language: null == language
           ? _value.language
           : language // ignore: cast_nullable_to_non_nullable
@@ -243,12 +256,14 @@ class _$AppSettingsImpl implements _AppSettings {
       required this.blurOverlayEnabled,
       required this.lastBackupDate,
       this.notificationsEnabled = true,
+      final List<String> mutedReminderDrugIds = const <String>[],
       this.language = '',
       this.darkModeEnabled = false,
-      this.autoCheckUpdate = true,
+      this.autoCheckUpdate = false,
       this.skippedVersion = '',
       this.hasCompletedOnboarding = false,
-      this.crashReportingEnabled = false});
+      this.crashReportingEnabled = false})
+      : _mutedReminderDrugIds = mutedReminderDrugIds;
 
   factory _$AppSettingsImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppSettingsImplFromJson(json);
@@ -264,6 +279,16 @@ class _$AppSettingsImpl implements _AppSettings {
   @override
   @JsonKey()
   final bool notificationsEnabled;
+  final List<String> _mutedReminderDrugIds;
+  @override
+  @JsonKey()
+  List<String> get mutedReminderDrugIds {
+    if (_mutedReminderDrugIds is EqualUnmodifiableListView)
+      return _mutedReminderDrugIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_mutedReminderDrugIds);
+  }
+
   @override
   @JsonKey()
   final String language;
@@ -285,7 +310,7 @@ class _$AppSettingsImpl implements _AppSettings {
 
   @override
   String toString() {
-    return 'AppSettings(appLockEnabled: $appLockEnabled, privacyModeEnabled: $privacyModeEnabled, blurOverlayEnabled: $blurOverlayEnabled, lastBackupDate: $lastBackupDate, notificationsEnabled: $notificationsEnabled, language: $language, darkModeEnabled: $darkModeEnabled, autoCheckUpdate: $autoCheckUpdate, skippedVersion: $skippedVersion, hasCompletedOnboarding: $hasCompletedOnboarding, crashReportingEnabled: $crashReportingEnabled)';
+    return 'AppSettings(appLockEnabled: $appLockEnabled, privacyModeEnabled: $privacyModeEnabled, blurOverlayEnabled: $blurOverlayEnabled, lastBackupDate: $lastBackupDate, notificationsEnabled: $notificationsEnabled, mutedReminderDrugIds: $mutedReminderDrugIds, language: $language, darkModeEnabled: $darkModeEnabled, autoCheckUpdate: $autoCheckUpdate, skippedVersion: $skippedVersion, hasCompletedOnboarding: $hasCompletedOnboarding, crashReportingEnabled: $crashReportingEnabled)';
   }
 
   @override
@@ -303,6 +328,8 @@ class _$AppSettingsImpl implements _AppSettings {
                 other.lastBackupDate == lastBackupDate) &&
             (identical(other.notificationsEnabled, notificationsEnabled) ||
                 other.notificationsEnabled == notificationsEnabled) &&
+            const DeepCollectionEquality()
+                .equals(other._mutedReminderDrugIds, _mutedReminderDrugIds) &&
             (identical(other.language, language) ||
                 other.language == language) &&
             (identical(other.darkModeEnabled, darkModeEnabled) ||
@@ -326,6 +353,7 @@ class _$AppSettingsImpl implements _AppSettings {
       blurOverlayEnabled,
       lastBackupDate,
       notificationsEnabled,
+      const DeepCollectionEquality().hash(_mutedReminderDrugIds),
       language,
       darkModeEnabled,
       autoCheckUpdate,
@@ -356,6 +384,7 @@ abstract class _AppSettings implements AppSettings {
       required final bool blurOverlayEnabled,
       required final DateTime? lastBackupDate,
       final bool notificationsEnabled,
+      final List<String> mutedReminderDrugIds,
       final String language,
       final bool darkModeEnabled,
       final bool autoCheckUpdate,
@@ -376,6 +405,8 @@ abstract class _AppSettings implements AppSettings {
   DateTime? get lastBackupDate;
   @override
   bool get notificationsEnabled;
+  @override
+  List<String> get mutedReminderDrugIds;
   @override
   String get language;
   @override

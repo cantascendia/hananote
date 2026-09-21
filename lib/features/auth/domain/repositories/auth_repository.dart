@@ -10,8 +10,14 @@ abstract interface class AuthRepository {
   /// Persists [settings].
   Future<Either<Failure, void>> saveSettings(AuthSettings settings);
 
+  /// Returns whether credential material or an encrypted database already exists.
+  Future<Either<Failure, bool>> hasProtectedSetupData();
+
   /// Sets up the master key from a new PIN.
   Future<Either<Failure, void>> setupPassword(String pin);
+
+  /// Removes only incomplete first-run setup artifacts.
+  Future<Either<Failure, void>> discardIncompleteSetup();
 
   /// Verifies the supplied PIN.
   Future<Either<Failure, bool>> verifyPassword(String pin);

@@ -1,11 +1,19 @@
+// HanaNote v2 — Plum hero countdown card.
+// Replaces the v1 sakura→lavender card with a HoyoHero plum twilight
+// panel: gold-text countdown numerals, glass chips for drug/time,
+// gold pill for "立即确认服用".
 // ignore_for_file: lines_longer_than_80_chars
+
 import 'dart:async';
-import 'dart:math' as math;
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:hananote/app/theme/hana_colors.dart';
-import 'package:hananote/app/theme/hana_gradients.dart';
+import 'package:hananote/app/theme/hana_colors_v2.dart';
+import 'package:hananote/app/theme/hana_typography.dart';
+import 'package:hananote/core/widgets/hoyo/gold_text.dart';
+import 'package:hananote/core/widgets/hoyo/hoyo_eyebrow.dart';
+import 'package:hananote/core/widgets/hoyo/hoyo_glass_chip.dart';
+import 'package:hananote/core/widgets/hoyo/hoyo_hero.dart';
+import 'package:hananote/core/widgets/hoyo/hoyo_pill_button.dart';
 
 /// A card displaying the countdown to the next medication dose.
 class CountdownCard extends StatefulWidget {
@@ -20,6 +28,7 @@ class CountdownCard extends StatefulWidget {
     required this.minuteUnitLabel,
     this.nextScheduledTime,
     this.isCompleteForToday = false,
+    this.onConfirm,
     super.key,
   });
 
@@ -50,6 +59,9 @@ class CountdownCard extends StatefulWidget {
   /// Whether all doses for today are already complete.
   final bool isCompleteForToday;
 
+  /// Triggered when the user taps the gold pill confirmation button.
+  final VoidCallback? onConfirm;
+
   @override
   State<CountdownCard> createState() => _CountdownCardState();
 }
@@ -61,9 +73,7 @@ class _CountdownCardState extends State<CountdownCard> {
   void initState() {
     super.initState();
     _timer = Timer.periodic(const Duration(minutes: 1), (_) {
-      if (mounted) {
-        setState(() {});
-      }
+      if (mounted) setState(() {});
     });
   }
 
@@ -77,188 +87,106 @@ class _CountdownCardState extends State<CountdownCard> {
     if (widget.isCompleteForToday || widget.nextScheduledTime == null) {
       return (0, 0);
     }
-
     final diff = widget.nextScheduledTime!.difference(DateTime.now());
-    if (diff.isNegative) {
-      return (0, 0);
-    }
-
+    if (diff.isNegative) return (0, 0);
     return (diff.inHours, diff.inMinutes % 60);
   }
 
   @override
   Widget build(BuildContext context) {
     final remaining = _calculateRemaining();
+    final isComplete = widget.isCompleteForToday;
 
-    return Container(
-      decoration: BoxDecoration(
-        gradient: HanaGradients.countdownOf(context),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withAlpha((255 * 0.2).round())),
-        boxShadow: [
-          BoxShadow(
-            color: HanaColors.primaryOf(context).withAlpha(31),
-            blurRadius: 32,
-            offset: const Offset(0, 8),
+    return HoyoHero(
+      padding: const EdgeInsets.fromLTRB(24, 22, 24, 22),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          HoyoEyebrow(
+            'NEXT DOSE · ${widget.nextDoseLabel}',
+            tone: HoyoEyebrowTone.light,
           ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
-        child: Stack(
-          children: [
-            // Decorative 128px blur circle at bottom right
-            Positioned(
-              right: -32,
-              bottom: -32,
-              child: Container(
-                width: 128,
-                height: 128,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withAlpha((255 * 0.2).round()),
-                ),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 24,
-                    sigmaY: 24,
-                  ), // mapped to blur-2xl
-                  child: Container(color: Colors.transparent),
-                ),
+          const SizedBox(height: 14),
+          if (isComplete)
+            GoldText(
+              widget.completedLabel,
+              style: HanaTypography.headlineLg.copyWith(
+                fontWeight: FontWeight.w800,
+                fontSize: 36,
               ),
-            ),
-            // Medication icon rotated 12 degrees upper right
-            Positioned(
-              right: 24,
-              top: 24,
-              child: Transform.rotate(
-                angle: 12 * math.pi / 180,
-                child: Opacity(
-                  opacity: 0.2,
-                  child: Icon(
-                    Icons.medication,
-                    size: 96,
-                    color: Colors.white.withAlpha((255 * 0.4).round()),
+            )
+          else
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                GoldText(
+                  '${remaining.$1}',
+                  style: HanaTypography.displayLg.copyWith(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 54,
+                    letterSpacing: -1.62,
+                    height: 1,
                   ),
                 ),
-              ),
+                const SizedBox(width: 4),
+                Text(
+                  widget.hourUnitLabel,
+                  style: HanaTypography.titleSm.copyWith(
+                    color: HanaColorsV2.pearl.withValues(alpha: 0.7),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                GoldText(
+                  '${remaining.$2}',
+                  style: HanaTypography.displayLg.copyWith(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 54,
+                    letterSpacing: -1.62,
+                    height: 1,
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  widget.minuteUnitLabel,
+                  style: HanaTypography.titleSm.copyWith(
+                    color: HanaColorsV2.pearl.withValues(alpha: 0.7),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.schedule,
-                        color: HanaColors.onPrimaryContainerOf(context),
-                        size: 14, // text-sm is usually 14px
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        widget.nextDoseLabel,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.2, // tracking-widest roughly
-                          color: HanaColors.onPrimaryContainerOf(context)
-                              .withAlpha((255 * 0.7).round()),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  if (widget.isCompleteForToday)
-                    Text(
-                      widget.completedLabel,
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontSize: 32,
-                        fontWeight: FontWeight.w800,
-                        color: HanaColors.onPrimaryContainerOf(context),
-                      ),
-                    )
-                  else
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.alphabetic,
-                      children: [
-                        Text(
-                          '${remaining.$1}',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 40,
-                            fontWeight: FontWeight.w800,
-                            color: HanaColors.onPrimaryContainerOf(context),
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          widget.hourUnitLabel,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: HanaColors.onPrimaryContainerOf(context),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 12,
-                        ), // Let the spacing match a bit
-                        Text(
-                          '${remaining.$2}',
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontSize: 40,
-                            fontWeight: FontWeight.w800,
-                            color: HanaColors.onPrimaryContainerOf(context),
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          widget.minuteUnitLabel,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: HanaColors.onPrimaryContainerOf(context),
-                          ),
-                        ),
-                      ],
-                    ),
-                  const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withAlpha((255 * 0.4).round()),
-                      borderRadius: BorderRadius.circular(24),
-                      border: Border.all(
-                        color: Colors.white.withAlpha((255 * 0.3).round()),
-                      ),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(24),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                        child: Text(
-                          '${widget.drugName} ${widget.dosage} · '
-                          '${widget.route}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: HanaColors.onPrimaryContainerOf(context),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+          const SizedBox(height: 14),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              HoyoGlassChip(
+                icon: Icons.medication,
+                label: '${widget.drugName} ${widget.dosage}',
+              ),
+              HoyoGlassChip(
+                icon: Icons.schedule,
+                label: widget.route,
+              ),
+            ],
+          ),
+          if (!isComplete && widget.onConfirm != null) ...[
+            const SizedBox(height: 18),
+            SizedBox(
+              width: double.infinity,
+              child: HoyoPillButton(
+                label: '立即确认服用',
+                icon: Icons.check_circle,
+                variant: HoyoPillVariant.gold,
+                onPressed: widget.onConfirm,
+                expand: true,
               ),
             ),
           ],
-        ),
+        ],
       ),
     );
   }

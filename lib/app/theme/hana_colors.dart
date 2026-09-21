@@ -75,16 +75,18 @@ class HanaColors {
       isDark(c) ? HanaColorsDark.background : background;
   static Color surfaceOf(BuildContext c) =>
       isDark(c) ? HanaColorsDark.surface : surface;
-  static Color surfaceContainerLowestOf(BuildContext c) =>
-      isDark(c) ? HanaColorsDark.surfaceContainerLowest : surfaceContainerLowest;
+  static Color surfaceContainerLowestOf(BuildContext c) => isDark(c)
+      ? HanaColorsDark.surfaceContainerLowest
+      : surfaceContainerLowest;
   static Color surfaceContainerLowOf(BuildContext c) =>
       isDark(c) ? HanaColorsDark.surfaceContainerLow : surfaceContainerLow;
   static Color surfaceContainerOf(BuildContext c) =>
       isDark(c) ? HanaColorsDark.surfaceContainer : surfaceContainer;
   static Color surfaceContainerHighOf(BuildContext c) =>
       isDark(c) ? HanaColorsDark.surfaceContainerHigh : surfaceContainerHigh;
-  static Color surfaceContainerHighestOf(BuildContext c) =>
-      isDark(c) ? HanaColorsDark.surfaceContainerHighest : surfaceContainerHighest;
+  static Color surfaceContainerHighestOf(BuildContext c) => isDark(c)
+      ? HanaColorsDark.surfaceContainerHighest
+      : surfaceContainerHighest;
   static Color primaryOf(BuildContext c) =>
       isDark(c) ? HanaColorsDark.primary : primary;
   static Color onPrimaryOf(BuildContext c) =>

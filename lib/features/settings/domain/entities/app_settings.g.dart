@@ -15,9 +15,13 @@ _$AppSettingsImpl _$$AppSettingsImplFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['lastBackupDate'] as String),
       notificationsEnabled: json['notificationsEnabled'] as bool? ?? true,
+      mutedReminderDrugIds: (json['mutedReminderDrugIds'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const <String>[],
       language: json['language'] as String? ?? '',
       darkModeEnabled: json['darkModeEnabled'] as bool? ?? false,
-      autoCheckUpdate: json['autoCheckUpdate'] as bool? ?? true,
+      autoCheckUpdate: json['autoCheckUpdate'] as bool? ?? false,
       skippedVersion: json['skippedVersion'] as String? ?? '',
       hasCompletedOnboarding: json['hasCompletedOnboarding'] as bool? ?? false,
       crashReportingEnabled: json['crashReportingEnabled'] as bool? ?? false,
@@ -30,6 +34,7 @@ Map<String, dynamic> _$$AppSettingsImplToJson(_$AppSettingsImpl instance) =>
       'blurOverlayEnabled': instance.blurOverlayEnabled,
       'lastBackupDate': instance.lastBackupDate?.toIso8601String(),
       'notificationsEnabled': instance.notificationsEnabled,
+      'mutedReminderDrugIds': instance.mutedReminderDrugIds,
       'language': instance.language,
       'darkModeEnabled': instance.darkModeEnabled,
       'autoCheckUpdate': instance.autoCheckUpdate,

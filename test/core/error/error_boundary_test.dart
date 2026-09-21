@@ -47,6 +47,20 @@ void main() {
     expect(onError!(StateError('boom'), StackTrace.empty), isTrue);
   });
 
+  test('ErrorBoundary logs abstract platform failures only', () async {
+    final logs = <String>[];
+    ErrorBoundary.setDebugLoggerForTest(logs.add);
+    await ErrorBoundary.init(() async {});
+
+    PlatformDispatcher.instance.onError!(
+      StateError('estradiol dose 4mg'),
+      StackTrace.empty,
+    );
+
+    expect(logs, contains('[ErrorBoundary] platform_error'));
+    expect(logs.join(), isNot(contains('estradiol dose 4mg')));
+  });
+
   test('ErrorBoundary.markAppStarted flips the started flag', () {
     expect(ErrorBoundary.appStarted, isFalse);
 
@@ -97,12 +111,9 @@ void main() {
       }
     });
 
-    unawaited(
-      ErrorBoundary.init(() async {
-        throw StateError('init failed');
-      }),
-    );
-
+    await ErrorBoundary.init(() async {
+      throw StateError('init failed');
+    }).timeout(const Duration(seconds: 5));
     await fallbackShown.future.timeout(const Duration(seconds: 5));
 
     expect(fallbackWidget, isNotNull);

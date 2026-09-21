@@ -118,11 +118,11 @@ class UpcomingDoseCard extends StatelessWidget {
                                     vertical: 2,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: HanaColors
-                                        .tertiaryContainerOf(context)
-                                        .withAlpha(
-                                          (255 * 0.4).round(),
-                                        ),
+                                    color:
+                                        HanaColors.tertiaryContainerOf(context)
+                                            .withAlpha(
+                                      (255 * 0.4).round(),
+                                    ),
                                     borderRadius: BorderRadius.circular(999),
                                   ),
                                   child: Text(
@@ -130,8 +130,8 @@ class UpcomingDoseCard extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.bold,
-                                      color: HanaColors
-                                          .onTertiaryContainerOf(context),
+                                      color: HanaColors.onTertiaryContainerOf(
+                                          context),
                                     ),
                                   ),
                                 ),

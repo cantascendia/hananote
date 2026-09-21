@@ -1,0 +1,50 @@
+id: 003-r52-arb-trilingual-sync
+description: |
+  When user-facing text changes (privacy policy, onboarding copy, hero
+  taglines), the CTO must update ALL THREE locales (zh/en/ja) in one commit
+  AND regenerate app_localizations*.dart via flutter gen-l10n. Failing to
+  ship one of the three locales triggers AppLocalizations.of(context) null /
+  fallback at runtime — silent UX bug.
+priority: P0
+
+input:
+  prompt: |
+    隐私政策从「零云端」更新为「默认本地，按需同步 + E2EE」。三语全部对齐 +
+    落地页 hero/privacy 文案对齐。
+  files_modified:
+    - lib/core/l10n/arb/app_zh.arb
+    - lib/core/l10n/arb/app_en.arb
+    - lib/core/l10n/arb/app_ja.arb
+    - landing/i18n.js
+    - landing/index.html
+
+expected_steps:
+  - "Identify ALL user-facing keys touched (privacyPolicyContent in this case; could be heroDesc/featTitle/etc.)."
+  - "Update zh.arb first (primary copy language per CLAUDE.md DEC-042/043)."
+  - "Translate to en + ja preserving section structure + section count."
+  - "Run `flutter gen-l10n` to regenerate app_localizations*.dart."
+  - "Verify generated files committed alongside ARB."
+  - "Mirror landing/i18n.js entries (zh/en/ja blocks) and landing/index.html default-zh hardcoded copy + meta description."
+  - "flutter test → no regression."
+
+forbidden_actions:
+  - "Updating only zh.arb without en/ja siblings (silent UX bug per 铁律 #10)."
+  - "Forgetting to regenerate app_localizations*.dart (build still works but text falls back to en for zh users)."
+  - "Editing AppLocalizationsZh / AppLocalizationsEn / AppLocalizationsJa generated files BY HAND (will be overwritten on next gen-l10n run)."
+  - "Leaving ICU placeholders mismatched between locales (e.g. {percent} present in en but not zh)."
+  - "Hardcoding strings inside Dart UI code instead of using AppLocalizations.of(context)!.someKey."
+
+acceptance_criteria:
+  - "git diff --name-only HEAD MUST include all three .arb files OR none of them."
+  - "If app_zh.arb modified, app_en.arb AND app_ja.arb MUST also be modified in same commit."
+  - "If app_*.arb modified, app_localizations*.dart MUST also be modified (regenerated) in same commit OR follow-up commit ≤ 24h."
+  - "diff <(jq 'keys' app_zh.arb) <(jq 'keys' app_en.arb) → empty (no key drift)."
+  - "diff <(jq 'keys' app_zh.arb) <(jq 'keys' app_ja.arb) → empty."
+  - "If landing/i18n.js touched, all three of T.zh / T.en / T.ja keys updated."
+  - "flutter gen-l10n exit code 0; no warnings about missing translations."
+
+notes: |
+  This case codifies R52 commits 55f5a6f + 14ad094 (privacy rewrite +
+  generated regen). The split into two commits (ARB + regen) was
+  acknowledged technical debt — eval should flag it as warning, not
+  failure, when commits are within the same PR.
