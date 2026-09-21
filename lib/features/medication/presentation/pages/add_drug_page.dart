@@ -116,9 +116,8 @@ class _AddDrugPageState extends State<AddDrugPage> {
               ]
             : null,
       ),
-      body: _showManualForm
-          ? _buildManualForm(l10n)
-          : _buildTemplatePicker(l10n),
+      body:
+          _showManualForm ? _buildManualForm(l10n) : _buildTemplatePicker(l10n),
     );
   }
 

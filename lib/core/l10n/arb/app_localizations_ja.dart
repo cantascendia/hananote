@@ -18,6 +18,15 @@ class AppLocalizationsJa extends AppLocalizations {
   String get error => 'エラー';
 
   @override
+  String get reminderSyncFailed => 'リマインダーを更新できませんでした。もう一度お試しください。';
+
+  @override
+  String get authOperationFailed => '保護されたストレージにアクセスできませんでした。もう一度お試しください。';
+
+  @override
+  String get authIncorrectPin => 'PIN が正しくありません。もう一度お試しください。';
+
+  @override
   String get ok => 'OK';
 
   @override
@@ -264,10 +273,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get dataBackup => 'データバックアップ';
 
   @override
-  String get exportBackup => 'バックアップを書き出す';
+  String get exportBackup => '暗号化した記録を保存';
 
   @override
-  String get importBackup => 'バックアップを読み込む';
+  String get importBackup => '記録バックアップを取込';
 
   @override
   String get generatePdf => 'PDF を生成';
@@ -939,12 +948,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get reminderChannelDesc => '毎日の服薬リマインダー通知';
 
   @override
-  String get reminderNotifTitle => 'HanaNote 服薬リマインダー';
+  String get reminderNotifTitle => 'HanaNote';
 
   @override
-  String reminderNotifBody(String drugName, String dosage, String unit) {
-    return '$drugName $dosage$unit — お薬の時間です 💊';
-  }
+  String get reminderNotifBody => 'お知らせがあります';
 
   @override
   String get milestoneSubtitle => 'ここまで来たあなたは素晴らしい';
@@ -1039,7 +1046,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get privacyPolicyContent =>
-      'プライバシーポリシー\n\n最終更新日：2026年5月（v2）\n\nHanaNote（以下「本アプリ」）は、お客様のプライバシーの保護に努めています。本プライバシーポリシーは、お客様の情報の取り扱い方法について説明します。\n\n1. 保存モデル：ローカル優先、必要時のみ同期\n服薬記録、日記、身体測定、写真、血液検査結果を含むすべての個人健康データは、初期設定でお客様のデバイスにのみ保存されます。v2 以降、デバイス間アクセスのために「暗号化クラウド同期」を任意で有効にできます — これはお客様が制御し、いつでも無効化できる機能で、初期設定はオフです。\n\n2. エンドツーエンド暗号化（E2EE）\nクラウド同期を有効にした場合：すべてのアップロードデータは、お客様の PIN/生体認証から導出した鍵（Argon2id）と AES-256-GCM を使い、お客様のデバイス上で暗号化されてからアップロードされます。サーバーは解読不能な暗号文しか受け取りません — 当社のエンジニアでもお客様の健康データを読み取ることはできません。この保証はプロジェクト憲章に記載され、緩和不可能です。\n\n3. リージョンルーティング\n中国本土外のユーザーは Supabase Cloud（us-east）に直接接続します。中国本土ユーザーは Cloudflare Worker のリバースプロキシ（cn-api.hrtyaku.com、海外エッジで終端）経由で接続します。両リージョンとも同じ E2EE プロトコルを使用し、サーバーは決して復号できません。\n\n4. クラウドからの離脱\n「設定 → アカウント」のワンタップで「サインアウト + クラウド削除」を実行すると、サーバー側データは即時削除（カスケード）されます。ローカルデータは残ります。\n\n5. 緊急消去\n「設定 → 緊急消去」で 3 回連続タップ確認後、ローカル全データ + クラウドアカウント + サーバー側全レコード + 共有ポスターストレージを永久削除します。取り消し不可。\n\n6. データの収集\n本アプリは個人を特定できる情報を収集、共有、販売しません。広告 SDK は使用していません。任意のクラッシュ監視（Sentry）は初期設定オフ；有効化時は PII を剥離してから送信します。\n\n7. 権限\n本アプリは、カメラ（写真記録）、生体認証センサー（アプリロック）、通知システム（服薬リマインダー）へのアクセスを要求する場合があります。これらの権限は記載された目的のみに使用されます。\n\n8. データのエクスポート / インポート\n内蔵のエクスポート機能で完全な JSON バックアップをいつでも取得できます。データの完全な所有権はお客様にあります。\n\n9. 適用法 — 中国 PIPL に関する注記\nサーバーは現在中国本土外（Supabase us-east + Cloudflare エッジ）にあり、中華人民共和国個人情報保護法の「データローカライゼーション」条項を厳密には満たしていません。当社は以下を約束します：(a) すべてのクラウドデータはエンドツーエンド暗号化され、当社からは読み取り不能；(b) いつでもオプトアウトまたは純ローカルモードを選択可能；(c) ICP 届出完了後に国内リージョンを提供します。\n\n10. 変更\n本プライバシーポリシーは随時更新される場合があります。継続使用は更新後のポリシーの承認とみなされます。\n\n11. お問い合わせ\nお問い合わせ：https://hrtyaku.com';
+      'プライバシーについて — Android v1.2.3\n\n更新：2026年9月\n\nHanaNote は健康記録を端末内の暗号化データベースに保存し、保存するプライベート写真も暗号化します。PIN でローカル暗号鍵を解除します。アプリを再起動した後は PIN が必要です。対応端末では、同じメモリー内のセッションを生体認証で再解除できます。\n\nクラウドアカウントと同期は別の v2 開発範囲であり、この v1 Android 版では有効になっていません。クラッシュ送信は初期設定で無効で、このビルドには送信先を含めていません。新規インストールでは更新の自動確認も無効です。手動で確認するか、設定で有効にできます。外部の情報ページやダウンロードリンクを開くとネットワークを使用します。\n\nAndroid のシステムバックアップと端末移行バックアップからアプリデータを除外します。バックグラウンドでは内容を覆い隠し、アプリロックが有効な通常のバックグラウンド移行では PIN 画面に戻ります。利用者が開いたカメラ、ファイル選択、共有画面では、背景を隠したまま操作開始時のセッションを保ちます。システムの写真ライブラリからは取り込みません。カメラがアプリのキャッシュに作成する一時ファイルは読み取り後に削除します。\n\n記録バックアップは独立したパスワードと AES-256-GCM で暗号化した .vault ファイルです。薬、服用計画、服用履歴、在庫、血液検査、日記、身体測定を含みます。写真、プロフィール、アプリ設定はこの形式では復元されません。パスワードは復旧できないため大切に保管してください。旧版 JSON は明示的な互換取り込みで読み込めます。\n\nPDF レポートや記念画像は読み取れる形式の書き出しです。選択した相手だけに共有してください。共有画面が閉じた後、アプリ自身の一時コピーを削除します。受信側アプリが保存・送信したコピーは HanaNote では管理できません。\n\n通知には薬名や用量を含めず、一般的な文面を使います。カメラ、生体認証、通知の権限は対応する機能に使われ、Android 設定で管理できます。\n\n連絡先：https://hrtyaku.com';
 
   @override
   String get downloadingUpdate => 'アップデートをダウンロード中...';
@@ -1190,6 +1197,16 @@ class AppLocalizationsJa extends AppLocalizations {
   String get pdfFailed => 'PDF 生成失敗';
 
   @override
+  String get pdfPlaintextConfirmTitle => '共有用 PDF を生成しますか？';
+
+  @override
+  String get pdfPlaintextConfirmMessage =>
+      'PDF は HanaNote の外に保存・共有できる平文レポートです。保存先を信頼できる場合のみ続行してください。';
+
+  @override
+  String get pdfPlaintextConfirmAction => 'PDF を生成';
+
+  @override
   String get importInProgress => 'インポート中...';
 
   @override
@@ -1208,10 +1225,38 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get importConfirmMessage =>
-      'バックアップを既存データに統合します。同じ ID の項目は上書きされる可能性があります。';
+      '記録のみを取り込みます。写真、プロフィール、アプリ設定は復元されません。同じ ID の既存記録は置き換えられる場合があります。';
 
   @override
   String get importConfirmAction => 'インポート';
+
+  @override
+  String get backupPasswordTitle => 'バックアップパスワードを作成';
+
+  @override
+  String get backupPasswordUnlockTitle => 'バックアップを解除';
+
+  @override
+  String get backupPasswordRememberWarning =>
+      '薬、服用計画、服用履歴、在庫、血液検査、日記、身体測定をバックアップします。写真とアプリ設定は含まれません。パスワードはアプリの PIN とは別です。復旧できないため、大切に保管してください。';
+
+  @override
+  String get backupPasswordLabel => 'バックアップパスワード';
+
+  @override
+  String get backupPasswordConfirmLabel => 'バックアップパスワード確認';
+
+  @override
+  String get backupPasswordTooShort => '8文字以上で入力してください。';
+
+  @override
+  String get backupPasswordMismatch => 'バックアップパスワードが一致しません。';
+
+  @override
+  String get backupPasswordCreateAction => '暗号化バックアップを作成';
+
+  @override
+  String get backupPasswordUnlockAction => 'バックアップを解除';
 
   @override
   String get termsOfUseContent =>

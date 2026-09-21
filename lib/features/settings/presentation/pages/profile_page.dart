@@ -3,7 +3,8 @@
 // dartdoc coverage is deferred to the documentation pass.
 // ignore_for_file: public_member_api_docs
 
-import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,8 +12,10 @@ import 'package:go_router/go_router.dart';
 import 'package:hananote/app/theme/hana_colors.dart';
 import 'package:hananote/app/theme/hana_colors_v2.dart';
 import 'package:hananote/app/theme/hana_typography.dart';
+import 'package:hananote/core/backup/read_backup_stream.dart';
 import 'package:hananote/core/constants/app_urls.dart';
 import 'package:hananote/core/l10n/arb/app_localizations.dart';
+import 'package:hananote/core/privacy/native_interaction.dart';
 import 'package:hananote/core/widgets/hoyo/hoyo_app_bar.dart';
 import 'package:hananote/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:hananote/features/settings/presentation/bloc/settings_event.dart';
@@ -82,8 +85,7 @@ class ProfilePage extends StatelessWidget {
                       color: HanaColorsV2.champagneSoft,
                       borderRadius: BorderRadius.circular(9999),
                       border: Border.all(
-                        color: HanaColorsV2.goldLight
-                            .withValues(alpha: 0.55),
+                        color: HanaColorsV2.goldLight.withValues(alpha: 0.55),
                       ),
                     ),
                     child: Text(
@@ -115,13 +117,11 @@ class ProfilePage extends StatelessWidget {
               ),
               actions: [
                 TextButton(
-                  onPressed: () =>
-                      Navigator.of(dialogContext).pop(false),
+                  onPressed: () => Navigator.of(dialogContext).pop(false),
                   child: Text(
                     l10n.cancel,
                     style: TextStyle(
-                      color:
-                          HanaColors.onSurfaceVariantOf(dialogContext),
+                      color: HanaColors.onSurfaceVariantOf(dialogContext),
                     ),
                   ),
                 ),
@@ -151,6 +151,35 @@ class ProfilePage extends StatelessWidget {
 
   Future<void> _handleGeneratePdf(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        backgroundColor: HanaColors.surfaceContainerLowestOf(dialogContext),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        title: Text(l10n.pdfPlaintextConfirmTitle),
+        content: Text(l10n.pdfPlaintextConfirmMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(
+              l10n.pdfPlaintextConfirmAction,
+              style: TextStyle(
+                color: HanaColors.primaryOf(dialogContext),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    if ((confirmed ?? false) == false || !context.mounted) return;
+
     context.read<SettingsBloc>().add(
           SettingsEvent.generatePdfReport(
             pdfTitle: l10n.pdfTitle,
@@ -163,25 +192,68 @@ class ProfilePage extends StatelessWidget {
         );
   }
 
+  Future<void> _handleExportBackup(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+    final password = await _showBackupPasswordDialog(
+      context: context,
+      l10n: l10n,
+      requireConfirm: true,
+    );
+    if (password == null || !context.mounted) return;
+    context.read<SettingsBloc>().add(
+          SettingsEvent.exportData(password: password),
+        );
+  }
+
   Future<void> _handleImportBackup(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
     final messenger = ScaffoldMessenger.of(context);
     final bloc = context.read<SettingsBloc>();
 
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['json'],
-      withData: true,
-    );
-
-    if (result == null || result.files.isEmpty) return;
-    final bytes = result.files.first.bytes;
-    if (bytes == null) {
-      messenger
-        ..hideCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text(l10n.importFailed)));
+    FilePickerResult? result;
+    try {
+      result = await NativeInteraction.run(
+        () => FilePicker.platform.pickFiles(
+          // Android's MIME registry does not recognize .vault; custom filters
+          // otherwise disable valid vault files. Validate the extension below.
+          type: FileType.any,
+          withData: false,
+          withReadStream: true,
+        ),
+      );
+    } catch (_) {
+      if (!context.mounted) return;
+      messenger.showSnackBar(SnackBar(content: Text(l10n.importFailed)));
       return;
     }
+
+    if (result == null || result.files.isEmpty) return;
+    if (!context.mounted) return;
+    final fileName = result.files.first.name.toLowerCase();
+    if (!fileName.endsWith('.vault') && !fileName.endsWith('.json')) {
+      messenger.showSnackBar(SnackBar(content: Text(l10n.importFailed)));
+      return;
+    }
+    late final Uint8List bytes;
+    try {
+      final file = result.files.first;
+      final stream = file.readStream;
+      if (stream == null) throw const FormatException('Backup stream missing.');
+      bytes = await readBackupStream(stream: stream, declaredSize: file.size);
+    } catch (_) {
+      if (!context.mounted) return;
+      messenger.showSnackBar(SnackBar(content: Text(l10n.importFailed)));
+      return;
+    }
+    if (!context.mounted) return;
+    final password = fileName.endsWith('.vault')
+        ? await _showBackupPasswordDialog(
+            context: context,
+            l10n: l10n,
+            requireConfirm: false,
+          )
+        : '';
+    if (password == null) return;
 
     if (!context.mounted) return;
     final confirm = await showDialog<bool>(
@@ -213,8 +285,133 @@ class ProfilePage extends StatelessWidget {
     );
 
     if (confirm ?? false) {
-      final jsonString = utf8.decode(bytes);
-      bloc.add(SettingsEvent.importBackup(jsonString: jsonString));
+      bloc.add(
+        SettingsEvent.importBackup(
+          backupBytes: bytes,
+          password: password,
+          legacyJson: fileName.endsWith('.json'),
+        ),
+      );
+    }
+  }
+
+  Future<String?> _showBackupPasswordDialog({
+    required BuildContext context,
+    required AppLocalizations l10n,
+    required bool requireConfirm,
+  }) async {
+    final passwordController = TextEditingController();
+    final confirmController = TextEditingController();
+    String? errorText;
+
+    try {
+      return await showDialog<String>(
+        context: context,
+        builder: (dialogContext) {
+          return StatefulBuilder(
+            builder: (context, setState) {
+              return AlertDialog(
+                backgroundColor:
+                    HanaColors.surfaceContainerLowestOf(dialogContext),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                title: Text(
+                  requireConfirm
+                      ? l10n.backupPasswordTitle
+                      : l10n.backupPasswordUnlockTitle,
+                ),
+                content: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        l10n.backupPasswordRememberWarning,
+                        style: HanaTypography.bodyMd.copyWith(
+                          color: HanaColors.onSurfaceVariantOf(dialogContext),
+                          height: 1.5,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: l10n.backupPasswordLabel,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                      if (requireConfirm) ...[
+                        const SizedBox(height: 12),
+                        TextField(
+                          controller: confirmController,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            labelText: l10n.backupPasswordConfirmLabel,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ],
+                      if (errorText != null) ...[
+                        const SizedBox(height: 10),
+                        Text(
+                          errorText!,
+                          style: HanaTypography.labelMd.copyWith(
+                            color: HanaColors.tertiaryOf(dialogContext),
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(dialogContext).pop(),
+                    child: Text(l10n.cancel),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      final password = passwordController.text;
+                      final confirm = confirmController.text;
+                      if (password.length < 8) {
+                        setState(() {
+                          errorText = l10n.backupPasswordTooShort;
+                        });
+                        return;
+                      }
+                      if (requireConfirm && password != confirm) {
+                        setState(() {
+                          errorText = l10n.backupPasswordMismatch;
+                        });
+                        return;
+                      }
+                      Navigator.of(dialogContext).pop(password);
+                    },
+                    child: Text(
+                      requireConfirm
+                          ? l10n.backupPasswordCreateAction
+                          : l10n.backupPasswordUnlockAction,
+                      style: TextStyle(
+                        color: HanaColors.primaryOf(dialogContext),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      );
+    } finally {
+      passwordController.dispose();
+      confirmController.dispose();
     }
   }
 
@@ -278,7 +475,9 @@ class ProfilePage extends StatelessWidget {
       },
       builder: (context, rootState) {
         final l10n = AppLocalizations.of(context)!;
-        final state = rootState is SettingsActionResult ? rootState.previousState : rootState;
+        final state = rootState is SettingsActionResult
+            ? rootState.previousState
+            : rootState;
 
         if (state is SettingsError) {
           return Scaffold(
@@ -373,32 +572,36 @@ class ProfilePage extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        state.profile.displayName,
+                        state.profile.displayName.isEmpty
+                            ? l10n.defaultUserName
+                            : state.profile.displayName,
                         style: theme.textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: HanaColors.primary,
                           fontFamily: 'Plus Jakarta Sans',
                         ),
                       ),
-                      const SizedBox(height: 6),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: HanaColors.surfaceContainerHigh,
-                          borderRadius: BorderRadius.circular(9999),
-                        ),
-                        child: Text(
-                          l10n.hrtDay(state.profile.hrtDayCount),
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: HanaColors.onSurfaceVariant
-                                .withAlpha((255 * 0.8).round()),
+                      if (state.profile.hrtStartDate != null) ...[
+                        const SizedBox(height: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: HanaColors.surfaceContainerHigh,
+                            borderRadius: BorderRadius.circular(9999),
+                          ),
+                          child: Text(
+                            l10n.hrtDay(state.profile.hrtDayCount),
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: HanaColors.onSurfaceVariant
+                                  .withAlpha((255 * 0.8).round()),
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ],
                   ),
                   const SizedBox(height: 48),
@@ -577,8 +780,7 @@ class ProfilePage extends StatelessWidget {
                     title: l10n.exportBackup,
                     trailingText: lastBackupText,
                     decoration: _bentoDecoration(),
-                    onTap: () =>
-                        context.read<SettingsBloc>().add(const ExportDataEvent()),
+                    onTap: () => _handleExportBackup(context),
                   ),
                   const SizedBox(height: 12),
                   _ButtonRowItem(

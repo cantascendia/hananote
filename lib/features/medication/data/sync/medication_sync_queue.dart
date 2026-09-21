@@ -61,19 +61,19 @@ class MedicationSyncQueue implements SyncQueue {
         final occurredAt = updatedAt == null || updatedAt.isEmpty
             ? null
             : DateTime.tryParse(updatedAt);
-        final op = (row['is_deleted'] as int? ?? 0) == 1
-            ? 'delete'
-            : 'upsert';
-        records.add(SyncedRecord(
-          id: id,
-          kind: kind,
-          occurredAt: occurredAt,
-          payload: <String, dynamic>{
-            'table': table,
-            'op': op,
-            'row': Map<String, dynamic>.from(row),
-          },
-        ),);
+        final op = (row['is_deleted'] as int? ?? 0) == 1 ? 'delete' : 'upsert';
+        records.add(
+          SyncedRecord(
+            id: id,
+            kind: kind,
+            occurredAt: occurredAt,
+            payload: <String, dynamic>{
+              'table': table,
+              'op': op,
+              'row': Map<String, dynamic>.from(row),
+            },
+          ),
+        );
       }
     }
 
@@ -145,18 +145,26 @@ class MedicationSyncQueue implements SyncQueue {
           // Remote delete for a row we never had — write a tombstone
           // so subsequent syncs don't reintroduce it from a stale
           // peer.
-          await txn.insert(table, {
-            ...row,
-            'dirty': 0,
-            'is_deleted': 1,
-            'synced_at': DateTime.now().toUtc().toIso8601String(),
-          }, conflictAlgorithm: ConflictAlgorithm.replace,);
+          await txn.insert(
+            table,
+            {
+              ...row,
+              'dirty': 0,
+              'is_deleted': 1,
+              'synced_at': DateTime.now().toUtc().toIso8601String(),
+            },
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          );
         } else {
-          await txn.insert(table, {
-            ...row,
-            'dirty': 0,
-            'synced_at': DateTime.now().toUtc().toIso8601String(),
-          }, conflictAlgorithm: ConflictAlgorithm.replace,);
+          await txn.insert(
+            table,
+            {
+              ...row,
+              'dirty': 0,
+              'synced_at': DateTime.now().toUtc().toIso8601String(),
+            },
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          );
         }
         return;
       }

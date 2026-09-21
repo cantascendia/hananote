@@ -16,8 +16,6 @@ class SettingsRepositoryImpl implements SettingsRepository {
   final SettingsLocalDataSource _localDataSource;
   final AuthRepository _authRepository;
 
-  static final DateTime _defaultHrtStartDate = DateTime(2025, 11, 30);
-
   @override
   Future<Either<Failure, UserProfile>> getUserProfile() {
     return _guardStorage(() async {
@@ -87,8 +85,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
 
   UserProfile _defaultProfile() {
     return UserProfile.withCalculatedHrtDayCount(
-      displayName: '小花',
-      hrtStartDate: _defaultHrtStartDate,
+      displayName: '',
     );
   }
 

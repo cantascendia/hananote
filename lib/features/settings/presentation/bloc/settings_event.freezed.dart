@@ -26,12 +26,14 @@ mixin _$SettingsEvent {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -40,7 +42,9 @@ mixin _$SettingsEvent {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) =>
       throw _privateConstructorUsedError;
@@ -54,16 +58,19 @@ mixin _$SettingsEvent {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) =>
       throw _privateConstructorUsedError;
@@ -77,16 +84,19 @@ mixin _$SettingsEvent {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) =>
@@ -101,6 +111,7 @@ mixin _$SettingsEvent {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -124,6 +135,7 @@ mixin _$SettingsEvent {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -145,6 +157,7 @@ mixin _$SettingsEvent {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,
@@ -231,12 +244,14 @@ class _$LoadSettingsDashboardImpl implements LoadSettingsDashboard {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -245,7 +260,9 @@ class _$LoadSettingsDashboardImpl implements LoadSettingsDashboard {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) {
     return loadDashboard();
@@ -262,16 +279,19 @@ class _$LoadSettingsDashboardImpl implements LoadSettingsDashboard {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) {
     return loadDashboard?.call();
@@ -288,16 +308,19 @@ class _$LoadSettingsDashboardImpl implements LoadSettingsDashboard {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) {
@@ -318,6 +341,7 @@ class _$LoadSettingsDashboardImpl implements LoadSettingsDashboard {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -344,6 +368,7 @@ class _$LoadSettingsDashboardImpl implements LoadSettingsDashboard {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -368,6 +393,7 @@ class _$LoadSettingsDashboardImpl implements LoadSettingsDashboard {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,
@@ -466,12 +492,14 @@ class _$ToggleAppLockImpl implements ToggleAppLock {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -480,7 +508,9 @@ class _$ToggleAppLockImpl implements ToggleAppLock {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) {
     return toggleAppLock(enabled);
@@ -497,16 +527,19 @@ class _$ToggleAppLockImpl implements ToggleAppLock {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) {
     return toggleAppLock?.call(enabled);
@@ -523,16 +556,19 @@ class _$ToggleAppLockImpl implements ToggleAppLock {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) {
@@ -553,6 +589,7 @@ class _$ToggleAppLockImpl implements ToggleAppLock {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -579,6 +616,7 @@ class _$ToggleAppLockImpl implements ToggleAppLock {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -603,6 +641,7 @@ class _$ToggleAppLockImpl implements ToggleAppLock {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,
@@ -711,12 +750,14 @@ class _$TogglePrivacyModeImpl implements TogglePrivacyMode {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -725,7 +766,9 @@ class _$TogglePrivacyModeImpl implements TogglePrivacyMode {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) {
     return togglePrivacyMode(enabled);
@@ -742,16 +785,19 @@ class _$TogglePrivacyModeImpl implements TogglePrivacyMode {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) {
     return togglePrivacyMode?.call(enabled);
@@ -768,16 +814,19 @@ class _$TogglePrivacyModeImpl implements TogglePrivacyMode {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) {
@@ -798,6 +847,7 @@ class _$TogglePrivacyModeImpl implements TogglePrivacyMode {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -824,6 +874,7 @@ class _$TogglePrivacyModeImpl implements TogglePrivacyMode {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -848,6 +899,7 @@ class _$TogglePrivacyModeImpl implements TogglePrivacyMode {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,
@@ -956,12 +1008,14 @@ class _$ToggleBlurOverlayImpl implements ToggleBlurOverlay {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -970,7 +1024,9 @@ class _$ToggleBlurOverlayImpl implements ToggleBlurOverlay {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) {
     return toggleBlurOverlay(enabled);
@@ -987,16 +1043,19 @@ class _$ToggleBlurOverlayImpl implements ToggleBlurOverlay {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) {
     return toggleBlurOverlay?.call(enabled);
@@ -1013,16 +1072,19 @@ class _$ToggleBlurOverlayImpl implements ToggleBlurOverlay {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) {
@@ -1043,6 +1105,7 @@ class _$ToggleBlurOverlayImpl implements ToggleBlurOverlay {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -1069,6 +1132,7 @@ class _$ToggleBlurOverlayImpl implements ToggleBlurOverlay {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -1093,6 +1157,7 @@ class _$ToggleBlurOverlayImpl implements ToggleBlurOverlay {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,
@@ -1201,12 +1266,14 @@ class _$UpdateDisplayNameImpl implements UpdateDisplayName {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -1215,7 +1282,9 @@ class _$UpdateDisplayNameImpl implements UpdateDisplayName {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) {
     return updateDisplayName(name);
@@ -1232,16 +1301,19 @@ class _$UpdateDisplayNameImpl implements UpdateDisplayName {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) {
     return updateDisplayName?.call(name);
@@ -1258,16 +1330,19 @@ class _$UpdateDisplayNameImpl implements UpdateDisplayName {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) {
@@ -1288,6 +1363,7 @@ class _$UpdateDisplayNameImpl implements UpdateDisplayName {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -1314,6 +1390,7 @@ class _$UpdateDisplayNameImpl implements UpdateDisplayName {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -1338,6 +1415,7 @@ class _$UpdateDisplayNameImpl implements UpdateDisplayName {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,
@@ -1446,12 +1524,14 @@ class _$UpdateHrtStartDateImpl implements UpdateHrtStartDate {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -1460,7 +1540,9 @@ class _$UpdateHrtStartDateImpl implements UpdateHrtStartDate {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) {
     return updateHrtStartDate(date);
@@ -1477,16 +1559,19 @@ class _$UpdateHrtStartDateImpl implements UpdateHrtStartDate {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) {
     return updateHrtStartDate?.call(date);
@@ -1503,16 +1588,19 @@ class _$UpdateHrtStartDateImpl implements UpdateHrtStartDate {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) {
@@ -1533,6 +1621,7 @@ class _$UpdateHrtStartDateImpl implements UpdateHrtStartDate {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -1559,6 +1648,7 @@ class _$UpdateHrtStartDateImpl implements UpdateHrtStartDate {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -1583,6 +1673,7 @@ class _$UpdateHrtStartDateImpl implements UpdateHrtStartDate {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,
@@ -1663,12 +1754,14 @@ class _$WipeSettingsDataImpl implements WipeSettingsData {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -1677,7 +1770,9 @@ class _$WipeSettingsDataImpl implements WipeSettingsData {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) {
     return wipeData();
@@ -1694,16 +1789,19 @@ class _$WipeSettingsDataImpl implements WipeSettingsData {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) {
     return wipeData?.call();
@@ -1720,16 +1818,19 @@ class _$WipeSettingsDataImpl implements WipeSettingsData {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) {
@@ -1750,6 +1851,7 @@ class _$WipeSettingsDataImpl implements WipeSettingsData {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -1776,6 +1878,7 @@ class _$WipeSettingsDataImpl implements WipeSettingsData {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -1800,6 +1903,7 @@ class _$WipeSettingsDataImpl implements WipeSettingsData {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,
@@ -1899,12 +2003,14 @@ class _$ToggleNotificationsImpl implements ToggleNotifications {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -1913,7 +2019,9 @@ class _$ToggleNotificationsImpl implements ToggleNotifications {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) {
     return toggleNotifications(enabled);
@@ -1930,16 +2038,19 @@ class _$ToggleNotificationsImpl implements ToggleNotifications {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) {
     return toggleNotifications?.call(enabled);
@@ -1956,16 +2067,19 @@ class _$ToggleNotificationsImpl implements ToggleNotifications {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) {
@@ -1986,6 +2100,7 @@ class _$ToggleNotificationsImpl implements ToggleNotifications {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -2012,6 +2127,7 @@ class _$ToggleNotificationsImpl implements ToggleNotifications {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -2036,6 +2152,7 @@ class _$ToggleNotificationsImpl implements ToggleNotifications {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,
@@ -2068,42 +2185,78 @@ abstract class ToggleNotifications implements SettingsEvent {
 }
 
 /// @nodoc
-abstract class _$$ExportDataEventImplCopyWith<$Res> {
-  factory _$$ExportDataEventImplCopyWith(_$ExportDataEventImpl value,
-          $Res Function(_$ExportDataEventImpl) then) =
-      __$$ExportDataEventImplCopyWithImpl<$Res>;
+abstract class _$$ToggleDrugReminderImplCopyWith<$Res> {
+  factory _$$ToggleDrugReminderImplCopyWith(_$ToggleDrugReminderImpl value,
+          $Res Function(_$ToggleDrugReminderImpl) then) =
+      __$$ToggleDrugReminderImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String drugId, bool enabled});
 }
 
 /// @nodoc
-class __$$ExportDataEventImplCopyWithImpl<$Res>
-    extends _$SettingsEventCopyWithImpl<$Res, _$ExportDataEventImpl>
-    implements _$$ExportDataEventImplCopyWith<$Res> {
-  __$$ExportDataEventImplCopyWithImpl(
-      _$ExportDataEventImpl _value, $Res Function(_$ExportDataEventImpl) _then)
+class __$$ToggleDrugReminderImplCopyWithImpl<$Res>
+    extends _$SettingsEventCopyWithImpl<$Res, _$ToggleDrugReminderImpl>
+    implements _$$ToggleDrugReminderImplCopyWith<$Res> {
+  __$$ToggleDrugReminderImplCopyWithImpl(_$ToggleDrugReminderImpl _value,
+      $Res Function(_$ToggleDrugReminderImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of SettingsEvent
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? drugId = null,
+    Object? enabled = null,
+  }) {
+    return _then(_$ToggleDrugReminderImpl(
+      drugId: null == drugId
+          ? _value.drugId
+          : drugId // ignore: cast_nullable_to_non_nullable
+              as String,
+      enabled: null == enabled
+          ? _value.enabled
+          : enabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
 }
 
 /// @nodoc
 
-class _$ExportDataEventImpl implements ExportDataEvent {
-  const _$ExportDataEventImpl();
+class _$ToggleDrugReminderImpl implements ToggleDrugReminder {
+  const _$ToggleDrugReminderImpl({required this.drugId, required this.enabled});
+
+  @override
+  final String drugId;
+  @override
+  final bool enabled;
 
   @override
   String toString() {
-    return 'SettingsEvent.exportData()';
+    return 'SettingsEvent.toggleDrugReminder(drugId: $drugId, enabled: $enabled)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ExportDataEventImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$ToggleDrugReminderImpl &&
+            (identical(other.drugId, drugId) || other.drugId == drugId) &&
+            (identical(other.enabled, enabled) || other.enabled == enabled));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, drugId, enabled);
+
+  /// Create a copy of SettingsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ToggleDrugReminderImplCopyWith<_$ToggleDrugReminderImpl> get copyWith =>
+      __$$ToggleDrugReminderImplCopyWithImpl<_$ToggleDrugReminderImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -2116,12 +2269,14 @@ class _$ExportDataEventImpl implements ExportDataEvent {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -2130,10 +2285,12 @@ class _$ExportDataEventImpl implements ExportDataEvent {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) {
-    return exportData();
+    return toggleDrugReminder(drugId, enabled);
   }
 
   @override
@@ -2147,19 +2304,22 @@ class _$ExportDataEventImpl implements ExportDataEvent {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) {
-    return exportData?.call();
+    return toggleDrugReminder?.call(drugId, enabled);
   }
 
   @override
@@ -2173,21 +2333,24 @@ class _$ExportDataEventImpl implements ExportDataEvent {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) {
-    if (exportData != null) {
-      return exportData();
+    if (toggleDrugReminder != null) {
+      return toggleDrugReminder(drugId, enabled);
     }
     return orElse();
   }
@@ -2203,6 +2366,268 @@ class _$ExportDataEventImpl implements ExportDataEvent {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
+    required TResult Function(ExportDataEvent value) exportData,
+    required TResult Function(ChangeLanguage value) changeLanguage,
+    required TResult Function(ToggleDarkMode value) toggleDarkMode,
+    required TResult Function(ToggleAutoCheckUpdate value)
+        toggleAutoCheckUpdate,
+    required TResult Function(SkipVersion value) skipVersion,
+    required TResult Function(MarkOnboardingComplete value)
+        markOnboardingComplete,
+    required TResult Function(GeneratePdfReportEvent value) generatePdfReport,
+    required TResult Function(ImportBackupEvent value) importBackup,
+    required TResult Function(ToggleCrashReporting value) toggleCrashReporting,
+  }) {
+    return toggleDrugReminder(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(LoadSettingsDashboard value)? loadDashboard,
+    TResult? Function(ToggleAppLock value)? toggleAppLock,
+    TResult? Function(TogglePrivacyMode value)? togglePrivacyMode,
+    TResult? Function(ToggleBlurOverlay value)? toggleBlurOverlay,
+    TResult? Function(UpdateDisplayName value)? updateDisplayName,
+    TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
+    TResult? Function(WipeSettingsData value)? wipeData,
+    TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
+    TResult? Function(ExportDataEvent value)? exportData,
+    TResult? Function(ChangeLanguage value)? changeLanguage,
+    TResult? Function(ToggleDarkMode value)? toggleDarkMode,
+    TResult? Function(ToggleAutoCheckUpdate value)? toggleAutoCheckUpdate,
+    TResult? Function(SkipVersion value)? skipVersion,
+    TResult? Function(MarkOnboardingComplete value)? markOnboardingComplete,
+    TResult? Function(GeneratePdfReportEvent value)? generatePdfReport,
+    TResult? Function(ImportBackupEvent value)? importBackup,
+    TResult? Function(ToggleCrashReporting value)? toggleCrashReporting,
+  }) {
+    return toggleDrugReminder?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(LoadSettingsDashboard value)? loadDashboard,
+    TResult Function(ToggleAppLock value)? toggleAppLock,
+    TResult Function(TogglePrivacyMode value)? togglePrivacyMode,
+    TResult Function(ToggleBlurOverlay value)? toggleBlurOverlay,
+    TResult Function(UpdateDisplayName value)? updateDisplayName,
+    TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
+    TResult Function(WipeSettingsData value)? wipeData,
+    TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
+    TResult Function(ExportDataEvent value)? exportData,
+    TResult Function(ChangeLanguage value)? changeLanguage,
+    TResult Function(ToggleDarkMode value)? toggleDarkMode,
+    TResult Function(ToggleAutoCheckUpdate value)? toggleAutoCheckUpdate,
+    TResult Function(SkipVersion value)? skipVersion,
+    TResult Function(MarkOnboardingComplete value)? markOnboardingComplete,
+    TResult Function(GeneratePdfReportEvent value)? generatePdfReport,
+    TResult Function(ImportBackupEvent value)? importBackup,
+    TResult Function(ToggleCrashReporting value)? toggleCrashReporting,
+    required TResult orElse(),
+  }) {
+    if (toggleDrugReminder != null) {
+      return toggleDrugReminder(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ToggleDrugReminder implements SettingsEvent {
+  const factory ToggleDrugReminder(
+      {required final String drugId,
+      required final bool enabled}) = _$ToggleDrugReminderImpl;
+
+  String get drugId;
+  bool get enabled;
+
+  /// Create a copy of SettingsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ToggleDrugReminderImplCopyWith<_$ToggleDrugReminderImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ExportDataEventImplCopyWith<$Res> {
+  factory _$$ExportDataEventImplCopyWith(_$ExportDataEventImpl value,
+          $Res Function(_$ExportDataEventImpl) then) =
+      __$$ExportDataEventImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String password});
+}
+
+/// @nodoc
+class __$$ExportDataEventImplCopyWithImpl<$Res>
+    extends _$SettingsEventCopyWithImpl<$Res, _$ExportDataEventImpl>
+    implements _$$ExportDataEventImplCopyWith<$Res> {
+  __$$ExportDataEventImplCopyWithImpl(
+      _$ExportDataEventImpl _value, $Res Function(_$ExportDataEventImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of SettingsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? password = null,
+  }) {
+    return _then(_$ExportDataEventImpl(
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ExportDataEventImpl implements ExportDataEvent {
+  const _$ExportDataEventImpl({required this.password});
+
+  @override
+  final String password;
+
+  @override
+  String toString() {
+    return 'SettingsEvent.exportData(password: $password)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ExportDataEventImpl &&
+            (identical(other.password, password) ||
+                other.password == password));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, password);
+
+  /// Create a copy of SettingsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ExportDataEventImplCopyWith<_$ExportDataEventImpl> get copyWith =>
+      __$$ExportDataEventImplCopyWithImpl<_$ExportDataEventImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loadDashboard,
+    required TResult Function(bool enabled) toggleAppLock,
+    required TResult Function(bool enabled) togglePrivacyMode,
+    required TResult Function(bool enabled) toggleBlurOverlay,
+    required TResult Function(String name) updateDisplayName,
+    required TResult Function(DateTime date) updateHrtStartDate,
+    required TResult Function() wipeData,
+    required TResult Function(bool enabled) toggleNotifications,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
+    required TResult Function(String languageCode) changeLanguage,
+    required TResult Function(bool enabled) toggleDarkMode,
+    required TResult Function(bool enabled) toggleAutoCheckUpdate,
+    required TResult Function(String version) skipVersion,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
+    required TResult Function(
+            String pdfTitle,
+            String medSection,
+            String bloodSection,
+            String measureSection,
+            String journalSection,
+            String noData)
+        generatePdfReport,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
+    required TResult Function(bool enabled) toggleCrashReporting,
+  }) {
+    return exportData(password);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadDashboard,
+    TResult? Function(bool enabled)? toggleAppLock,
+    TResult? Function(bool enabled)? togglePrivacyMode,
+    TResult? Function(bool enabled)? toggleBlurOverlay,
+    TResult? Function(String name)? updateDisplayName,
+    TResult? Function(DateTime date)? updateHrtStartDate,
+    TResult? Function()? wipeData,
+    TResult? Function(bool enabled)? toggleNotifications,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
+    TResult? Function(String languageCode)? changeLanguage,
+    TResult? Function(bool enabled)? toggleDarkMode,
+    TResult? Function(bool enabled)? toggleAutoCheckUpdate,
+    TResult? Function(String version)? skipVersion,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
+    TResult? Function(String pdfTitle, String medSection, String bloodSection,
+            String measureSection, String journalSection, String noData)?
+        generatePdfReport,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
+    TResult? Function(bool enabled)? toggleCrashReporting,
+  }) {
+    return exportData?.call(password);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadDashboard,
+    TResult Function(bool enabled)? toggleAppLock,
+    TResult Function(bool enabled)? togglePrivacyMode,
+    TResult Function(bool enabled)? toggleBlurOverlay,
+    TResult Function(String name)? updateDisplayName,
+    TResult Function(DateTime date)? updateHrtStartDate,
+    TResult Function()? wipeData,
+    TResult Function(bool enabled)? toggleNotifications,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
+    TResult Function(String languageCode)? changeLanguage,
+    TResult Function(bool enabled)? toggleDarkMode,
+    TResult Function(bool enabled)? toggleAutoCheckUpdate,
+    TResult Function(String version)? skipVersion,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
+    TResult Function(String pdfTitle, String medSection, String bloodSection,
+            String measureSection, String journalSection, String noData)?
+        generatePdfReport,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
+    TResult Function(bool enabled)? toggleCrashReporting,
+    required TResult orElse(),
+  }) {
+    if (exportData != null) {
+      return exportData(password);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(LoadSettingsDashboard value) loadDashboard,
+    required TResult Function(ToggleAppLock value) toggleAppLock,
+    required TResult Function(TogglePrivacyMode value) togglePrivacyMode,
+    required TResult Function(ToggleBlurOverlay value) toggleBlurOverlay,
+    required TResult Function(UpdateDisplayName value) updateDisplayName,
+    required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
+    required TResult Function(WipeSettingsData value) wipeData,
+    required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -2229,6 +2654,7 @@ class _$ExportDataEventImpl implements ExportDataEvent {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -2253,6 +2679,7 @@ class _$ExportDataEventImpl implements ExportDataEvent {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,
@@ -2272,7 +2699,16 @@ class _$ExportDataEventImpl implements ExportDataEvent {
 }
 
 abstract class ExportDataEvent implements SettingsEvent {
-  const factory ExportDataEvent() = _$ExportDataEventImpl;
+  const factory ExportDataEvent({required final String password}) =
+      _$ExportDataEventImpl;
+
+  String get password;
+
+  /// Create a copy of SettingsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ExportDataEventImplCopyWith<_$ExportDataEventImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -2353,12 +2789,14 @@ class _$ChangeLanguageImpl implements ChangeLanguage {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -2367,7 +2805,9 @@ class _$ChangeLanguageImpl implements ChangeLanguage {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) {
     return changeLanguage(languageCode);
@@ -2384,16 +2824,19 @@ class _$ChangeLanguageImpl implements ChangeLanguage {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) {
     return changeLanguage?.call(languageCode);
@@ -2410,16 +2853,19 @@ class _$ChangeLanguageImpl implements ChangeLanguage {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) {
@@ -2440,6 +2886,7 @@ class _$ChangeLanguageImpl implements ChangeLanguage {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -2466,6 +2913,7 @@ class _$ChangeLanguageImpl implements ChangeLanguage {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -2490,6 +2938,7 @@ class _$ChangeLanguageImpl implements ChangeLanguage {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,
@@ -2598,12 +3047,14 @@ class _$ToggleDarkModeImpl implements ToggleDarkMode {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -2612,7 +3063,9 @@ class _$ToggleDarkModeImpl implements ToggleDarkMode {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) {
     return toggleDarkMode(enabled);
@@ -2629,16 +3082,19 @@ class _$ToggleDarkModeImpl implements ToggleDarkMode {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) {
     return toggleDarkMode?.call(enabled);
@@ -2655,16 +3111,19 @@ class _$ToggleDarkModeImpl implements ToggleDarkMode {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) {
@@ -2685,6 +3144,7 @@ class _$ToggleDarkModeImpl implements ToggleDarkMode {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -2711,6 +3171,7 @@ class _$ToggleDarkModeImpl implements ToggleDarkMode {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -2735,6 +3196,7 @@ class _$ToggleDarkModeImpl implements ToggleDarkMode {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,
@@ -2844,12 +3306,14 @@ class _$ToggleAutoCheckUpdateImpl implements ToggleAutoCheckUpdate {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -2858,7 +3322,9 @@ class _$ToggleAutoCheckUpdateImpl implements ToggleAutoCheckUpdate {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) {
     return toggleAutoCheckUpdate(enabled);
@@ -2875,16 +3341,19 @@ class _$ToggleAutoCheckUpdateImpl implements ToggleAutoCheckUpdate {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) {
     return toggleAutoCheckUpdate?.call(enabled);
@@ -2901,16 +3370,19 @@ class _$ToggleAutoCheckUpdateImpl implements ToggleAutoCheckUpdate {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) {
@@ -2931,6 +3403,7 @@ class _$ToggleAutoCheckUpdateImpl implements ToggleAutoCheckUpdate {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -2957,6 +3430,7 @@ class _$ToggleAutoCheckUpdateImpl implements ToggleAutoCheckUpdate {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -2981,6 +3455,7 @@ class _$ToggleAutoCheckUpdateImpl implements ToggleAutoCheckUpdate {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,
@@ -3088,12 +3563,14 @@ class _$SkipVersionImpl implements SkipVersion {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -3102,7 +3579,9 @@ class _$SkipVersionImpl implements SkipVersion {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) {
     return skipVersion(version);
@@ -3119,16 +3598,19 @@ class _$SkipVersionImpl implements SkipVersion {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) {
     return skipVersion?.call(version);
@@ -3145,16 +3627,19 @@ class _$SkipVersionImpl implements SkipVersion {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) {
@@ -3175,6 +3660,7 @@ class _$SkipVersionImpl implements SkipVersion {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -3201,6 +3687,7 @@ class _$SkipVersionImpl implements SkipVersion {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -3225,6 +3712,7 @@ class _$SkipVersionImpl implements SkipVersion {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,
@@ -3262,6 +3750,8 @@ abstract class _$$MarkOnboardingCompleteImplCopyWith<$Res> {
           _$MarkOnboardingCompleteImpl value,
           $Res Function(_$MarkOnboardingCompleteImpl) then) =
       __$$MarkOnboardingCompleteImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String? displayName, DateTime? hrtStartDate});
 }
 
 /// @nodoc
@@ -3275,27 +3765,62 @@ class __$$MarkOnboardingCompleteImplCopyWithImpl<$Res>
 
   /// Create a copy of SettingsEvent
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? displayName = freezed,
+    Object? hrtStartDate = freezed,
+  }) {
+    return _then(_$MarkOnboardingCompleteImpl(
+      displayName: freezed == displayName
+          ? _value.displayName
+          : displayName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      hrtStartDate: freezed == hrtStartDate
+          ? _value.hrtStartDate
+          : hrtStartDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$MarkOnboardingCompleteImpl implements MarkOnboardingComplete {
-  const _$MarkOnboardingCompleteImpl();
+  const _$MarkOnboardingCompleteImpl({this.displayName, this.hrtStartDate});
+
+  @override
+  final String? displayName;
+  @override
+  final DateTime? hrtStartDate;
 
   @override
   String toString() {
-    return 'SettingsEvent.markOnboardingComplete()';
+    return 'SettingsEvent.markOnboardingComplete(displayName: $displayName, hrtStartDate: $hrtStartDate)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MarkOnboardingCompleteImpl);
+            other is _$MarkOnboardingCompleteImpl &&
+            (identical(other.displayName, displayName) ||
+                other.displayName == displayName) &&
+            (identical(other.hrtStartDate, hrtStartDate) ||
+                other.hrtStartDate == hrtStartDate));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, displayName, hrtStartDate);
+
+  /// Create a copy of SettingsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$MarkOnboardingCompleteImplCopyWith<_$MarkOnboardingCompleteImpl>
+      get copyWith => __$$MarkOnboardingCompleteImplCopyWithImpl<
+          _$MarkOnboardingCompleteImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -3308,12 +3833,14 @@ class _$MarkOnboardingCompleteImpl implements MarkOnboardingComplete {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -3322,10 +3849,12 @@ class _$MarkOnboardingCompleteImpl implements MarkOnboardingComplete {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) {
-    return markOnboardingComplete();
+    return markOnboardingComplete(displayName, hrtStartDate);
   }
 
   @override
@@ -3339,19 +3868,22 @@ class _$MarkOnboardingCompleteImpl implements MarkOnboardingComplete {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) {
-    return markOnboardingComplete?.call();
+    return markOnboardingComplete?.call(displayName, hrtStartDate);
   }
 
   @override
@@ -3365,21 +3897,24 @@ class _$MarkOnboardingCompleteImpl implements MarkOnboardingComplete {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) {
     if (markOnboardingComplete != null) {
-      return markOnboardingComplete();
+      return markOnboardingComplete(displayName, hrtStartDate);
     }
     return orElse();
   }
@@ -3395,6 +3930,7 @@ class _$MarkOnboardingCompleteImpl implements MarkOnboardingComplete {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -3421,6 +3957,7 @@ class _$MarkOnboardingCompleteImpl implements MarkOnboardingComplete {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -3445,6 +3982,7 @@ class _$MarkOnboardingCompleteImpl implements MarkOnboardingComplete {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,
@@ -3464,7 +4002,18 @@ class _$MarkOnboardingCompleteImpl implements MarkOnboardingComplete {
 }
 
 abstract class MarkOnboardingComplete implements SettingsEvent {
-  const factory MarkOnboardingComplete() = _$MarkOnboardingCompleteImpl;
+  const factory MarkOnboardingComplete(
+      {final String? displayName,
+      final DateTime? hrtStartDate}) = _$MarkOnboardingCompleteImpl;
+
+  String? get displayName;
+  DateTime? get hrtStartDate;
+
+  /// Create a copy of SettingsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$MarkOnboardingCompleteImplCopyWith<_$MarkOnboardingCompleteImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -3604,12 +4153,14 @@ class _$GeneratePdfReportEventImpl implements GeneratePdfReportEvent {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -3618,7 +4169,9 @@ class _$GeneratePdfReportEventImpl implements GeneratePdfReportEvent {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) {
     return generatePdfReport(pdfTitle, medSection, bloodSection, measureSection,
@@ -3636,16 +4189,19 @@ class _$GeneratePdfReportEventImpl implements GeneratePdfReportEvent {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) {
     return generatePdfReport?.call(pdfTitle, medSection, bloodSection,
@@ -3663,16 +4219,19 @@ class _$GeneratePdfReportEventImpl implements GeneratePdfReportEvent {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) {
@@ -3694,6 +4253,7 @@ class _$GeneratePdfReportEventImpl implements GeneratePdfReportEvent {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -3720,6 +4280,7 @@ class _$GeneratePdfReportEventImpl implements GeneratePdfReportEvent {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -3744,6 +4305,7 @@ class _$GeneratePdfReportEventImpl implements GeneratePdfReportEvent {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,
@@ -3791,7 +4353,7 @@ abstract class _$$ImportBackupEventImplCopyWith<$Res> {
           $Res Function(_$ImportBackupEventImpl) then) =
       __$$ImportBackupEventImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String jsonString});
+  $Res call({Uint8List backupBytes, String password, bool legacyJson});
 }
 
 /// @nodoc
@@ -3807,13 +4369,23 @@ class __$$ImportBackupEventImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? jsonString = null,
+    Object? backupBytes = null,
+    Object? password = null,
+    Object? legacyJson = null,
   }) {
     return _then(_$ImportBackupEventImpl(
-      jsonString: null == jsonString
-          ? _value.jsonString
-          : jsonString // ignore: cast_nullable_to_non_nullable
+      backupBytes: null == backupBytes
+          ? _value.backupBytes
+          : backupBytes // ignore: cast_nullable_to_non_nullable
+              as Uint8List,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
               as String,
+      legacyJson: null == legacyJson
+          ? _value.legacyJson
+          : legacyJson // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -3821,14 +4393,22 @@ class __$$ImportBackupEventImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ImportBackupEventImpl implements ImportBackupEvent {
-  const _$ImportBackupEventImpl({required this.jsonString});
+  const _$ImportBackupEventImpl(
+      {required this.backupBytes,
+      required this.password,
+      this.legacyJson = false});
 
   @override
-  final String jsonString;
+  final Uint8List backupBytes;
+  @override
+  final String password;
+  @override
+  @JsonKey()
+  final bool legacyJson;
 
   @override
   String toString() {
-    return 'SettingsEvent.importBackup(jsonString: $jsonString)';
+    return 'SettingsEvent.importBackup(backupBytes: $backupBytes, password: $password, legacyJson: $legacyJson)';
   }
 
   @override
@@ -3836,12 +4416,17 @@ class _$ImportBackupEventImpl implements ImportBackupEvent {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ImportBackupEventImpl &&
-            (identical(other.jsonString, jsonString) ||
-                other.jsonString == jsonString));
+            const DeepCollectionEquality()
+                .equals(other.backupBytes, backupBytes) &&
+            (identical(other.password, password) ||
+                other.password == password) &&
+            (identical(other.legacyJson, legacyJson) ||
+                other.legacyJson == legacyJson));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, jsonString);
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(backupBytes), password, legacyJson);
 
   /// Create a copy of SettingsEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -3863,12 +4448,14 @@ class _$ImportBackupEventImpl implements ImportBackupEvent {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -3877,10 +4464,12 @@ class _$ImportBackupEventImpl implements ImportBackupEvent {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) {
-    return importBackup(jsonString);
+    return importBackup(backupBytes, password, legacyJson);
   }
 
   @override
@@ -3894,19 +4483,22 @@ class _$ImportBackupEventImpl implements ImportBackupEvent {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) {
-    return importBackup?.call(jsonString);
+    return importBackup?.call(backupBytes, password, legacyJson);
   }
 
   @override
@@ -3920,21 +4512,24 @@ class _$ImportBackupEventImpl implements ImportBackupEvent {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) {
     if (importBackup != null) {
-      return importBackup(jsonString);
+      return importBackup(backupBytes, password, legacyJson);
     }
     return orElse();
   }
@@ -3950,6 +4545,7 @@ class _$ImportBackupEventImpl implements ImportBackupEvent {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -3976,6 +4572,7 @@ class _$ImportBackupEventImpl implements ImportBackupEvent {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -4000,6 +4597,7 @@ class _$ImportBackupEventImpl implements ImportBackupEvent {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,
@@ -4019,10 +4617,14 @@ class _$ImportBackupEventImpl implements ImportBackupEvent {
 }
 
 abstract class ImportBackupEvent implements SettingsEvent {
-  const factory ImportBackupEvent({required final String jsonString}) =
-      _$ImportBackupEventImpl;
+  const factory ImportBackupEvent(
+      {required final Uint8List backupBytes,
+      required final String password,
+      final bool legacyJson}) = _$ImportBackupEventImpl;
 
-  String get jsonString;
+  Uint8List get backupBytes;
+  String get password;
+  bool get legacyJson;
 
   /// Create a copy of SettingsEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -4109,12 +4711,14 @@ class _$ToggleCrashReportingImpl implements ToggleCrashReporting {
     required TResult Function(DateTime date) updateHrtStartDate,
     required TResult Function() wipeData,
     required TResult Function(bool enabled) toggleNotifications,
-    required TResult Function() exportData,
+    required TResult Function(String drugId, bool enabled) toggleDrugReminder,
+    required TResult Function(String password) exportData,
     required TResult Function(String languageCode) changeLanguage,
     required TResult Function(bool enabled) toggleDarkMode,
     required TResult Function(bool enabled) toggleAutoCheckUpdate,
     required TResult Function(String version) skipVersion,
-    required TResult Function() markOnboardingComplete,
+    required TResult Function(String? displayName, DateTime? hrtStartDate)
+        markOnboardingComplete,
     required TResult Function(
             String pdfTitle,
             String medSection,
@@ -4123,7 +4727,9 @@ class _$ToggleCrashReportingImpl implements ToggleCrashReporting {
             String journalSection,
             String noData)
         generatePdfReport,
-    required TResult Function(String jsonString) importBackup,
+    required TResult Function(
+            Uint8List backupBytes, String password, bool legacyJson)
+        importBackup,
     required TResult Function(bool enabled) toggleCrashReporting,
   }) {
     return toggleCrashReporting(enabled);
@@ -4140,16 +4746,19 @@ class _$ToggleCrashReportingImpl implements ToggleCrashReporting {
     TResult? Function(DateTime date)? updateHrtStartDate,
     TResult? Function()? wipeData,
     TResult? Function(bool enabled)? toggleNotifications,
-    TResult? Function()? exportData,
+    TResult? Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult? Function(String password)? exportData,
     TResult? Function(String languageCode)? changeLanguage,
     TResult? Function(bool enabled)? toggleDarkMode,
     TResult? Function(bool enabled)? toggleAutoCheckUpdate,
     TResult? Function(String version)? skipVersion,
-    TResult? Function()? markOnboardingComplete,
+    TResult? Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult? Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult? Function(String jsonString)? importBackup,
+    TResult? Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult? Function(bool enabled)? toggleCrashReporting,
   }) {
     return toggleCrashReporting?.call(enabled);
@@ -4166,16 +4775,19 @@ class _$ToggleCrashReportingImpl implements ToggleCrashReporting {
     TResult Function(DateTime date)? updateHrtStartDate,
     TResult Function()? wipeData,
     TResult Function(bool enabled)? toggleNotifications,
-    TResult Function()? exportData,
+    TResult Function(String drugId, bool enabled)? toggleDrugReminder,
+    TResult Function(String password)? exportData,
     TResult Function(String languageCode)? changeLanguage,
     TResult Function(bool enabled)? toggleDarkMode,
     TResult Function(bool enabled)? toggleAutoCheckUpdate,
     TResult Function(String version)? skipVersion,
-    TResult Function()? markOnboardingComplete,
+    TResult Function(String? displayName, DateTime? hrtStartDate)?
+        markOnboardingComplete,
     TResult Function(String pdfTitle, String medSection, String bloodSection,
             String measureSection, String journalSection, String noData)?
         generatePdfReport,
-    TResult Function(String jsonString)? importBackup,
+    TResult Function(Uint8List backupBytes, String password, bool legacyJson)?
+        importBackup,
     TResult Function(bool enabled)? toggleCrashReporting,
     required TResult orElse(),
   }) {
@@ -4196,6 +4808,7 @@ class _$ToggleCrashReportingImpl implements ToggleCrashReporting {
     required TResult Function(UpdateHrtStartDate value) updateHrtStartDate,
     required TResult Function(WipeSettingsData value) wipeData,
     required TResult Function(ToggleNotifications value) toggleNotifications,
+    required TResult Function(ToggleDrugReminder value) toggleDrugReminder,
     required TResult Function(ExportDataEvent value) exportData,
     required TResult Function(ChangeLanguage value) changeLanguage,
     required TResult Function(ToggleDarkMode value) toggleDarkMode,
@@ -4222,6 +4835,7 @@ class _$ToggleCrashReportingImpl implements ToggleCrashReporting {
     TResult? Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult? Function(WipeSettingsData value)? wipeData,
     TResult? Function(ToggleNotifications value)? toggleNotifications,
+    TResult? Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult? Function(ExportDataEvent value)? exportData,
     TResult? Function(ChangeLanguage value)? changeLanguage,
     TResult? Function(ToggleDarkMode value)? toggleDarkMode,
@@ -4246,6 +4860,7 @@ class _$ToggleCrashReportingImpl implements ToggleCrashReporting {
     TResult Function(UpdateHrtStartDate value)? updateHrtStartDate,
     TResult Function(WipeSettingsData value)? wipeData,
     TResult Function(ToggleNotifications value)? toggleNotifications,
+    TResult Function(ToggleDrugReminder value)? toggleDrugReminder,
     TResult Function(ExportDataEvent value)? exportData,
     TResult Function(ChangeLanguage value)? changeLanguage,
     TResult Function(ToggleDarkMode value)? toggleDarkMode,

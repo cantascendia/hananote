@@ -38,88 +38,91 @@ class HoyoAppBar extends StatelessWidget implements PreferredSizeWidget {
         ? HanaColorsV2.goldLight.withValues(alpha: 0.18)
         : HanaColorsV2.goldLight.withValues(alpha: 0.18);
 
-    return ClipRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
-        child: Container(
-          height: 56,
-          padding: const EdgeInsets.symmetric(horizontal: 18),
-          decoration: BoxDecoration(
-            color: bg,
-            border: Border(bottom: BorderSide(color: borderColor)),
-          ),
-          child: Row(
-            children: [
-              // Leading: explicit 38px box for the default _IconBtn,
-              // but caller-provided widgets size themselves.
-              if (leading != null)
-                leading!
-              else
-                _IconBtn(icon: Icons.menu, dark: dark, onTap: () {}),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.local_florist,
-                          size: 16,
-                          color: dark
-                              ? HanaColorsV2.goldLight
-                              : HanaColors.primaryOf(context),
-                        ),
-                        const SizedBox(width: 6),
-                        Flexible(
+    return SafeArea(
+      bottom: false,
+      child: ClipRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+          child: Container(
+            height: 56,
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            decoration: BoxDecoration(
+              color: bg,
+              border: Border(bottom: BorderSide(color: borderColor)),
+            ),
+            child: Row(
+              children: [
+                // Leading: explicit 38px box for the default _IconBtn,
+                // but caller-provided widgets size themselves.
+                if (leading != null)
+                  leading!
+                else
+                  _IconBtn(icon: Icons.menu, dark: dark, onTap: () {}),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.local_florist,
+                            size: 16,
+                            color: dark
+                                ? HanaColorsV2.goldLight
+                                : HanaColors.primaryOf(context),
+                          ),
+                          const SizedBox(width: 6),
+                          Flexible(
+                            child: Text(
+                              title,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: HanaTypography.titleMd.copyWith(
+                                color: dark
+                                    ? HanaColorsV2.champagneSoft
+                                    : HanaColors.primaryOf(context),
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 0.32,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      if (subtitle != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 2),
                           child: Text(
-                            title,
+                            subtitle!.toUpperCase(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: HanaTypography.titleMd.copyWith(
+                            style: HanaTypography.labelSm.copyWith(
                               color: dark
-                                  ? HanaColorsV2.champagneSoft
-                                  : HanaColors.primaryOf(context),
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 0.32,
+                                  ? HanaColorsV2.pearl.withValues(alpha: 0.6)
+                                  : HanaColors.onSurfaceVariantOf(context),
+                              letterSpacing: 1.32,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                    if (subtitle != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 2),
-                        child: Text(
-                          subtitle!.toUpperCase(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: HanaTypography.labelSm.copyWith(
-                            color: dark
-                                ? HanaColorsV2.pearl.withValues(alpha: 0.6)
-                                : HanaColors.onSurfaceVariantOf(context),
-                            letterSpacing: 1.32,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              // Trailing: actions size themselves; default icon when empty.
-              if (actions.isEmpty)
-                _IconBtn(
-                  icon: Icons.notifications_outlined,
-                  dark: dark,
-                  onTap: () {},
-                )
-              else
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
-                  children: actions,
-                ),
-            ],
+                // Trailing: actions size themselves; default icon when empty.
+                if (actions.isEmpty)
+                  _IconBtn(
+                    icon: Icons.notifications_outlined,
+                    dark: dark,
+                    onTap: () {},
+                  )
+                else
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: actions,
+                  ),
+              ],
+            ),
           ),
         ),
       ),
@@ -147,16 +150,13 @@ class _IconBtn extends StatelessWidget {
               ? HanaColorsV2.pearl.withValues(alpha: 0.08)
               : Colors.white.withValues(alpha: 0.6),
           border: Border.all(
-            color: HanaColorsV2.goldLight
-                .withValues(alpha: dark ? 0.3 : 0.3),
+            color: HanaColorsV2.goldLight.withValues(alpha: dark ? 0.3 : 0.3),
           ),
         ),
         child: Icon(
           icon,
           size: 18,
-          color: dark
-              ? HanaColorsV2.pearl
-              : HanaColors.primaryOf(context),
+          color: dark ? HanaColorsV2.pearl : HanaColors.primaryOf(context),
         ),
       ),
     );

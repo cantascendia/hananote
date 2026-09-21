@@ -10,7 +10,7 @@ class UserProfile with _$UserProfile {
   const factory UserProfile({
     required String displayName,
     required int hrtDayCount,
-    required DateTime hrtStartDate,
+    DateTime? hrtStartDate,
     String? avatarPath,
   }) = _UserProfile;
 
@@ -19,7 +19,7 @@ class UserProfile with _$UserProfile {
   /// Creates a [UserProfile] with [hrtDayCount] derived from [hrtStartDate].
   factory UserProfile.withCalculatedHrtDayCount({
     required String displayName,
-    required DateTime hrtStartDate,
+    DateTime? hrtStartDate,
     String? avatarPath,
     DateTime? today,
   }) {
@@ -43,9 +43,10 @@ class UserProfile with _$UserProfile {
   }
 
   static int _calculateHrtDayCount(
-    DateTime hrtStartDate, {
+    DateTime? hrtStartDate, {
     DateTime? today,
   }) {
+    if (hrtStartDate == null) return 0;
     final currentDay = today ?? DateTime.now();
     final normalizedStartDate = DateTime(
       hrtStartDate.year,

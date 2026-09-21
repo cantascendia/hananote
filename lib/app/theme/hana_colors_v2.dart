@@ -93,8 +93,7 @@ class HanaColorsV2 {
   static Color heroGoldOf(BuildContext c) => goldLight;
 
   /// Sub-pill glass background on plum hero (rgba(255,246,238,.08)).
-  static Color heroGlassFillOf(BuildContext c) =>
-      pearl.withValues(alpha: 0.08);
+  static Color heroGlassFillOf(BuildContext c) => pearl.withValues(alpha: 0.08);
 
   /// Sub-pill glass border on plum hero (rgba(232,200,135,.28)).
   static Color heroGlassBorderOf(BuildContext c) =>

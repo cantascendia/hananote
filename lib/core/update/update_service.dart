@@ -135,14 +135,12 @@ class UpdateService {
 
   static Future<AppUpdateInfo?> _checkGitHub(String currentVersion) async {
     try {
-      final response = await http
-          .get(
-            Uri.parse(
-              'https://api.github.com/repos/$_owner/$_repo/releases/latest',
-            ),
-            headers: {'Accept': 'application/vnd.github.v3+json'},
-          )
-          .timeout(const Duration(seconds: 10));
+      final response = await http.get(
+        Uri.parse(
+          'https://api.github.com/repos/$_owner/$_repo/releases/latest',
+        ),
+        headers: {'Accept': 'application/vnd.github.v3+json'},
+      ).timeout(const Duration(seconds: 10));
 
       if (response.statusCode != 200) return null;
 

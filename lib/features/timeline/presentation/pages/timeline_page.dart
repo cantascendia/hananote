@@ -2,7 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hananote/app/presentation/main_shell.dart' show kNavBarContentHeight;
+import 'package:hananote/app/presentation/main_shell.dart'
+    show kNavBarContentHeight;
 import 'package:hananote/app/theme/hana_colors.dart';
 import 'package:hananote/core/l10n/arb/app_localizations.dart';
 import 'package:hananote/core/l10n/enum_l10n.dart';
@@ -86,7 +87,8 @@ class TimelinePage extends StatelessWidget {
                 child: CircularProgressIndicator(color: HanaColors.primary),
               ),
             TimelineError(:final message) => Center(child: Text(message)),
-            TimelineLoaded(:final events, :final selectedRange) => _TimelineLoadedView(
+            TimelineLoaded(:final events, :final selectedRange) =>
+              _TimelineLoadedView(
                 events: events,
                 selectedRange: selectedRange,
                 emptyLabel: l10n.noTimelineEvents,
@@ -226,7 +228,9 @@ class _TimelineLoadedView extends StatelessWidget {
                 child: _FilterPills(
                   selectedRange: selectedRange,
                   onRangeSelected: (range) {
-                    context.read<TimelineBloc>().add(TimelineBlocEvent.selectRange(range));
+                    context
+                        .read<TimelineBloc>()
+                        .add(TimelineBlocEvent.selectRange(range));
                   },
                 ),
               ),
@@ -606,15 +610,15 @@ class _EventCard extends StatelessWidget {
 String _resolveTitle(TimelineEvent event, AppLocalizations l10n) {
   return switch (event.type) {
     TimelineEventType.milestone => l10n.hrtDay(
-      event.metadata?['milestoneDays'] as int? ?? 0,
-    ),
-    TimelineEventType.medication => l10n.medicationLogTitle(
-      event.metadata?['drugName'] as String? ?? '',
-      _formatDosage(
-        event.metadata?['dosageAmount'] as double? ?? 0,
-        event.metadata?['dosageUnit'] as String? ?? '',
+        event.metadata?['milestoneDays'] as int? ?? 0,
       ),
-    ),
+    TimelineEventType.medication => l10n.medicationLogTitle(
+        event.metadata?['drugName'] as String? ?? '',
+        _formatDosage(
+          event.metadata?['dosageAmount'] as double? ?? 0,
+          event.metadata?['dosageUnit'] as String? ?? '',
+        ),
+      ),
     TimelineEventType.bloodTest => l10n.enumTimelineBloodTest,
     TimelineEventType.journal => event.title,
   };
@@ -640,8 +644,9 @@ String _resolveSubtitle(TimelineEvent event, AppLocalizations l10n) {
 }
 
 String _formatDosage(double amount, String unit) {
-  final formatted =
-      amount == amount.roundToDouble() ? amount.toInt().toString() : amount.toString();
+  final formatted = amount == amount.roundToDouble()
+      ? amount.toInt().toString()
+      : amount.toString();
   return '$formatted$unit';
 }
 

@@ -54,7 +54,8 @@ class AccountPage extends StatelessWidget {
                         const SizedBox(height: 12),
                         const _Row(label: 'STATUS', value: '默认本地，已加密同步'),
                         const SizedBox(height: 12),
-                        const _Row(label: 'E2EE', value: 'AES-256-GCM · Argon2id'),
+                        const _Row(
+                            label: 'E2EE', value: 'AES-256-GCM · Argon2id'),
                       ],
                     ),
                   ),

@@ -22,6 +22,7 @@ void main() {
     await tester.pump();
 
     expect(_overlayOpacity(tester), 1);
+    expect(_overlayColor(tester).a, 1);
     expect(find.byIcon(Icons.shield_moon_rounded), findsOneWidget);
 
     tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
@@ -29,6 +30,17 @@ void main() {
 
     expect(_overlayOpacity(tester), 0);
   });
+}
+
+Color _overlayColor(WidgetTester tester) {
+  return tester
+      .widget<ColoredBox>(
+        find.descendant(
+          of: find.byType(AnimatedOpacity),
+          matching: find.byType(ColoredBox),
+        ),
+      )
+      .color;
 }
 
 double _overlayOpacity(WidgetTester tester) {

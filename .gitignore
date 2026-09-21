@@ -32,6 +32,7 @@ migrate_working_dir/
 .pub/
 /build/
 /coverage/
+/artifacts/android-v1-stability/
 
 # Symbolication related
 app.*.symbols

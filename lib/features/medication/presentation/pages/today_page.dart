@@ -37,12 +37,12 @@ class TodayPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final settingsState = context.watch<SettingsBloc>().state;
-    final displayName = settingsState is SettingsLoaded
+    final displayName = settingsState is SettingsLoaded &&
+            settingsState.profile.displayName.isNotEmpty
         ? settingsState.profile.displayName
         : l10n.defaultUserName;
-    final hrtDays = settingsState is SettingsLoaded
-        ? settingsState.profile.hrtDayCount
-        : 0;
+    final hrtDays =
+        settingsState is SettingsLoaded ? settingsState.profile.hrtDayCount : 0;
     final greeting = _greetingForHour(DateTime.now().hour, l10n);
     final signatureChar = _signatureCharFromName(displayName);
 
@@ -66,8 +66,10 @@ class TodayPage extends StatelessWidget {
       ),
       body: BlocListener<TodayScheduleBloc, TodayScheduleState>(
         listenWhen: (prev, curr) {
-          final prevCount = prev.mapOrNull(loaded: (s) => s.completedCount) ?? 0;
-          final currCount = curr.mapOrNull(loaded: (s) => s.completedCount) ?? 0;
+          final prevCount =
+              prev.mapOrNull(loaded: (s) => s.completedCount) ?? 0;
+          final currCount =
+              curr.mapOrNull(loaded: (s) => s.completedCount) ?? 0;
           return currCount > prevCount;
         },
         listener: (context, state) {
@@ -101,13 +103,18 @@ class TodayPage extends StatelessWidget {
                                   letterSpacing: -0.64,
                                 ),
                               ),
-                              const SizedBox(height: 4),
-                              Text(
-                                l10n.hrtDay(hrtDays),
-                                style: HanaTypography.labelMd.copyWith(
-                                  color: HanaColors.onSurfaceVariantOf(context),
+                              if (settingsState is SettingsLoaded &&
+                                  settingsState.profile.hrtStartDate !=
+                                      null) ...[
+                                const SizedBox(height: 4),
+                                Text(
+                                  l10n.hrtDay(hrtDays),
+                                  style: HanaTypography.labelMd.copyWith(
+                                    color:
+                                        HanaColors.onSurfaceVariantOf(context),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ],
                           ),
                         ),
@@ -128,6 +135,8 @@ class TodayPage extends StatelessWidget {
                   state,
                   l10n,
                   hrtDays: hrtDays,
+                  hasHrtStartDate: settingsState is SettingsLoaded &&
+                      settingsState.profile.hrtStartDate != null,
                   signatureChar: signatureChar,
                 ),
                 const SliverPadding(padding: EdgeInsets.only(bottom: 32)),
@@ -144,6 +153,7 @@ class TodayPage extends StatelessWidget {
     TodayScheduleState state,
     AppLocalizations l10n, {
     required int hrtDays,
+    required bool hasHrtStartDate,
     required String signatureChar,
   }) {
     return state.when(
@@ -194,7 +204,8 @@ class TodayPage extends StatelessWidget {
                     Icon(
                       Icons.medication_outlined,
                       size: 64,
-                      color: HanaColors.primaryOf(context).withValues(alpha: 0.3),
+                      color:
+                          HanaColors.primaryOf(context).withValues(alpha: 0.3),
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -364,18 +375,19 @@ class TodayPage extends StatelessWidget {
         }
 
         // Daily 花笺 signature card.
-        widgets.add(
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(18, 4, 18, 0),
-              child: _DailyHanaSection(
-                day: hrtDays.clamp(1, 365),
-                collected: hrtDays.clamp(0, 365),
-                signatureChar: signatureChar,
+        if (hasHrtStartDate)
+          widgets.add(
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(18, 4, 18, 0),
+                child: _DailyHanaSection(
+                  day: hrtDays.clamp(1, 365),
+                  collected: hrtDays.clamp(0, 365),
+                  signatureChar: signatureChar,
+                ),
               ),
             ),
-          ),
-        );
+          );
 
         return widgets;
       },

@@ -154,8 +154,7 @@ class _NavItem extends StatelessWidget {
                   item.label,
                   style: HanaTypography.labelSm.copyWith(
                     color: color,
-                    fontWeight:
-                        active ? FontWeight.w800 : FontWeight.w600,
+                    fontWeight: active ? FontWeight.w800 : FontWeight.w600,
                     letterSpacing: 0.44,
                   ),
                 ),

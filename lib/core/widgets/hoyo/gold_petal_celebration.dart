@@ -39,8 +39,10 @@ class _GoldPetalCelebrationState extends State<GoldPetalCelebration>
     super.initState();
     _ctrl = AnimationController(vsync: this, duration: widget.duration);
     final rng = Random();
-    _parts = List.generate(widget.particleCount,
-        (i) => _Particle.spawn(rng, i, widget.particleCount),);
+    _parts = List.generate(
+      widget.particleCount,
+      (i) => _Particle.spawn(rng, i, widget.particleCount),
+    );
     _ctrl
       ..addStatusListener((s) {
         if (s == AnimationStatus.completed) widget.onComplete();

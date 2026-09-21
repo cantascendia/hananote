@@ -87,7 +87,9 @@ class SettingsDetailPage extends StatelessWidget {
                           icon: Symbols.person_outline,
                           title: l10n.editDisplayName,
                           trailing: Text(
-                            profile.displayName,
+                            profile.displayName.isEmpty
+                                ? l10n.defaultUserName
+                                : profile.displayName,
                             style: const TextStyle(
                               color: HanaColors.onSurfaceVariant,
                               fontWeight: FontWeight.w500,
@@ -108,8 +110,10 @@ class SettingsDetailPage extends StatelessWidget {
                           icon: Symbols.cake,
                           title: l10n.editHrtStartDate,
                           trailing: Text(
-                            DateFormat.yMMMd(localeName)
-                                .format(profile.hrtStartDate),
+                            profile.hrtStartDate == null
+                                ? l10n.selectDate
+                                : DateFormat.yMMMd(localeName)
+                                    .format(profile.hrtStartDate!),
                             style: const TextStyle(
                               color: HanaColors.onSurfaceVariant,
                               fontWeight: FontWeight.w500,
@@ -222,40 +226,40 @@ class SettingsDetailPage extends StatelessWidget {
 
                     // Updates (hidden on web — no APK installation)
                     if (!kIsWeb) ...[
-                    _SectionTitle(title: l10n.updateSectionTitle),
-                    const SizedBox(height: 12),
-                    _SettingsCard(
-                      children: [
-                        _SettingsTile(
-                          icon: Symbols.system_update_rounded,
-                          title: l10n.updateAutoCheck,
-                          subtitle: l10n.updateAutoCheckDesc,
-                          trailing: Switch(
-                            value: settings.autoCheckUpdate,
-                            onChanged: (val) =>
-                                context.read<SettingsBloc>().add(
-                                      ToggleAutoCheckUpdate(enabled: val),
-                                    ),
-                            activeTrackColor: HanaColors.primary,
+                      _SectionTitle(title: l10n.updateSectionTitle),
+                      const SizedBox(height: 12),
+                      _SettingsCard(
+                        children: [
+                          _SettingsTile(
+                            icon: Symbols.system_update_rounded,
+                            title: l10n.updateAutoCheck,
+                            subtitle: l10n.updateAutoCheckDesc,
+                            trailing: Switch(
+                              value: settings.autoCheckUpdate,
+                              onChanged: (val) =>
+                                  context.read<SettingsBloc>().add(
+                                        ToggleAutoCheckUpdate(enabled: val),
+                                      ),
+                              activeTrackColor: HanaColors.primary,
+                            ),
                           ),
-                        ),
-                        Container(
-                          height: 1,
-                          margin: const EdgeInsets.only(left: 56),
-                          color: HanaColors.primaryOf(context).withAlpha(13),
-                        ),
-                        _SettingsTile(
-                          icon: Symbols.refresh_rounded,
-                          title: l10n.updateCheckNow,
-                          trailing: const Icon(
-                            Symbols.chevron_right,
-                            color: HanaColors.outlineVariant,
+                          Container(
+                            height: 1,
+                            margin: const EdgeInsets.only(left: 56),
+                            color: HanaColors.primaryOf(context).withAlpha(13),
                           ),
-                          onTap: () => _checkForUpdates(context, l10n),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
+                          _SettingsTile(
+                            icon: Symbols.refresh_rounded,
+                            title: l10n.updateCheckNow,
+                            trailing: const Icon(
+                              Symbols.chevron_right,
+                              color: HanaColors.outlineVariant,
+                            ),
+                            onTap: () => _checkForUpdates(context, l10n),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
                     ], // end if (!kIsWeb)
 
                     // Download App (web only)
@@ -490,8 +494,7 @@ class SettingsDetailPage extends StatelessWidget {
                 const SizedBox(height: 16),
                 ...options.map(
                   (option) => ListTile(
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 24),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 24),
                     title: Text(
                       option.$2,
                       style: const TextStyle(
@@ -569,11 +572,11 @@ class SettingsDetailPage extends StatelessWidget {
 
   Future<void> _selectHrtStartDate(
     BuildContext context,
-    DateTime currentDate,
+    DateTime? currentDate,
   ) async {
     final selected = await showDatePicker(
       context: context,
-      initialDate: currentDate,
+      initialDate: currentDate ?? DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime.now().add(const Duration(days: 365)),
       builder: (context, child) {

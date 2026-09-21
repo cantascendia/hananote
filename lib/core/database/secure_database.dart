@@ -95,6 +95,13 @@ class SecureDatabase {
     }
   }
 
+  /// Runs [action] inside one SQL transaction on the open database.
+  ///
+  /// Any exception thrown by [action] rolls back all writes in the transaction.
+  Future<T> runInTransaction<T>(Future<T> Function(Transaction txn) action) {
+    return database.transaction<T>(action);
+  }
+
   /// Runs database migrations explicitly against the current open connection.
   Future<Either<Failure, void>> runMigrations() async {
     try {

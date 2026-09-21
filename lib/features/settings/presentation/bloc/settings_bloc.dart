@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hananote/core/error/failures.dart';
 import 'package:hananote/core/platform/file_helper.dart';
+import 'package:hananote/core/privacy/native_interaction.dart';
 import 'package:hananote/features/settings/domain/usecases/export_data.dart';
 import 'package:hananote/features/settings/domain/usecases/generate_pdf_report.dart';
 import 'package:hananote/features/settings/domain/usecases/get_profile_dashboard.dart';
@@ -31,6 +34,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<TogglePrivacyMode>(_onTogglePrivacyMode);
     on<ToggleBlurOverlay>(_onToggleBlurOverlay);
     on<ToggleNotifications>(_onToggleNotifications);
+    on<ToggleDrugReminder>(_onToggleDrugReminder);
     on<UpdateDisplayName>(_onUpdateDisplayName);
     on<UpdateHrtStartDate>(_onUpdateHrtStartDate);
     on<WipeSettingsData>(_onWipeData);
@@ -324,44 +328,46 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     final currentState = state;
     if (currentState is! SettingsLoaded) return;
 
-    emit(SettingsState.actionResult(
-      actionKey: 'export_in_progress',
-      previousState: currentState,
-    ),);
+    emit(
+      SettingsState.actionResult(
+        actionKey: 'export_in_progress',
+        previousState: currentState,
+      ),
+    );
 
-    final failureOrExport = await _exportData();
+    final failureOrExport = await _exportData(password: event.password);
 
     await failureOrExport.fold(
       (failure) async {
-        emit(SettingsState.actionResult(
-          actionKey: 'export_failed',
-          previousState: currentState,
-        ),);
-      },
-      (jsonString) async {
-        try {
-          final fileName =
-              'hananote_backup_'
-              '${DateTime.now().millisecondsSinceEpoch}.json';
-          final filePath = await writeTempFile(fileName, jsonString);
-
-          if (kHasFileSystem) {
-            await SharePlus.instance.share(
-              ShareParams(
-                files: [XFile(filePath)],
-                text: 'HanaNote Backup',
-              ),
-            );
-          }
-          emit(SettingsState.actionResult(
-            actionKey: 'export_success',
-            previousState: currentState,
-          ),);
-        } catch (e) {
-          emit(SettingsState.actionResult(
+        emit(
+          SettingsState.actionResult(
             actionKey: 'export_failed',
             previousState: currentState,
-          ),);
+          ),
+        );
+      },
+      (vaultBytes) async {
+        try {
+          final fileName = 'hananote_backup_'
+              '${DateTime.now().millisecondsSinceEpoch}.vault';
+          await _shareGeneratedFile(
+            fileName: fileName,
+            bytes: vaultBytes,
+            shareText: 'HanaNote Backup',
+          );
+          emit(
+            SettingsState.actionResult(
+              actionKey: 'export_success',
+              previousState: currentState,
+            ),
+          );
+        } catch (e) {
+          emit(
+            SettingsState.actionResult(
+              actionKey: 'export_failed',
+              previousState: currentState,
+            ),
+          );
         }
       },
     );
@@ -377,6 +383,19 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     final currentState = state;
     if (currentState is! SettingsLoaded) return;
 
+    var profile = currentState.profile;
+    if (event.displayName != null || event.hrtStartDate != null) {
+      final result = await _updateUserProfile(profile.copyWith(
+        displayName: event.displayName ?? profile.displayName,
+        hrtStartDate: event.hrtStartDate ?? profile.hrtStartDate,
+      ));
+      if (result.isLeft()) {
+        emit(const SettingsError('onboarding_save_failed'));
+        emit(currentState);
+        return;
+      }
+      profile = result.getOrElse((_) => profile);
+    }
     final newSettings = currentState.settings.copyWith(
       hasCompletedOnboarding: true,
     );
@@ -386,9 +405,10 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     failureOrSettings.fold(
       (failure) => emit(SettingsError(failureMessage(failure))),
       (updatedSettings) => emit(
-        currentState.copyWith(settings: updatedSettings),
+        currentState.copyWith(settings: updatedSettings, profile: profile),
       ),
     );
+    if (state is SettingsError) emit(currentState.copyWith(profile: profile));
   }
 
   Future<void> _onGeneratePdfReport(
@@ -398,10 +418,12 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     final currentState = state;
     if (currentState is! SettingsLoaded) return;
 
-    emit(SettingsState.actionResult(
-      actionKey: 'pdf_in_progress',
-      previousState: currentState,
-    ),);
+    emit(
+      SettingsState.actionResult(
+        actionKey: 'pdf_in_progress',
+        previousState: currentState,
+      ),
+    );
 
     final failureOrBytes = await _generatePdfReport(
       pdfTitle: event.pdfTitle,
@@ -414,34 +436,35 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
     await failureOrBytes.fold(
       (failure) async {
-        emit(SettingsState.actionResult(
-          actionKey: 'pdf_failed',
-          previousState: currentState,
-        ),);
+        emit(
+          SettingsState.actionResult(
+            actionKey: 'pdf_failed',
+            previousState: currentState,
+          ),
+        );
       },
       (bytes) async {
         try {
           final fileName =
               'hananote_report_${DateTime.now().millisecondsSinceEpoch}.pdf';
-          final filePath = await writeTempBytes(fileName, bytes);
-
-          if (kHasFileSystem) {
-            await SharePlus.instance.share(
-              ShareParams(
-                files: [XFile(filePath)],
-                text: 'HanaNote Health Report',
-              ),
-            );
-          }
-          emit(SettingsState.actionResult(
-            actionKey: 'pdf_success',
-            previousState: currentState,
-          ),);
+          await _shareGeneratedFile(
+            fileName: fileName,
+            bytes: bytes,
+            shareText: 'HanaNote Health Report',
+          );
+          emit(
+            SettingsState.actionResult(
+              actionKey: 'pdf_success',
+              previousState: currentState,
+            ),
+          );
         } catch (e) {
-          emit(SettingsState.actionResult(
-            actionKey: 'pdf_failed',
-            previousState: currentState,
-          ),);
+          emit(
+            SettingsState.actionResult(
+              actionKey: 'pdf_failed',
+              previousState: currentState,
+            ),
+          );
         }
       },
     );
@@ -456,29 +479,91 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     final currentState = state;
     if (currentState is! SettingsLoaded) return;
 
-    emit(SettingsState.actionResult(
-      actionKey: 'import_in_progress',
-      previousState: currentState,
-    ),);
+    emit(
+      SettingsState.actionResult(
+        actionKey: 'import_in_progress',
+        previousState: currentState,
+      ),
+    );
 
-    final failureOrCount = await _importData(event.jsonString);
+    final failureOrCount = await _importData(
+      backupBytes: event.backupBytes,
+      password: event.password,
+      format: event.legacyJson
+          ? ImportBackupFormat.legacyJson
+          : ImportBackupFormat.vault,
+    );
 
     failureOrCount.fold(
       (failure) {
-        emit(SettingsState.actionResult(
-          actionKey: 'import_failed',
-          previousState: currentState,
-        ),);
+        emit(
+          SettingsState.actionResult(
+            actionKey: 'import_failed',
+            previousState: currentState,
+          ),
+        );
       },
       (count) {
-        emit(SettingsState.actionResult(
-          actionKey: 'import_success:$count',
-          previousState: currentState,
-        ),);
+        emit(
+          SettingsState.actionResult(
+            actionKey: 'import_success:$count',
+            previousState: currentState,
+          ),
+        );
       },
     );
 
     // Reload dashboard so newly imported items appear in counts.
     add(const LoadSettingsDashboard());
+  }
+
+  Future<void> _onToggleDrugReminder(
+    ToggleDrugReminder event,
+    Emitter<SettingsState> emit,
+  ) async {
+    if (state is! SettingsLoaded) return;
+    final current = state as SettingsLoaded;
+    final muted = {...current.settings.mutedReminderDrugIds};
+    if (event.enabled) {
+      muted.remove(event.drugId);
+    } else {
+      muted.add(event.drugId);
+    }
+    final result = await _updateAppSettings(
+      current.settings.copyWith(mutedReminderDrugIds: muted.toList()..sort()),
+    );
+    result.fold(
+      (failure) => emit(SettingsError(failureMessage(failure))),
+      (updated) => emit(current.copyWith(settings: updated)),
+    );
+  }
+
+  Future<void> _shareGeneratedFile({
+    required String fileName,
+    required Uint8List bytes,
+    required String shareText,
+  }) async {
+    if (!kHasFileSystem) {
+      await writeTempBytes(fileName, bytes);
+      return;
+    }
+
+    final relativePath = 'share/$fileName';
+    final filePath = await writeFileBytes(
+      relativePath,
+      bytes,
+    );
+    try {
+      await NativeInteraction.run(
+        () => SharePlus.instance.share(
+          ShareParams(
+            files: [XFile(filePath)],
+            text: shareText,
+          ),
+        ),
+      );
+    } finally {
+      await deleteFileAt(relativePath);
+    }
   }
 }

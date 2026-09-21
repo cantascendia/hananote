@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart' show debugPrint;
+import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hananote/features/settings/domain/entities/app_settings.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -21,15 +21,19 @@ Future<void> initSentryIfEnabled({
   required String dsn,
   required AppRunner appRunner,
 }) async {
+  if (dsn.isEmpty) {
+    await appRunner();
+    return;
+  }
+
   final enabled = await _isCrashReportingEnabled();
 
-  if (enabled && dsn.isNotEmpty) {
+  if (enabled) {
     await SentryFlutter.init(
       (options) {
         options
           ..dsn = dsn
           ..tracesSampleRate = 0.0
-          ..attachStacktrace = true
           ..enableUserInteractionBreadcrumbs = false
           ..enableAutoNativeBreadcrumbs = false
           ..beforeSend = _scrubPii;
@@ -51,9 +55,9 @@ Future<bool> _isCrashReportingEnabled() async {
     final json = jsonDecode(raw) as Map<String, dynamic>;
     final settings = AppSettings.fromJson(json);
     return settings.crashReportingEnabled;
-  } catch (e) {
+  } catch (_) {
     // If we can't read settings, default to off — privacy-first.
-    debugPrint('[sentry_init] Could not read settings: $e');
+    if (kDebugMode) debugPrint('[sentry_init] settings_read_failed');
     return false;
   }
 }
@@ -62,7 +66,7 @@ Future<bool> _isCrashReportingEnabled() async {
 /// event before it is transmitted.
 SentryEvent? _scrubPii(SentryEvent event, Hint hint) {
   // Strip user object entirely (we never set it, but be defensive).
-  final scrubbed = event.copyWith(user: null);
+  final scrubbed = event.copyWith(user: SentryUser(id: '[redacted]'));
 
   // Walk through breadcrumb messages and exception values to remove PII.
   final cleanBreadcrumbs = scrubbed.breadcrumbs?.map((b) {

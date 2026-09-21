@@ -100,8 +100,11 @@ class HoyoMedRow extends StatelessWidget {
                   color: HanaColorsV2.goldLight.withValues(alpha: 0.4),
                 ),
               ),
-              child: Icon(statusIcon,
-                  size: 16, color: HanaColors.secondaryOf(context),),
+              child: Icon(
+                statusIcon,
+                size: 16,
+                color: HanaColors.secondaryOf(context),
+              ),
             ),
         ],
       ),

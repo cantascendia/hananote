@@ -28,8 +28,7 @@ class HoyoStars extends StatefulWidget {
   State<HoyoStars> createState() => _HoyoStarsState();
 }
 
-class _HoyoStarsState extends State<HoyoStars>
-    with TickerProviderStateMixin {
+class _HoyoStarsState extends State<HoyoStars> with TickerProviderStateMixin {
   late final AnimationController _ctrlA = AnimationController(
     vsync: this,
     duration: const Duration(seconds: 6),

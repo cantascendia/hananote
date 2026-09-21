@@ -67,8 +67,7 @@ void main() {
   testWidgets('shows loading indicator when settings are not loaded', (
     tester,
   ) async {
-    when(() => settingsBloc.state)
-        .thenReturn(const SettingsState.initial());
+    when(() => settingsBloc.state).thenReturn(const SettingsState.initial());
 
     await tester.pumpWidget(buildApp(const SettingsDetailPage()));
 

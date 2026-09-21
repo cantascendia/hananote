@@ -18,6 +18,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get error => 'Error';
 
   @override
+  String get reminderSyncFailed =>
+      'Reminders could not be updated. Please try again.';
+
+  @override
+  String get authOperationFailed =>
+      'Protected storage could not be accessed. Please try again.';
+
+  @override
+  String get authIncorrectPin => 'Incorrect PIN. Please try again.';
+
+  @override
   String get ok => 'OK';
 
   @override
@@ -270,10 +281,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dataBackup => 'Data backup';
 
   @override
-  String get exportBackup => 'Export backup';
+  String get exportBackup => 'Export encrypted records';
 
   @override
-  String get importBackup => 'Import backup';
+  String get importBackup => 'Import records backup';
 
   @override
   String get generatePdf => 'Generate PDF';
@@ -964,12 +975,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reminderChannelDesc => 'Daily medication reminder notifications';
 
   @override
-  String get reminderNotifTitle => 'HanaNote Medication Reminder';
+  String get reminderNotifTitle => 'HanaNote';
 
   @override
-  String reminderNotifBody(String drugName, String dosage, String unit) {
-    return '$drugName $dosage$unit — Time to take your meds 💊';
-  }
+  String get reminderNotifBody => 'You have a reminder';
 
   @override
   String get milestoneSubtitle => 'You\'ve come so far — that\'s amazing';
@@ -1064,7 +1073,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get privacyPolicyContent =>
-      'Privacy Policy\n\nLast updated: May 2026 (v2)\n\nHanaNote (\"the App\") is committed to protecting your privacy. This Privacy Policy explains how we handle your information.\n\n1. Storage Model: Local-First, Sync-on-Demand\nAll personal health data — medication records, journal entries, body measurements, photos, and blood test results — stays on your device by default. From v2 onward you may opt into encrypted cloud sync for cross-device access; this is a feature you control and can disable at any time. It is OFF by default.\n\n2. End-to-End Encryption (E2EE)\nIf you enable cloud sync, all uploaded data is encrypted ON YOUR DEVICE using a key derived from your PIN/biometric (Argon2id) plus AES-256-GCM. Our servers see only opaque ciphertext — even our engineers cannot read your health data. This guarantee is enshrined in the project Constitution and cannot be relaxed.\n\n3. Regional Routing\nUsers outside mainland China connect directly to Supabase Cloud (us-east). Mainland China users route through a Cloudflare Worker reverse proxy (cn-api.hrtyaku.com) terminated at overseas edge PoPs. Both regions use the same E2EE protocol; the server can never decrypt.\n\n4. Leaving the Cloud\nIn Settings → Account, one tap \"Sign out + wipe cloud\" deletes all server-side data immediately (cascade). Your local data stays.\n\n5. Emergency Wipe\nIn Settings → Emergency Wipe, after triple-tap confirmation we permanently delete: all local data + your cloud account + all server-side records + shared poster storage. Irreversible.\n\n6. Data Collection\nWe do not collect, share, or sell any personally identifiable information. We do not embed advertising SDKs. Optional crash monitoring (Sentry) is OFF by default; when enabled it strips PII before reporting.\n\n7. Permissions\nThe App may request camera (photo records), biometric sensor (app lock), and notification system (medication reminders). These permissions are used solely for the stated purposes.\n\n8. Data Export / Import\nUse the built-in export feature to obtain a full JSON backup at any time. You retain complete ownership of your data.\n\n9. Applicable Law — PRC PIPL Notice\nServers currently sit outside mainland China (Supabase us-east + Cloudflare edge), which does not strictly satisfy the \"data localization\" clause of the PRC Personal Information Protection Law. We commit to: (a) all cloud data is end-to-end encrypted and unreadable by us; (b) you can opt out or choose pure-local mode at any time; (c) we will provide a domestic region after completing ICP filing.\n\n10. Changes\nWe may update this Privacy Policy from time to time. Continued use constitutes acceptance.\n\n11. Contact\nQuestions: https://hrtyaku.com';
+      'Privacy information — Android v1.2.3\n\nUpdated: September 2026\n\nHanaNote stores your health records locally in an encrypted database and encrypts saved private photos. A PIN unlocks the local encryption key. Restarting the app requires the PIN; biometrics can unlock an existing in-memory session on supported devices.\n\nCloud account and synchronization work belongs to a separate v2 development scope and is not enabled in this v1 Android release. Crash reporting is off by default. This release is built without a reporting endpoint. Automatic update checks are off on a fresh install; you can request an update check or explicitly enable them in settings. Opening external knowledge pages or download links uses the network.\n\nAndroid platform backup and device-transfer backup are excluded. Background protection covers the app content; app lock returns ordinary background sessions to the PIN screen when enabled. Camera, document-picker and share-sheet actions keep their initiating session while hiding the background content. The app does not import from the system photo gallery. Camera capture may create a temporary file in app cache, which is removed after reading.\n\nRecords backups use an independent password and AES-256-GCM encryption in a .vault file. They contain medications, schedules, dose logs, inventory, blood tests, journals and measurements. Photos, profile and app settings are not restored by this records-backup format. Keep the backup password: we cannot recover it. Legacy JSON import is available explicitly for older backups.\n\nA PDF report or commemorative image is a readable export. Share it only with recipients you choose; the app removes its temporary share copy when the share sheet returns. A copy saved or sent by the recipient app is outside HanaNote\'s control.\n\nLocal notifications use generic text without medication names or doses. Camera, biometric and notification permissions serve the corresponding features. You can manage them in Android settings.\n\nContact: https://hrtyaku.com';
 
   @override
   String get downloadingUpdate => 'Downloading update...';
@@ -1217,6 +1226,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pdfFailed => 'PDF generation failed';
 
   @override
+  String get pdfPlaintextConfirmTitle => 'Generate shareable PDF?';
+
+  @override
+  String get pdfPlaintextConfirmMessage =>
+      'The PDF is a plaintext report for sharing or saving outside HanaNote. Only continue if you trust where you will store it.';
+
+  @override
+  String get pdfPlaintextConfirmAction => 'Generate PDF';
+
+  @override
   String get importInProgress => 'Importing...';
 
   @override
@@ -1235,10 +1254,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get importConfirmMessage =>
-      'This will add backup data to your existing records. Existing items with matching IDs may be overwritten.';
+      'Import structured records only. Photos, profile and app settings are not restored. Existing records with matching IDs may be replaced.';
 
   @override
   String get importConfirmAction => 'Import';
+
+  @override
+  String get backupPasswordTitle => 'Create backup password';
+
+  @override
+  String get backupPasswordUnlockTitle => 'Unlock backup';
+
+  @override
+  String get backupPasswordRememberWarning =>
+      'This records backup includes medications, schedules, dose logs, inventory, blood tests, journals and measurements. Photos and app settings are not included. The password is separate from your app PIN. Keep it safe: HanaNote cannot recover it.';
+
+  @override
+  String get backupPasswordLabel => 'Backup password';
+
+  @override
+  String get backupPasswordConfirmLabel => 'Confirm backup password';
+
+  @override
+  String get backupPasswordTooShort => 'Use at least 8 characters.';
+
+  @override
+  String get backupPasswordMismatch => 'Backup passwords do not match.';
+
+  @override
+  String get backupPasswordCreateAction => 'Create encrypted backup';
+
+  @override
+  String get backupPasswordUnlockAction => 'Unlock backup';
 
   @override
   String get termsOfUseContent =>

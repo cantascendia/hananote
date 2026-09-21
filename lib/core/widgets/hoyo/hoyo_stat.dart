@@ -75,7 +75,10 @@ class HoyoStat extends StatelessWidget {
         // 4 corner ticks (top-left, bottom-right gold L-marks).
         const Positioned(top: -1, left: -1, child: _Tick(corner: _Corner.tl)),
         const Positioned(
-            bottom: -1, right: -1, child: _Tick(corner: _Corner.br),),
+          bottom: -1,
+          right: -1,
+          child: _Tick(corner: _Corner.br),
+        ),
       ],
     );
   }

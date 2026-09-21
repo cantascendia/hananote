@@ -14,6 +14,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart'
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:hananote/app/di/register_module.dart' as _i622;
+import 'package:hananote/core/backup/backup_vault_service.dart' as _i493;
 import 'package:hananote/core/crypto/crypto_engine.dart' as _i472;
 import 'package:hananote/core/crypto/key_manager.dart' as _i869;
 import 'package:hananote/core/database/secure_database.dart' as _i59;
@@ -141,6 +142,10 @@ import 'package:hananote/features/settings/data/datasources/settings_local_datas
     as _i843;
 import 'package:hananote/features/settings/data/repositories/settings_repository_impl.dart'
     as _i1024;
+import 'package:hananote/features/settings/data/repositories/sql_backup_restore_repository.dart'
+    as _i338;
+import 'package:hananote/features/settings/domain/repositories/backup_restore_repository.dart'
+    as _i1024;
 import 'package:hananote/features/settings/domain/repositories/settings_repository.dart'
     as _i755;
 import 'package:hananote/features/settings/domain/usecases/export_data.dart'
@@ -189,16 +194,22 @@ extension GetItInjectableX on _i174.GetIt {
         () => registerModule.secureStorage);
     gh.lazySingleton<_i152.LocalAuthentication>(
         () => registerModule.localAuthentication);
+    gh.lazySingleton<_i809.ConflictResolver>(
+        () => registerModule.conflictResolver);
     gh.lazySingleton<_i472.CryptoEngine>(() => _i472.CryptoEngine());
     gh.lazySingleton<_i163.FlutterLocalNotificationsPlugin>(
         () => notificationModule.flutterLocalNotificationsPlugin);
+    gh.lazySingleton<_i493.BackupVaultService>(
+        () => _i493.BackupVaultService(gh<_i472.CryptoEngine>()));
     gh.lazySingleton<_i95.PhotoPickerService>(() => _i95.ImagePickerService());
     gh.lazySingleton<_i869.KeyManager>(
         () => _i869.KeyManager(gh<_i558.FlutterSecureStorage>()));
     gh.lazySingleton<_i260.AuthLocalDataSource>(
         () => _i260.AuthLocalDataSourceImpl(gh<_i558.FlutterSecureStorage>()));
-    gh.lazySingleton<_i287.NotificationService>(() =>
-        _i287.NotificationService(gh<_i163.FlutterLocalNotificationsPlugin>()));
+    gh.lazySingleton<_i287.NotificationService>(() => _i287.NotificationService(
+          gh<_i163.FlutterLocalNotificationsPlugin>(),
+          settingsStorage: gh<_i558.FlutterSecureStorage>(),
+        ));
     gh.factory<_i484.PhotoCryptoService>(() => _i484.PhotoCryptoService(
           gh<_i472.CryptoEngine>(),
           gh<_i869.KeyManager>(),
@@ -212,6 +223,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i531.MedicationSyncQueue>(() => _i531.MedicationSyncQueue(
           gh<_i59.SecureDatabase>(),
           gh<_i809.ConflictResolver>(),
+        ));
+    gh.lazySingleton<_i1024.BackupRestoreRepository>(
+        () => _i338.SqlBackupRestoreRepository(gh<_i59.SecureDatabase>()));
+    gh.factory<_i671.ExportData>(() => _i671.ExportData(
+          gh<_i1024.BackupRestoreRepository>(),
+          gh<_i493.BackupVaultService>(),
+        ));
+    gh.factory<_i414.ImportData>(() => _i414.ImportData(
+          gh<_i1024.BackupRestoreRepository>(),
+          gh<_i493.BackupVaultService>(),
         ));
     gh.lazySingleton<_i1072.AuthRepository>(() => _i735.AuthRepositoryImpl(
           gh<_i260.AuthLocalDataSource>(),
@@ -343,6 +364,7 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i445.SyncMedicationReminders(
               gh<_i160.MedicationRepository>(),
               gh<_i287.NotificationService>(),
+              gh<_i755.SettingsRepository>(),
             ));
     gh.factory<_i622.SimulatorBloc>(
         () => _i622.SimulatorBloc(gh<_i691.RunPkSimulation>()));
@@ -350,21 +372,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i965.GetTimelineEvents>(),
           gh<_i755.SettingsRepository>(),
         ));
-    gh.factory<_i671.ExportData>(() => _i671.ExportData(
-          gh<_i160.MedicationRepository>(),
-          gh<_i1032.JournalRepository>(),
-          gh<_i979.BloodTestRepository>(),
-          gh<_i502.MeasurementRepository>(),
-          gh<_i755.SettingsRepository>(),
-        ));
     gh.factory<_i13.GeneratePdfReport>(() => _i13.GeneratePdfReport(
-          gh<_i160.MedicationRepository>(),
-          gh<_i979.BloodTestRepository>(),
-          gh<_i1032.JournalRepository>(),
-          gh<_i502.MeasurementRepository>(),
-          gh<_i755.SettingsRepository>(),
-        ));
-    gh.factory<_i414.ImportData>(() => _i414.ImportData(
           gh<_i160.MedicationRepository>(),
           gh<_i979.BloodTestRepository>(),
           gh<_i1032.JournalRepository>(),

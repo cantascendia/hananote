@@ -200,20 +200,24 @@ class SyncEngine {
         final m = r as Map<String, dynamic>;
         final id = m['id'] as String;
         try {
-          final payload = _codec.decode(EncryptedBlob(
-            ciphertext: base64Decode(m['ciphertext_b64'] as String),
-            nonce: base64Decode(m['nonce_b64'] as String),
-          ),);
-          await _queue.applyRemote(SyncedRecord(
-            id: id,
-            kind: m['kind'] as String,
-            deviceId: m['device_id'] as String?,
-            occurredAt: m['occurred_at'] == null
-                ? null
-                : DateTime.parse(m['occurred_at'] as String),
-            clientVersion: m['client_version'] as String?,
-            payload: payload,
-          ),);
+          final payload = _codec.decode(
+            EncryptedBlob(
+              ciphertext: base64Decode(m['ciphertext_b64'] as String),
+              nonce: base64Decode(m['nonce_b64'] as String),
+            ),
+          );
+          await _queue.applyRemote(
+            SyncedRecord(
+              id: id,
+              kind: m['kind'] as String,
+              deviceId: m['device_id'] as String?,
+              occurredAt: m['occurred_at'] == null
+                  ? null
+                  : DateTime.parse(m['occurred_at'] as String),
+              clientVersion: m['client_version'] as String?,
+              payload: payload,
+            ),
+          );
           applied++;
         } catch (e) {
           // ISOLATE: do not abort the batch. Log + continue.
@@ -226,11 +230,13 @@ class SyncEngine {
 
       _telemetry.recordPullOk(appliedCount: applied);
 
-      return Right(PullResult(
-        appliedCount: applied,
-        decryptFailedIds: decryptFailed,
-        nextSince: nextSince,
-      ),);
+      return Right(
+        PullResult(
+          appliedCount: applied,
+          decryptFailedIds: decryptFailed,
+          nextSince: nextSince,
+        ),
+      );
     } catch (e) {
       _telemetry.recordPullFail(reason: 'transport_error');
       return Left(SyncNetwork('$e'));

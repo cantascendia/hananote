@@ -4,9 +4,11 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hananote/core/constants/app_urls.dart';
+import 'package:hananote/core/l10n/arb/app_localizations.dart';
 import 'package:hananote/core/update/update_dialog.dart';
 import 'package:hananote/core/update/update_service.dart';
 import 'package:hananote/features/auth/presentation/bloc/auth_cubit.dart';
+import 'package:hananote/features/auth/presentation/auth_error_message.dart';
 import 'package:hananote/features/auth/presentation/bloc/auth_state.dart';
 import 'package:hananote/features/auth/presentation/pages/lock_screen_page.dart';
 import 'package:hananote/features/auth/presentation/pages/setup_page.dart';
@@ -31,7 +33,11 @@ class AuthWrapperPage extends StatelessWidget {
             if (state is AuthError) {
               ScaffoldMessenger.of(context)
                 ..hideCurrentSnackBar()
-                ..showSnackBar(SnackBar(content: Text(state.message)));
+                ..showSnackBar(SnackBar(
+                    content: Text(authErrorMessage(
+                  AppLocalizations.of(context)!,
+                  state.message,
+                ))));
             } else if (state is AuthUnlocked) {
               // Trigger settings load; navigation happens in the listener
               // below once SettingsLoaded arrives.
@@ -79,13 +85,42 @@ class AuthWrapperPage extends StatelessWidget {
             AuthNeedsSetup() || AuthWiped() => const SetupPage(),
             AuthLocked(:final biometricAvailable) =>
               LockScreenPage(biometricAvailable: biometricAvailable),
-            AuthUnlocked() => const Scaffold(
-                body: Center(child: CircularProgressIndicator()),
-              ),
+            AuthUnlocked() => const _UnlockedLoadingPage(),
             AuthError() => const _LoadingPage(),
           };
         },
       ),
+    );
+  }
+}
+
+class _UnlockedLoadingPage extends StatelessWidget {
+  const _UnlockedLoadingPage();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SettingsBloc, SettingsState>(
+      builder: (context, state) {
+        if (state is! SettingsError) return const _LoadingPage();
+        final l10n = AppLocalizations.of(context)!;
+        return Scaffold(
+          body: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(l10n.errorFallbackTitle),
+                const SizedBox(height: 16),
+                FilledButton(
+                  onPressed: () => context
+                      .read<SettingsBloc>()
+                      .add(const LoadSettingsDashboard()),
+                  child: Text(l10n.retry),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

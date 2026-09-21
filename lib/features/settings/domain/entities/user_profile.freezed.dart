@@ -22,7 +22,7 @@ UserProfile _$UserProfileFromJson(Map<String, dynamic> json) {
 mixin _$UserProfile {
   String get displayName => throw _privateConstructorUsedError;
   int get hrtDayCount => throw _privateConstructorUsedError;
-  DateTime get hrtStartDate => throw _privateConstructorUsedError;
+  DateTime? get hrtStartDate => throw _privateConstructorUsedError;
   String? get avatarPath => throw _privateConstructorUsedError;
 
   /// Serializes this UserProfile to a JSON map.
@@ -44,7 +44,7 @@ abstract class $UserProfileCopyWith<$Res> {
   $Res call(
       {String displayName,
       int hrtDayCount,
-      DateTime hrtStartDate,
+      DateTime? hrtStartDate,
       String? avatarPath});
 }
 
@@ -65,7 +65,7 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
   $Res call({
     Object? displayName = null,
     Object? hrtDayCount = null,
-    Object? hrtStartDate = null,
+    Object? hrtStartDate = freezed,
     Object? avatarPath = freezed,
   }) {
     return _then(_value.copyWith(
@@ -77,10 +77,10 @@ class _$UserProfileCopyWithImpl<$Res, $Val extends UserProfile>
           ? _value.hrtDayCount
           : hrtDayCount // ignore: cast_nullable_to_non_nullable
               as int,
-      hrtStartDate: null == hrtStartDate
+      hrtStartDate: freezed == hrtStartDate
           ? _value.hrtStartDate
           : hrtStartDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       avatarPath: freezed == avatarPath
           ? _value.avatarPath
           : avatarPath // ignore: cast_nullable_to_non_nullable
@@ -100,7 +100,7 @@ abstract class _$$UserProfileImplCopyWith<$Res>
   $Res call(
       {String displayName,
       int hrtDayCount,
-      DateTime hrtStartDate,
+      DateTime? hrtStartDate,
       String? avatarPath});
 }
 
@@ -119,7 +119,7 @@ class __$$UserProfileImplCopyWithImpl<$Res>
   $Res call({
     Object? displayName = null,
     Object? hrtDayCount = null,
-    Object? hrtStartDate = null,
+    Object? hrtStartDate = freezed,
     Object? avatarPath = freezed,
   }) {
     return _then(_$UserProfileImpl(
@@ -131,10 +131,10 @@ class __$$UserProfileImplCopyWithImpl<$Res>
           ? _value.hrtDayCount
           : hrtDayCount // ignore: cast_nullable_to_non_nullable
               as int,
-      hrtStartDate: null == hrtStartDate
+      hrtStartDate: freezed == hrtStartDate
           ? _value.hrtStartDate
           : hrtStartDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       avatarPath: freezed == avatarPath
           ? _value.avatarPath
           : avatarPath // ignore: cast_nullable_to_non_nullable
@@ -149,7 +149,7 @@ class _$UserProfileImpl extends _UserProfile {
   const _$UserProfileImpl(
       {required this.displayName,
       required this.hrtDayCount,
-      required this.hrtStartDate,
+      this.hrtStartDate,
       this.avatarPath})
       : super._();
 
@@ -161,7 +161,7 @@ class _$UserProfileImpl extends _UserProfile {
   @override
   final int hrtDayCount;
   @override
-  final DateTime hrtStartDate;
+  final DateTime? hrtStartDate;
   @override
   final String? avatarPath;
 
@@ -210,7 +210,7 @@ abstract class _UserProfile extends UserProfile {
   const factory _UserProfile(
       {required final String displayName,
       required final int hrtDayCount,
-      required final DateTime hrtStartDate,
+      final DateTime? hrtStartDate,
       final String? avatarPath}) = _$UserProfileImpl;
   const _UserProfile._() : super._();
 
@@ -222,7 +222,7 @@ abstract class _UserProfile extends UserProfile {
   @override
   int get hrtDayCount;
   @override
-  DateTime get hrtStartDate;
+  DateTime? get hrtStartDate;
   @override
   String? get avatarPath;
 

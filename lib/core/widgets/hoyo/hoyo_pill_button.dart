@@ -88,8 +88,8 @@ class _HoyoPillButtonState extends State<HoyoPillButton> {
   }
 
   // (background, foreground, shadow, border)
-  (Object bg, Color fg, List<BoxShadow>? shadow, Border? border)
-      _resolveStyle(BuildContext c) {
+  (Object bg, Color fg, List<BoxShadow>? shadow, Border? border) _resolveStyle(
+      BuildContext c) {
     switch (widget.variant) {
       case HoyoPillVariant.primary:
         return (

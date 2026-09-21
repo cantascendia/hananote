@@ -3,6 +3,7 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hananote/core/sync/conflict_resolver.dart';
 import 'package:hananote/core/sync/sync_queue.dart';
 import 'package:hananote/core/sync/sync_queue_registry.dart';
 import 'package:hananote/features/medication/data/sync/medication_sync_queue.dart';
@@ -16,6 +17,9 @@ abstract class RegisterModule {
 
   @lazySingleton
   LocalAuthentication get localAuthentication => LocalAuthentication();
+
+  @lazySingleton
+  ConflictResolver get conflictResolver => const ConflictResolver();
 
   /// SyncQueue is wired as a composite SyncQueueRegistry, with the
   /// medication queue registered under its `kind = "medication"`.

@@ -18,6 +18,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get error => '错误';
 
   @override
+  String get reminderSyncFailed => '提醒更新失败，请重试。';
+
+  @override
+  String get authOperationFailed => '暂时无法访问受保护的存储，请重试。';
+
+  @override
+  String get authIncorrectPin => 'PIN 不正确，请重试。';
+
+  @override
   String get ok => '确定';
 
   @override
@@ -264,10 +273,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get dataBackup => '数据备份';
 
   @override
-  String get exportBackup => '导出备份';
+  String get exportBackup => '导出加密记录备份';
 
   @override
-  String get importBackup => '导入恢复';
+  String get importBackup => '导入记录备份';
 
   @override
   String get generatePdf => '生成 PDF';
@@ -939,12 +948,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get reminderChannelDesc => '每日服药提醒通知';
 
   @override
-  String get reminderNotifTitle => 'HanaNote 服药提醒';
+  String get reminderNotifTitle => 'HanaNote';
 
   @override
-  String reminderNotifBody(String drugName, String dosage, String unit) {
-    return '$drugName $dosage$unit — 该吃药啦 💊';
-  }
+  String get reminderNotifBody => '你有一条提醒';
 
   @override
   String get milestoneSubtitle => '一路走到这里，已经很了不起了';
@@ -1039,7 +1046,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get privacyPolicyContent =>
-      '隐私政策\n\n最后更新：2026年5月（v2）\n\nHanaNote（以下简称\"本应用\"）致力于保护您的隐私。本隐私政策说明我们如何处理您的信息。\n\n1. 数据存储模式：默认本地，按需同步\n所有个人健康数据，包括用药记录、日记、身体测量、照片和血液检测结果，默认仅存储在您的本地设备上。从 v2 起，您可以选择主动开启「加密云同步」用于跨设备访问 — 这是您可关闭的可选功能，默认关闭。\n\n2. 端到端加密（E2EE）\n如果您启用云同步：所有上传数据均在您的设备上使用 PIN/生物识别派生密钥（Argon2id）+ AES-256-GCM 加密后再上传。我们的服务器只能看到不可解读的密文，连我们的工程师也读不到您的健康数据。这一保证写入项目章程（CONSTITUTION.md），不可破坏。\n\n3. 区域路由\n海外用户使用 Supabase Cloud（us-east 区域）。中国大陆用户走 Cloudflare Worker 反代（cn-api.hrtyaku.com，境外终结，无 ICP 备案需求）。两区共用同一加密协议；服务端永不解密。\n\n4. 退出云端\n您可以在「设置 → 账号」一键「退出云端」：服务器侧数据立即删除（cascade），本地数据保留。\n\n5. 紧急清除\n您可以在「设置 → 紧急清除」三连按确认后永久删除：本地全部数据 + 云端账号 + 服务端全部记录 + 共享海报存储。此操作不可撤销。\n\n6. 数据收集\n本应用不收集、共享或出售任何个人身份信息（PII）。我们不使用广告 SDK。可选崩溃监控（Sentry）默认关闭，启用后会自动剥离 PII。\n\n7. 权限\n本应用可能请求访问相机（拍照记录）、生物识别（应用锁）和通知（服药提醒）。这些权限仅用于所述目的。\n\n8. 数据导出 / 导入\n您可以随时使用内置导出功能导出 JSON 备份。您保留对数据的完全所有权。\n\n9. 适用法律 — PIPL 风险声明\n当前阶段服务器位于境外（Supabase us-east + Cloudflare 边缘），不完全满足《个人信息保护法》「境内数据境内存储」严格条款。本应用承诺：(a) 所有云端数据均经端到端加密，服务器无法读取；(b) 您可随时退出云端或选择纯本地模式；(c) 后续完成 ICP 备案后将提供境内 region。\n\n10. 变更\n我们可能不定期更新本隐私政策。继续使用本应用即表示接受更新后的政策。\n\n11. 联系\n如有疑问请通过 https://hrtyaku.com 联系我们。';
+      '隐私说明 — Android v1.2.3\n\n更新：2026 年 9 月\n\nHanaNote 将健康记录保存在本机加密数据库中，保存的私密照片也会加密。应用 PIN 用于解锁本地密钥。应用重启后需要输入 PIN；支持生物识别的设备可在同一内存会话内使用生物识别再次解锁。\n\n云账户和同步属于独立的 v2 开发范围，本次 v1 Android 版本未启用。崩溃上报默认关闭，本次构建不包含上报地址。新安装时自动检查更新默认关闭；你可以手动检查，或在设置中主动开启。打开外部知识页面或下载链接会使用网络。\n\n应用排除 Android 系统备份和设备迁移备份。后台遮罩隐藏应用内容；开启应用锁时，普通切后台会返回 PIN 页。主动打开相机、文件选择器和分享面板时会保留发起操作的会话，同时继续隐藏后台内容。应用不从系统相册导入照片。相机拍摄可能生成应用缓存内的临时文件，读取后会删除。\n\n记录备份采用独立密码和 AES-256-GCM 加密，生成 .vault 文件。备份包括药物、方案、服药日志、库存、血检、日记及身体测量；该格式不恢复照片、个人资料和应用设置。请保存好备份密码，我们无法找回。旧版 JSON 备份可通过明确的兼容导入路径读取。\n\nPDF 报告和纪念图片是可直接阅读的导出内容。请只分享给你选择的对象。分享面板返回后，应用删除自己的临时分享副本；接收应用保存或发送的副本不受 HanaNote 控制。\n\n本地通知使用通用文案，不包含药名或剂量。相机、生物识别和通知权限仅服务于对应功能，可在 Android 设置中管理。\n\n联系：https://hrtyaku.com';
 
   @override
   String get downloadingUpdate => '正在下载更新...';
@@ -1190,6 +1197,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get pdfFailed => 'PDF 生成失败';
 
   @override
+  String get pdfPlaintextConfirmTitle => '生成可分享 PDF？';
+
+  @override
+  String get pdfPlaintextConfirmMessage =>
+      'PDF 是可在 HanaNote 外保存或分享的明文报告。请只在你信任保存位置时继续。';
+
+  @override
+  String get pdfPlaintextConfirmAction => '生成 PDF';
+
+  @override
   String get importInProgress => '正在导入...';
 
   @override
@@ -1207,10 +1224,39 @@ class AppLocalizationsZh extends AppLocalizations {
   String get importConfirmTitle => '确认导入？';
 
   @override
-  String get importConfirmMessage => '导入会把备份数据合并到现有记录中，相同 ID 的条目可能被覆盖。';
+  String get importConfirmMessage =>
+      '仅导入结构化记录，不恢复照片、个人资料和应用设置。相同 ID 的现有记录可能被替换。';
 
   @override
   String get importConfirmAction => '导入';
+
+  @override
+  String get backupPasswordTitle => '创建备份密码';
+
+  @override
+  String get backupPasswordUnlockTitle => '解锁备份';
+
+  @override
+  String get backupPasswordRememberWarning =>
+      '此备份包含药物、方案、服药日志、库存、血检、日记和身体测量，不含照片与应用设置。备份密码独立于应用 PIN，请妥善保存，HanaNote 无法找回。';
+
+  @override
+  String get backupPasswordLabel => '备份密码';
+
+  @override
+  String get backupPasswordConfirmLabel => '确认备份密码';
+
+  @override
+  String get backupPasswordTooShort => '请至少输入 8 个字符。';
+
+  @override
+  String get backupPasswordMismatch => '两次输入的备份密码不一致。';
+
+  @override
+  String get backupPasswordCreateAction => '创建加密备份';
+
+  @override
+  String get backupPasswordUnlockAction => '解锁备份';
 
   @override
   String get termsOfUseContent =>

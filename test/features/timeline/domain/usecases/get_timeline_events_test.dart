@@ -220,6 +220,23 @@ void main() {
       expect(milestones.last.metadata?['milestoneDays'], 100);
     });
 
+    test('test: unknown HRT start date creates no milestone events', () async {
+      stubEmptyRepositories();
+      stubUserProfile(
+        UserProfile.withCalculatedHrtDayCount(displayName: ''),
+      );
+
+      final result = await useCase(from: DateTime(2025), to: rangeTo);
+      final events = result.getOrElse(
+        (_) => throw StateError('expected timeline events'),
+      );
+
+      expect(
+        events.where((event) => event.type == TimelineEventType.milestone),
+        isEmpty,
+      );
+    });
+
     test('returns events sorted by descending date', () async {
       stubUserProfile(
         UserProfile.withCalculatedHrtDayCount(

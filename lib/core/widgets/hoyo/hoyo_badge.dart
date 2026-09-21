@@ -31,10 +31,26 @@ class HoyoBadge extends StatelessWidget {
       child: ColorFiltered(
         colorFilter: faded
             ? const ColorFilter.matrix([
-                0.5, 0.5, 0.5, 0, 0,
-                0.5, 0.5, 0.5, 0, 0,
-                0.5, 0.5, 0.5, 0, 0,
-                0,   0,   0,   1, 0,
+                0.5,
+                0.5,
+                0.5,
+                0,
+                0,
+                0.5,
+                0.5,
+                0.5,
+                0,
+                0,
+                0.5,
+                0.5,
+                0.5,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
               ])
             : const ColorFilter.mode(Colors.transparent, BlendMode.dst),
         child: Container(

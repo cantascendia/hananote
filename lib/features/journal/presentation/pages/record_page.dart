@@ -343,13 +343,11 @@ class _StitchRecordCardState extends State<_StitchRecordCard>
                           const SizedBox(height: 4),
                           Text(
                             widget.subtitle,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodySmall
-                                ?.copyWith(
-                                  color: HanaColors.onSurfaceVariant
-                                      .withAlpha((255 * 0.7).round()),
-                                ),
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      color: HanaColors.onSurfaceVariant
+                                          .withAlpha((255 * 0.7).round()),
+                                    ),
                           ),
                           const SizedBox(height: 16),
                           Container(

@@ -116,13 +116,11 @@ class _PetalPainter extends CustomPainter {
           sin(progress * petal.wobbleFreq * pi * 2) *
               petal.wobbleAmp *
               size.width;
-      final dy =
-          (petal.startY + t * 0.4) * size.height;
+      final dy = (petal.startY + t * 0.4) * size.height;
 
       // Fade out in last 40%
-      final opacity = progress > 0.6
-          ? (1.0 - (progress - 0.6) / 0.4).clamp(0.0, 1.0)
-          : 1.0;
+      final opacity =
+          progress > 0.6 ? (1.0 - (progress - 0.6) / 0.4).clamp(0.0, 1.0) : 1.0;
 
       final paint = Paint()
         ..color = (petal.isPink

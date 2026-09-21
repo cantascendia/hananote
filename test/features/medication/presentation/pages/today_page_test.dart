@@ -244,8 +244,7 @@ void main() {
         ),
         GoRoute(
           path: '/timeline',
-          builder: (context, state) =>
-              const Scaffold(body: Text('timeline')),
+          builder: (context, state) => const Scaffold(body: Text('timeline')),
         ),
       ],
     );

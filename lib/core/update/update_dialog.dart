@@ -678,9 +678,7 @@ class _VersionBadge extends StatelessWidget {
           style: TextStyle(
             fontSize: 10,
             fontWeight: FontWeight.w600,
-            color: isOld
-                ? HanaColors.onSurfaceVariant
-                : HanaColors.primary,
+            color: isOld ? HanaColors.onSurfaceVariant : HanaColors.primary,
             letterSpacing: 0.3,
           ),
         ),
@@ -698,9 +696,7 @@ class _VersionBadge extends StatelessWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w700,
-              color: isOld
-                  ? HanaColors.onSurfaceVariant
-                  : HanaColors.primary,
+              color: isOld ? HanaColors.onSurfaceVariant : HanaColors.primary,
               fontFamily: 'Plus Jakarta Sans',
             ),
           ),

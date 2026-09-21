@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hananote/core/error/failures.dart';
 import 'package:hananote/features/auth/domain/entities/auth_settings.dart';
@@ -27,13 +29,26 @@ class AuthCubit extends Cubit<AuthState> {
   AuthSettings? _settings;
   var _failedAttempts = 0;
 
+  /// Immediately hides an unlocked session when the app is backgrounded.
+  /// The in-memory key is retained for optional warm-session biometrics.
+  void lockSession() {
+    if (state is! AuthUnlocked) return;
+    emit(const AuthState.locked(biometricAvailable: false));
+    unawaited(_refreshBiometricAvailability());
+  }
+
+  Future<void> _refreshBiometricAvailability() async {
+    final lockedState = await _buildLockedState();
+    if (!isClosed && state is AuthLocked) emit(lockedState);
+  }
+
   /// Determines whether setup or unlock is needed on startup.
   Future<void> checkAuthStatus() async {
     final result = await _repository.getSettings();
     await result.fold(
       (failure) async => _emitErrorWithFallback(
         failureMessage(failure),
-        const AuthState.needsSetup(),
+        const AuthState.locked(biometricAvailable: false),
       ),
       (settings) async {
         _settings = settings;
@@ -167,7 +182,10 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<AuthState> _buildLockedState() async {
     final settings = _settings;
-    if (settings == null || !settings.isSetup) {
+    if (settings == null) {
+      return const AuthState.locked(biometricAvailable: false);
+    }
+    if (!settings.isSetup) {
       return const AuthState.needsSetup();
     }
 
@@ -179,6 +197,8 @@ class AuthCubit extends Cubit<AuthState> {
 
   void _emitErrorWithFallback(String message, AuthState fallback) {
     emit(AuthState.error(message: message));
-    Future.microtask(() => emit(fallback));
+    Future.microtask(() {
+      if (!isClosed) emit(fallback);
+    });
   }
 }

@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:hananote/core/platform/file_helper.dart';
+import 'package:hananote/core/privacy/native_interaction.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 
@@ -8,7 +10,7 @@ enum PhotoPickerSource {
   /// Capture a new photo from the camera.
   camera,
 
-  /// Select an existing photo from the gallery.
+  /// Legacy source; unavailable under the private-camera-only policy.
   gallery,
 }
 
@@ -31,16 +33,19 @@ class ImagePickerService implements PhotoPickerService {
 
   @override
   Future<Uint8List?> pickImage(PhotoPickerSource source) async {
-    final pickedFile = await _picker.pickImage(
-      source: switch (source) {
-        PhotoPickerSource.camera => ImageSource.camera,
-        PhotoPickerSource.gallery => ImageSource.gallery,
-      },
-      maxWidth: 2048,
-      maxHeight: 2048,
-      requestFullMetadata: false,
-    );
+    if (source == PhotoPickerSource.gallery) return null;
+    final pickedFile = await NativeInteraction.run(() => _picker.pickImage(
+          source: ImageSource.camera,
+          maxWidth: 2048,
+          maxHeight: 2048,
+          requestFullMetadata: false,
+        ));
 
-    return pickedFile?.readAsBytes();
+    if (pickedFile == null) return null;
+    try {
+      return await pickedFile.readAsBytes();
+    } finally {
+      await deleteTemporaryFile(pickedFile.path);
+    }
   }
 }

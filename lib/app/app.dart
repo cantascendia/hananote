@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hananote/app/auth_session_guard.dart';
 import 'package:hananote/app/di/injection.dart';
 import 'package:hananote/app/router.dart';
 import 'package:hananote/app/theme/app_theme.dart';
@@ -41,18 +42,22 @@ class HanaNote extends StatelessWidget {
                 AppThemeType.sakura,
                 brightness: Brightness.dark,
               ),
-              themeMode:
-                  darkModeEnabled ? ThemeMode.dark : ThemeMode.light,
+              themeMode: darkModeEnabled ? ThemeMode.dark : ThemeMode.light,
               locale: locale,
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
               builder: (context, child) {
-                final blurEnabled = settingsState is SettingsLoaded &&
+                final blurEnabled = settingsState is! SettingsLoaded ||
                     settingsState.settings.blurOverlayEnabled;
 
                 return AppBlurOverlay(
                   enabled: blurEnabled,
-                  child: child ?? const SizedBox.shrink(),
+                  child: AuthSessionGuard(
+                    onLocked: () => appRouter.go('/'),
+                    enabled: settingsState is! SettingsLoaded ||
+                        settingsState.settings.appLockEnabled,
+                    child: child ?? const SizedBox.shrink(),
+                  ),
                 );
               },
             );

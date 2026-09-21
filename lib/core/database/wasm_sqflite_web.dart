@@ -106,7 +106,8 @@ final class _WasmSqfliteDatabaseFactory implements DatabaseFactory {
     }
     if (options.onDowngrade != null) {
       throw ArgumentError(
-          'onDowngrade must be null if no version is specified',);
+        'onDowngrade must be null if no version is specified',
+      );
     }
   }
 
@@ -170,8 +171,10 @@ final class _WasmSqfliteDatabaseFactory implements DatabaseFactory {
   }
 
   @override
-  Future<Database> openDatabase(String path,
-      {OpenDatabaseOptions? options,}) async {
+  Future<Database> openDatabase(
+    String path, {
+    OpenDatabaseOptions? options,
+  }) async {
     final openOptions = options ?? OpenDatabaseOptions();
     final resolvedPath = _normalizePath(path);
     final singleInstance =

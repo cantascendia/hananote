@@ -42,10 +42,9 @@ class AuthService {
       isCloudEnabled ? HanaSupabase.client.auth.currentUser : null;
 
   /// Stream of auth state changes (signedIn / signedOut).
-  Stream<AuthState> get authStateChanges =>
-      isCloudEnabled
-          ? HanaSupabase.client.auth.onAuthStateChange
-          : const Stream<AuthState>.empty();
+  Stream<AuthState> get authStateChanges => isCloudEnabled
+      ? HanaSupabase.client.auth.onAuthStateChange
+      : const Stream<AuthState>.empty();
 
   /// Sign up a new user with email + password.
   Future<Either<AuthFailure, User>> signUpWithEmail({

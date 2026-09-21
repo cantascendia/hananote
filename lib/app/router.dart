@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hananote/app/auth_redirect.dart';
 import 'package:hananote/app/di/injection.dart';
 import 'package:hananote/app/presentation/main_shell.dart';
 import 'package:hananote/app/theme/hana_colors.dart';
@@ -74,6 +75,7 @@ DrugListCubit _createDrugListCubit() {
 final GoRouter appRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: '/',
+  redirect: requireLocalAuthentication,
   routes: [
     GoRoute(
       path: '/',
@@ -214,8 +216,7 @@ final GoRouter appRouter = GoRouter(
       path: '/auth/sign-in',
       parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => BlocProvider(
-        create: (_) => AuthBloc(AuthService())
-          ..add(const AuthInitRequested()),
+        create: (_) => AuthBloc(AuthService())..add(const AuthInitRequested()),
         child: const SignInPage(),
       ),
     ),
@@ -223,8 +224,7 @@ final GoRouter appRouter = GoRouter(
       path: '/auth/sign-up',
       parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => BlocProvider(
-        create: (_) => AuthBloc(AuthService())
-          ..add(const AuthInitRequested()),
+        create: (_) => AuthBloc(AuthService())..add(const AuthInitRequested()),
         child: const SignUpPage(),
       ),
     ),
@@ -232,8 +232,7 @@ final GoRouter appRouter = GoRouter(
       path: '/auth/account',
       parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => BlocProvider(
-        create: (_) => AuthBloc(AuthService())
-          ..add(const AuthInitRequested()),
+        create: (_) => AuthBloc(AuthService())..add(const AuthInitRequested()),
         child: const AccountPage(),
       ),
     ),
@@ -332,7 +331,8 @@ final GoRouter appRouter = GoRouter(
       path: '/legal/:type',
       parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => LegalPage(
-        type: LegalPageType.fromString(state.pathParameters['type'] ?? 'privacy'),
+        type:
+            LegalPageType.fromString(state.pathParameters['type'] ?? 'privacy'),
       ),
     ),
   ],

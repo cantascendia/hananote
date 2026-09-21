@@ -49,3 +49,13 @@ Future<String> writeTempBytes(String fileName, Uint8List bytes) async {
   await file.writeAsBytes(bytes, flush: true);
   return file.path;
 }
+
+/// Deletes a plugin-created capture only when it belongs to the app cache.
+Future<void> deleteTemporaryFile(String absolutePath) async {
+  final tempDir = await getTemporaryDirectory();
+  final candidate = p.normalize(p.absolute(absolutePath));
+  final cacheRoot = p.normalize(p.absolute(tempDir.path));
+  if (!p.isWithin(cacheRoot, candidate)) return;
+  final file = File(candidate);
+  if (await file.exists()) await file.delete();
+}

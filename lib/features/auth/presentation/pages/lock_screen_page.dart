@@ -16,6 +16,7 @@ import 'package:hananote/core/l10n/arb/app_localizations.dart';
 import 'package:hananote/core/widgets/hoyo/hoyo_eyebrow.dart';
 import 'package:hananote/core/widgets/hoyo/hoyo_pin_pad.dart';
 import 'package:hananote/features/auth/presentation/bloc/auth_cubit.dart';
+import 'package:hananote/features/auth/presentation/auth_error_message.dart';
 import 'package:hananote/features/auth/presentation/bloc/auth_state.dart';
 
 /// Lock screen with a custom HoYo-styled PIN keypad.
@@ -66,7 +67,7 @@ class _LockScreenPageState extends State<LockScreenPage> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthError) {
-          showError(state.message);
+          showError(authErrorMessage(l10n, state.message));
         }
       },
       child: Scaffold(
@@ -143,8 +144,7 @@ class _LockScreenPageState extends State<LockScreenPage> {
                       onDigit: _handleDigit,
                       onBackspace: _handleBackspace,
                       onBiometric: widget.biometricAvailable
-                          ? () =>
-                              context.read<AuthCubit>().unlockBiometric()
+                          ? () => context.read<AuthCubit>().unlockBiometric()
                           : null,
                     ),
                     const SizedBox(height: 16),

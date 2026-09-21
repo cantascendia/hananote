@@ -135,8 +135,8 @@ class SharePosterCard extends StatelessWidget {
                           color: HanaColorsV2.pearl.withValues(alpha: 0.06),
                           borderRadius: BorderRadius.circular(9999),
                           border: Border.all(
-                            color: HanaColorsV2.goldLight
-                                .withValues(alpha: 0.4),
+                            color:
+                                HanaColorsV2.goldLight.withValues(alpha: 0.4),
                           ),
                         ),
                         child: Text(

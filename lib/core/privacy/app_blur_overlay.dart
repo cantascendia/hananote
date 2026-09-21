@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:hananote/app/theme/hana_colors.dart';
 
@@ -76,24 +74,24 @@ class _AppBlurOverlayState extends State<AppBlurOverlay>
     return Stack(
       fit: StackFit.expand,
       children: [
-        widget.child,
+        ExcludeSemantics(
+          excluding: _isOverlayVisible,
+          child: widget.child,
+        ),
         Positioned.fill(
           child: IgnorePointer(
             ignoring: !_isOverlayVisible,
             child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 200),
+              duration: Duration.zero,
               opacity: _isOverlayVisible ? 1 : 0,
-              child: ClipRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-                  child: ColoredBox(
-                    color: HanaColors.background.withAlpha(200),
-                    child: const Center(
-                      child: Icon(
-                        Icons.shield_moon_rounded,
-                        size: 64,
-                        color: HanaColors.primary,
-                      ),
+              child: const ColoredBox(
+                color: HanaColors.background,
+                child: Center(
+                  child: ExcludeSemantics(
+                    child: Icon(
+                      Icons.shield_moon_rounded,
+                      size: 64,
+                      color: HanaColors.primary,
                     ),
                   ),
                 ),

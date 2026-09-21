@@ -53,8 +53,7 @@ void main() {
       when(
         () => database.query(
           'medication_schedules',
-          where:
-              'drug_id = ? AND (is_deleted = 0 OR is_deleted IS NULL)',
+          where: 'drug_id = ? AND (is_deleted = 0 OR is_deleted IS NULL)',
           whereArgs: [schedule.drugId],
           orderBy: 'is_active DESC, start_date DESC',
           limit: 1,

@@ -41,8 +41,11 @@ class HoyoGlassChip extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (icon != null) ...[
-                Icon(icon,
-                    size: 14, color: iconColor ?? HanaColorsV2.goldLight,),
+                Icon(
+                  icon,
+                  size: 14,
+                  color: iconColor ?? HanaColorsV2.goldLight,
+                ),
                 const SizedBox(width: 8),
               ],
               Text(

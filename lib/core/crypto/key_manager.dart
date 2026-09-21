@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
+import 'package:flutter/foundation.dart' show compute, kIsWeb;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hashlib/hashlib.dart';
 import 'package:injectable/injectable.dart';
@@ -42,7 +42,7 @@ class KeyManager {
   /// The actual key is kept only in [_cachedKey] — never written to storage.
   Future<void> initializeKey(String password) async {
     final salt = _generateSalt();
-    final key = _deriveKey(password, salt);
+    final key = await _deriveKeyAsync(password, salt);
     final hash = _computeHash(key);
 
     await _secureStorage.write(
@@ -68,10 +68,20 @@ class KeyManager {
     return _cachedKey;
   }
 
-  /// Returns the current session key, hydrating it from secure storage when the
-  /// in-memory cache is empty.
+  /// Returns the current in-memory session key without reading it from storage.
   Future<Uint8List?> getCurrentKey() {
     return getKey();
+  }
+
+  /// Returns whether any persisted credential verifier material exists.
+  Future<bool> hasStoredCredentialMaterial() async {
+    final encodedSalt = await _secureStorage.read(key: _saltStorageKey);
+    final encodedHash = await _secureStorage.read(key: _hashStorageKey);
+    final encodedLegacyKey =
+        await _secureStorage.read(key: _legacyKeyStorageKey);
+    return encodedSalt != null ||
+        encodedHash != null ||
+        encodedLegacyKey != null;
   }
 
   /// Verifies whether [password] derives the same master key as the stored one.
@@ -83,13 +93,10 @@ class KeyManager {
   /// was persisted instead of a hash.
   Future<bool> verifyPassword(String password) async {
     final encodedSalt = await _secureStorage.read(key: _saltStorageKey);
-    if (kIsWeb) {
-      debugPrint('[KeyManager] verifyPassword: salt=${encodedSalt != null}');
-    }
     if (encodedSalt == null) return false;
 
     final salt = base64Decode(encodedSalt);
-    final testKey = _deriveKey(password, salt);
+    final testKey = await _deriveKeyAsync(password, salt);
 
     // --- Legacy migration path ---
     final encodedLegacyKey =
@@ -112,18 +119,10 @@ class KeyManager {
 
     // --- New hash-based path ---
     final encodedStoredHash = await _secureStorage.read(key: _hashStorageKey);
-    if (kIsWeb) {
-      debugPrint('[KeyManager] verifyPassword: hash=${encodedStoredHash != null}');
-    }
     if (encodedStoredHash == null) return false;
 
     final storedHash = base64Decode(encodedStoredHash);
     final testHash = _computeHash(testKey);
-
-    if (kIsWeb) {
-      debugPrint('[KeyManager] storedHash=${base64Encode(storedHash).substring(0, 8)}...');
-      debugPrint('[KeyManager] testHash =${base64Encode(testHash).substring(0, 8)}...');
-    }
 
     if (_constantTimeEquals(testHash, storedHash)) {
       _cachedKey = testKey;
@@ -149,7 +148,15 @@ class KeyManager {
     return salt;
   }
 
-  Uint8List _deriveKey(String password, Uint8List salt) {
+  Future<Uint8List> _deriveKeyAsync(String password, Uint8List salt) {
+    return compute(_deriveKeyTask, (password, salt));
+  }
+
+  static Uint8List _deriveKeyTask((String, Uint8List) input) {
+    return _deriveKey(input.$1, input.$2);
+  }
+
+  static Uint8List _deriveKey(String password, Uint8List salt) {
     if (kIsWeb) {
       // Web: use PBKDF2-SHA256 (fast, browser-friendly, no memory issues).
       // Argon2 freezes the browser even at reduced params due to JS main thread.

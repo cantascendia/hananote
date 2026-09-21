@@ -59,9 +59,9 @@ class DataPage extends StatelessWidget {
             ),
             error: (error) => Center(child: Text(error.message)),
             loaded: (loaded) => _LoadedView(
-                state: loaded,
-                topPadding: topPadding,
-              ),
+              state: loaded,
+              topPadding: topPadding,
+            ),
           );
         },
       ),
@@ -146,8 +146,9 @@ class _LoadedView extends StatelessWidget {
                   HormoneStatus.warning => HanaColors.tertiary,
                   HormoneStatus.critical => HanaColors.error,
                 },
-                bgIcon:
-                    isWarning ? Symbols.warning_amber_rounded : Symbols.water_drop,
+                bgIcon: isWarning
+                    ? Symbols.warning_amber_rounded
+                    : Symbols.water_drop,
                 onTap: () {
                   context.read<BloodTestBloc>().add(
                         SelectHormoneForTrend(reading.type),
@@ -591,9 +592,10 @@ class _TrendChart extends StatelessWidget {
     final points = _extractPoints();
     final hasTrendData = points.length >= 2;
     final currentUnit = selectedHormone.defaultUnit;
-    final trendLabel = hasTrendData && points.last.value < points[points.length - 2].value
-        ? l10n.trendDecreasing
-        : l10n.trendStable;
+    final trendLabel =
+        hasTrendData && points.last.value < points[points.length - 2].value
+            ? l10n.trendDecreasing
+            : l10n.trendStable;
 
     final spots = [
       for (var i = 0; i < points.length; i++)
@@ -799,8 +801,7 @@ class _TrendChart extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color:
-                                HanaColors.onSurfaceVariant.withAlpha(204),
+                            color: HanaColors.onSurfaceVariant.withAlpha(204),
                           ),
                         ),
                       ],
@@ -886,7 +887,8 @@ class _StitchHistoryCardState extends State<_StitchHistoryCard>
                   color: HanaColors.primaryContainer.withAlpha(77), // 30%
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: const Icon(Symbols.description, color: HanaColors.primary),
+                child:
+                    const Icon(Symbols.description, color: HanaColors.primary),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -932,7 +934,8 @@ class _StitchHistoryCardState extends State<_StitchHistoryCard>
                   ],
                 ),
               ),
-              const Icon(Symbols.chevron_right, color: HanaColors.outlineVariant),
+              const Icon(Symbols.chevron_right,
+                  color: HanaColors.outlineVariant),
             ],
           ),
         ),

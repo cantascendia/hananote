@@ -134,8 +134,7 @@ class MedicationLocalDataSourceImpl implements MedicationLocalDataSource {
   Future<MedicationScheduleModel?> getScheduleForDrug(String drugId) async {
     final rows = await _db.query(
       'medication_schedules',
-      where:
-          'drug_id = ? AND (is_deleted = 0 OR is_deleted IS NULL)',
+      where: 'drug_id = ? AND (is_deleted = 0 OR is_deleted IS NULL)',
       whereArgs: [drugId],
       orderBy: 'is_active DESC, start_date DESC',
       limit: 1,

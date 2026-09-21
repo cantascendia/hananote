@@ -328,20 +328,27 @@ class _ParamsCardState extends State<_ParamsCard> {
                 if (_esterType == EsterType.sublingualEstradiol) ...[
                   const SizedBox(height: 16),
                   Text(l10n.simulatorSublingualHold,
-                      style: const
-                          TextStyle(fontSize: 12, color: HanaColors.outline)),
+                      style: const TextStyle(
+                          fontSize: 12, color: HanaColors.outline)),
                   const SizedBox(height: 8),
                   SegmentedButton<SublingualHoldTime>(
                     segments: [
                       ButtonSegment(
-                          value: SublingualHoldTime.quick, label: Text(SublingualHoldTime.quick.localizedName(l10n))),
+                          value: SublingualHoldTime.quick,
+                          label: Text(
+                              SublingualHoldTime.quick.localizedName(l10n))),
                       ButtonSegment(
-                          value: SublingualHoldTime.casual, label: Text(SublingualHoldTime.casual.localizedName(l10n))),
+                          value: SublingualHoldTime.casual,
+                          label: Text(
+                              SublingualHoldTime.casual.localizedName(l10n))),
                       ButtonSegment(
                           value: SublingualHoldTime.standard,
-                          label: Text(SublingualHoldTime.standard.localizedName(l10n))),
+                          label: Text(
+                              SublingualHoldTime.standard.localizedName(l10n))),
                       ButtonSegment(
-                          value: SublingualHoldTime.strict, label: Text(SublingualHoldTime.strict.localizedName(l10n))),
+                          value: SublingualHoldTime.strict,
+                          label: Text(
+                              SublingualHoldTime.strict.localizedName(l10n))),
                     ],
                     selected: {_holdTime ?? SublingualHoldTime.standard},
                     onSelectionChanged: (set) {
@@ -721,7 +728,8 @@ class _SummaryCard extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                l10n.reachSteadyDays(result.timeToSteadyState.toStringAsFixed(0)),
+                l10n.reachSteadyDays(
+                    result.timeToSteadyState.toStringAsFixed(0)),
                 style: const TextStyle(
                   fontSize: 12,
                   color: HanaColors.outline,

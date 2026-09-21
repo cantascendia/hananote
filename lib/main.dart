@@ -10,33 +10,32 @@ import 'package:hananote/core/observability/sentry_init.dart';
 import 'package:hananote/core/region/region_resolver.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 
-void main() async {
+void main() {
+  ErrorBoundary.init(_startApplication);
+}
+
+Future<void> _startApplication() async {
   WidgetsFlutterBinding.ensureInitialized();
   tz.initializeTimeZones();
   initDatabaseFactory();
   configureDependencies();
-  // Resolve region (zh-CN → CN proxy, else → Global) and initialize
-  // Supabase against the right endpoint. Both regions hit the same
-  // upstream Supabase project; CN endpoint is a Cloudflare Worker
-  // reverse-proxy (see cloudflare-proxy/) that bypasses the GFW
-  // reset of *.supabase.co. Safe no-op when SUPABASE_* defines are
-  // missing (pure-local fallback).
-  final region = await RegionResolver().resolve();
-  await HanaSupabase.ensureInitialized(region: region);
+
+  if (HanaSupabase.isConfigured) {
+    final region = await RegionResolver().resolve();
+    await HanaSupabase.ensureInitialized(region: region);
+  }
 
   await initSentryIfEnabled(
     dsn: ObservabilityConstants.sentryDsn,
     appRunner: () async {
-      await ErrorBoundary.init(() async {
-        try {
-          await getIt<NotificationService>().init();
-          await getIt<NotificationService>().requestPermissions();
-        } catch (e) {
-          debugPrint('[main] Notification init error (non-fatal): $e');
-        }
+      try {
+        await getIt<NotificationService>().init();
+        await getIt<NotificationService>().requestPermissions();
+      } catch (_) {
+        ErrorBoundary.logAbstractFailure('notification_initialization');
+      }
 
-        runApp(const HanaNote());
-      });
+      runApp(const HanaNote());
     },
   );
 }

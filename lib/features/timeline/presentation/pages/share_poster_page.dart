@@ -14,6 +14,9 @@ import 'package:hananote/app/theme/hana_colors.dart';
 import 'package:hananote/app/theme/hana_colors_v2.dart';
 import 'package:hananote/app/theme/hana_typography.dart';
 import 'package:hananote/core/data/flower_almanac.dart';
+import 'package:hananote/core/l10n/arb/app_localizations.dart';
+import 'package:hananote/core/platform/file_helper.dart';
+import 'package:hananote/core/privacy/native_interaction.dart';
 import 'package:hananote/core/widgets/hoyo/hoyo_app_bar.dart';
 import 'package:hananote/core/widgets/hoyo/hoyo_eyebrow.dart';
 import 'package:hananote/core/widgets/hoyo/hoyo_pill_button.dart';
@@ -57,29 +60,49 @@ class _SharePosterPageState extends State<SharePosterPage> {
     final bytes = await _capture();
     if (bytes == null) return;
     if (!mounted) return;
-    final l10n = ScaffoldMessenger.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final failureText = AppLocalizations.of(context)!.exportFailed;
+    String? temporaryPath;
     try {
-      await Share.shareXFiles(
-        [XFile.fromData(bytes, name: 'hananote_day.png', mimeType: 'image/png')],
-        text: 'HanaNote · 花笺',
-      );
-    } catch (e) {
-      l10n.showSnackBar(SnackBar(content: Text('分享失败：$e')));
+      if (kHasFileSystem) {
+        temporaryPath = await writeTempBytes('hananote_day.png', bytes);
+      }
+      await NativeInteraction.run(() => SharePlus.instance.share(
+            ShareParams(
+              files: [
+                if (temporaryPath != null)
+                  XFile(temporaryPath)
+                else
+                  XFile.fromData(bytes,
+                      name: 'hananote_day.png', mimeType: 'image/png'),
+              ],
+              text: 'HanaNote · 花笺',
+            ),
+          ));
+    } catch (_) {
+      messenger.showSnackBar(SnackBar(content: Text(failureText)));
+    } finally {
+      if (temporaryPath != null) await deleteTemporaryFile(temporaryPath);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final settingsState = context.watch<SettingsBloc>().state;
-    final displayName = settingsState is SettingsLoaded
-        ? settingsState.profile.displayName
-        : '·';
-    final hrtDays = settingsState is SettingsLoaded
-        ? settingsState.profile.hrtDayCount
-        : 1;
-    final startDate = settingsState is SettingsLoaded
-        ? DateFormat.yMd().format(settingsState.profile.hrtStartDate)
-        : DateFormat.yMd().format(DateTime.now());
+    if (settingsState is! SettingsLoaded ||
+        settingsState.profile.hrtStartDate == null) {
+      return Scaffold(
+        backgroundColor: HanaColors.backgroundOf(context),
+        appBar: const HoyoAppBar(title: '纪念卡'),
+        body: Center(child: Text(AppLocalizations.of(context)!.selectDate)),
+      );
+    }
+    final displayName = settingsState.profile.displayName.isEmpty
+        ? '·'
+        : settingsState.profile.displayName;
+    final hrtDays = settingsState.profile.hrtDayCount;
+    final startDate =
+        DateFormat.yMd().format(settingsState.profile.hrtStartDate!);
     final signatureChar =
         displayName.isEmpty ? '·' : displayName.characters.first.toUpperCase();
 

@@ -50,3 +50,6 @@ Future<String> writeTempBytes(String fileName, Uint8List bytes) async {
   html.Url.revokeObjectUrl(url);
   return fileName;
 }
+
+/// Browser captures have no application-cache file to remove.
+Future<void> deleteTemporaryFile(String absolutePath) async {}
